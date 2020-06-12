@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CA</title>
+	<style type="text/css">
+		body {
+			text-align: center;
+		}
+		canvas {
+			border: 2px solid #cc0000;
+		}
+	</style>
+
+	<script>
+	function play() {
+		var ctx;
+		var rand = Math.random;
+		var s = 160;
+		var size = s*s; // grid squared size
+		var blocks = [];
+		var colors = ["#FFFFFF", "#2244FF"]; // cells colors
+		var interval = 0;
+		
+		for (var i = 0; i < size; i++) {
+			if (rand() < 0.1) {
+				blocks.push( {"pos": i, "vel_z": 0} );
+			}
+		}
+
+		var c = document.getElementById('area');
+		ctx = c.getContext('2d');
+		interval = window.setInterval(simloop, 1000/30);
+		// loop
+		function simloop() {
+
+			// pre-think
+			for (var i = blocks.length - 1; i >= 0; i--) {
+				blocks[i].vel_z += 1;
+				var newpos = blocks[i].pos + Math.floor(blocks[i].vel_z)*s;
+				if (newpos < size) {
+					blocks[i].pos = newpos;
+				}
+				else {
+					blocks[i].pos = size-s+(blocks[i].pos % s);
+				}
+			}
+
+			// draw
+			for (var i = 0; i < size; i++) {
+				ctx.fillStyle = colors[0];
+				ctx.fillRect((i%s) * 5+1, Math.floor(i/s) * 5+1, 4, 4);
+			}
+
+			for (var i = blocks.length - 1; i >= 0; i--) {
+				var pos = blocks[i].pos;
+				ctx.fillStyle = colors[1];
+				ctx.fillRect((pos%s) * 5+1, Math.floor(pos/s) * 5+1, 4, 4);
+			}
+		}
+
+
+
+	}
+	</script>
+
+</head>
+<body onload="play()">
+<canvas id="area" width="801" height="801"></canvas>
+</body>
+
+
+</html>
