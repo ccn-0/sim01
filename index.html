@@ -23,7 +23,8 @@
 		
 		for (var i = 0; i < size; i++) {
 			if (rand() < 0.1) {
-				blocks.push( {"pos": i, "vel_z": 0} );
+				var vel = Math.floor( rand()*4 )
+				blocks.push( {"pos": i, "vel_z": vel} );
 			}
 		}
 
