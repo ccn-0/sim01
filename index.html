@@ -28,14 +28,45 @@
 		ctx = c.getContext('2d');
 		ctx.canvas.width  = window.innerWidth;
   		ctx.canvas.height = window.innerHeight;
-		interval = window.setInterval(simloop, 1000/30);
+
+  		function rand_color() {
+  			return '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
+  		}
+		
+		function getMousePos(canvas, evt) {
+	        var rect = canvas.getBoundingClientRect();
+	        return {
+	          x: evt.clientX - rect.left,
+	          y: evt.clientY - rect.top
+	        };
+	    }
+
+	    function rand_bounce() {
+	    	return rand()*(0.95-0.6) + 0.6;
+	    }
 
 		for (var i = 0; i < block_count; i++) {	
 			var pos = [rand() * ctx.canvas.width , rand() * ctx.canvas.height ];
 			var vel = [rand() * vel_init - vel_init*0.5 , rand() * vel_init - vel_init*0.5 ];
-			blocks.push( {"pos": pos, "vel": vel} );
+			blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce() });
 			
 		}
+
+		interval = window.setInterval(simloop, 1000/30);
+
+		function getMousePos(canvas, evt) {
+	        var rect = canvas.getBoundingClientRect();
+	        return {
+	          x: evt.clientX - rect.left,
+	          y: evt.clientY - rect.top
+	        };
+	    }
+		c.addEventListener('mousemove', function(evt) {
+	        var mousePos = getMousePos(c, evt);
+	        var pos = [mousePos.x, mousePos.y];
+			var vel = [rand() * vel_init - vel_init*0.5 , rand() * vel_init - vel_init*0.5 ];
+	        blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce()} );
+        }, false);
 
 		// loop
 		function simloop() {
@@ -46,30 +77,27 @@
 				var newpos = [blocks[i].pos[0] + blocks[i].vel[0], blocks[i].pos[1] + blocks[i].vel[1]];
 				if (newpos[1] > ctx.canvas.height) { // bounce from the floor
 					newpos[1] = ctx.canvas.height;
-					blocks[i].vel[1] *= -0.7; // energy loss on bounce, -1.0 for no loss
+					blocks[i].vel[1] *= -blocks[i].bounceScale; // energy loss on bounce, -1.0 for no loss
 					blocks[i].vel[0] *= friction_flr; // friction
 				}
 				if (newpos[0] < 0) { // bounce from left wall
 					newpos[0] = 0;
-					blocks[i].vel[0] *= -0.7; // energy loss on bounce, -1.0 for no loss
+					blocks[i].vel[0] *= -blocks[i].bounceScale; // energy loss on bounce, -1.0 for no loss
 					blocks[i].vel[1] *= friction_wall; // friction
 				}
-				if (newpos[0] > ctx.canvas.width) { // bounce from left wall
+				if (newpos[0] > ctx.canvas.width) { // bounce from right wall
 					newpos[0] = ctx.canvas.width;
-					blocks[i].vel[0] *= -0.7; // energy loss on bounce, -1.0 for no loss
-					blocks[i].vel[1] *= friction_wall; // friction
+					blocks[i].vel[0] *= -blocks[i].bounceScale; 
+					blocks[i].vel[1] *= friction_wall; 
 				}
-
 				blocks[i].pos = newpos;
-
 			}
-
 			// draw
 			ctx.fillStyle = colors[0]; // clean
 			ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
 			for (var i = blocks.length - 1; i >= 0; i--) {
-				ctx.fillStyle = colors[1];
+				ctx.fillStyle = blocks[i].color;
 				ctx.fillRect(blocks[i].pos[0]-block_size/2, blocks[i].pos[1]-block_size/2, block_size, block_size);
 			}
 		}
