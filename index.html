@@ -154,12 +154,12 @@
 						// gravity interaction
 						blocks[i].vel[0] += -inv_dist * dx;
 						blocks[i].vel[1] += -inv_dist * dy;
-						if (distance < 50) {
+						if (distance < 100) {
 							// weird repulsion physics, not realistic
-							blocks[i].vel[0] = (blocks[i].vel[0] + inv_dist*10 * dx) * 0.99;
-							blocks[i].vel[1] = (blocks[i].vel[1] + inv_dist*10 * dy) * 0.99;
+							blocks[i].vel[0] = (blocks[i].vel[0] + inv_dist*10 * dx) * 0.97;
+							blocks[i].vel[1] = (blocks[i].vel[1] + inv_dist*10 * dy) * 0.97;
 						}
-						if (repulse_active > 0 && distance < 100) {
+						if (repulse_active > 0 && distance < 180) {
 							// strong pulse event
 							blocks[i].vel[0] = (blocks[i].vel[0] + inv_dist*10 * dx) * 1.02;
 							blocks[i].vel[1] = (blocks[i].vel[1] + inv_dist*10 * dy) * 1.02;
