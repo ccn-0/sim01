@@ -128,11 +128,12 @@
 			// draw
 			ctx.fillStyle = colors[0]; // clean
 			ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
+			ctx.beginPath();	
 			for (var i = blocks.length - 1; i >= 0; i--) {
 				ctx.fillStyle = blocks[i].color;
-				ctx.fillRect(blocks[i].pos[0]-block_size/2, blocks[i].pos[1]-block_size/2, block_size, block_size);
+				ctx.arc(blocks[i].pos[0], blocks[i].pos[1], block_size, 0 , 2*Math.PI);		
 			}
+			ctx.fill();
 		}
 
 
