@@ -92,15 +92,32 @@
 	        };
 	    }
 		c.addEventListener('mousemove', function(evt) {
-			if (glimit_count == glimit) {
-				glimit_count = 0;
-		        var mousePos = getMousePos(c, evt);
+			// OLD - particle spam generator
+			// if (glimit_count == glimit) {
+			// 	glimit_count = 0;
+		 //        var mousePos = getMousePos(c, evt);
+		 //        var pos = [mousePos.x, mousePos.y];
+			// 	var vel = [rand() * vel_init - vel_init*0.5 , rand() * vel_init - vel_init*0.5 ];
+		 //        blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce(), "pic" : drawings[Math.floor(Math.random() * drawings.length)]} );			
+			// }
+			// else {
+			// 	glimit_count += 1;
+			// }
+
+
+			// cursor repulse
+			for (var i = blocks.length - 1; i >= 0; i--) {
+				var mousePos = getMousePos(c, evt);
 		        var pos = [mousePos.x, mousePos.y];
-				var vel = [rand() * vel_init - vel_init*0.5 , rand() * vel_init - vel_init*0.5 ];
-		        blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce(), "pic" : drawings[Math.floor(Math.random() * drawings.length)]} );			
-			}
-			else {
-				glimit_count += 1;
+        		var dx = (blocks[i].pos[0]-mousePos.x);
+				var dy = (blocks[i].pos[1]-mousePos.y);
+				var distance = Math.sqrt(dx*dx + dy*dy) + 1;
+				if (distance < 100) {
+					var inv_sqrare_dist = 1/distance;	
+					blocks[i].vel[0] += inv_sqrare_dist * dx;
+					blocks[i].vel[1] += inv_sqrare_dist * dy;
+				}
+
 			}
 
         }, false);
@@ -108,6 +125,8 @@
 		// loop
 		function simloop() {
 
+			// TODO - particle decay
+			
 			// pre-think
 			for (var i = blocks.length - 1; i >= 0; i--) {
 				blocks[i].vel[1] += gravity; // gravity
@@ -143,8 +162,14 @@
 						var dy = (blocks[i].pos[1]-blocks[j].pos[1]);
 						var distance = Math.sqrt(dx*dx + dy*dy) + 2;
 						var inv_dist = (1/distance) * 0.005;
+						// gravity interaction
 						blocks[i].vel[0] += -inv_dist * dx;
 						blocks[i].vel[1] += -inv_dist * dy;
+						if (distance < 100) {
+							// weird repulsion physics, not realistic
+							blocks[i].vel[0] = (blocks[i].vel[0] + blocks[j].vel[0])*0.4;
+							blocks[i].vel[1] = (blocks[i].vel[1] + blocks[j].vel[1])*0.4;
+						}
 					}
 				}
 			}
