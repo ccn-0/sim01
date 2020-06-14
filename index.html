@@ -18,14 +18,17 @@
 		var rand = Math.random;
 		var block_count = 30; // initial generated particle count in the area
 		var block_size = 8;   // visual size of the particle (side length of the square)
+		var blocks = [];
+
 
 		// physics
 		var vel_init = 20;
 		var friction_flr = 0.9;
-		var friction_wall = 0.97;
-		var gravity = 0.03;
-		var blocks = [];
-
+		var friction_wall = 0.9;
+		var gravity = 0.00;
+		var bounceMin = 0.3;
+		var bounceMax = 0.6;
+		
 		// visuals
 		var colors = ["#333333", "#2244FF"]; // cells colors
 		var pics = [
@@ -76,7 +79,7 @@
 	    }
 
 	    function rand_bounce() {
-	    	return rand()*(0.95-0.6) + 0.6;
+	    	return rand()*(bounceMax-bounceMin) + bounceMin;
 	    }
 
 
