@@ -21,10 +21,11 @@
 		var vel_init = 20;
 		var friction_flr = 0.9;
 		var friction_wall = 0.97;
-		var gravity = 0.1;
+		var gravity = 0.03;
 		var blocks = [];
 		var colors = ["#FFFFFF", "#2244FF"]; // cells colors
 		var interval = 0;
+		var fps = 60;
 
 		var glimit = 4; // generates a particle on mousemove every X frames
 		var glimit_count = 0;
@@ -57,7 +58,7 @@
 			
 		}
 
-		interval = window.setInterval(simloop, 1000/30);
+		interval = window.setInterval(simloop, 1000/fps);
 
 		function getMousePos(canvas, evt) {
 	        var rect = canvas.getBoundingClientRect();
@@ -117,7 +118,7 @@
 						var dx = (blocks[i].pos[0]-blocks[j].pos[0]);
 						var dy = (blocks[i].pos[1]-blocks[j].pos[1]);
 						var distance = Math.sqrt(dx*dx + dy*dy) + 2;
-						var inv_dist = (1/distance) * 0.01;
+						var inv_dist = (1/distance) * 0.005;
 						blocks[i].vel[0] += -inv_dist * dx;
 						blocks[i].vel[1] += -inv_dist * dy;
 					}
