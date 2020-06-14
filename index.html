@@ -18,15 +18,33 @@
 		var rand = Math.random;
 		var block_count = 30; // initial generated particle count in the area
 		var block_size = 8;   // visual size of the particle (side length of the square)
+
+		// physics
 		var vel_init = 20;
 		var friction_flr = 0.9;
 		var friction_wall = 0.97;
 		var gravity = 0.03;
 		var blocks = [];
-		var colors = ["#FFFFFF", "#2244FF"]; // cells colors
+
+		// visuals
+		var colors = ["#333333", "#2244FF"]; // cells colors
+		var pics = [
+		"https://steamuserimages-a.akamaihd.net/ugc/1188335431787417015/DF0B749E1A7C2C2F86876F006E166E5DF7D89CF8/",
+		"https://steamuserimages-a.akamaihd.net/ugc/1188335431787417263/A57240F88EF5F2889685715243029EFACD89A2A8/",
+		"https://steamuserimages-a.akamaihd.net/ugc/1188335431787417534/2CF8F8033D27CAD5927A2DA832FFC5A6CCA6CFE5/",
+		"https://steamuserimages-a.akamaihd.net/ugc/1188335431787417803/36DD056A9C76F0271C9E8B570749BC62ACC34FEA/"
+		]
+		var drawings = [];
+
+		for (var i = pics.length - 1; i >= 0; i--) {
+			var drawing = new Image()
+			drawing.src = pics[i]
+			drawings.push(drawing)
+		}
+
+		// rendering
 		var interval = 0;
 		var fps = 60;
-
 		var glimit = 4; // generates a particle on mousemove every X frames
 		var glimit_count = 0;
 
@@ -34,6 +52,16 @@
 		ctx = c.getContext('2d');
 		ctx.canvas.width  = window.innerWidth;
   		ctx.canvas.height = window.innerHeight;
+
+  		for (var i = 0; i < block_count; i++) {	
+			var pos = [rand() * ctx.canvas.width , rand() * ctx.canvas.height ];
+			var vel = [rand() * vel_init - vel_init*0.5 , rand() * vel_init - vel_init*0.5 ];
+			var rnd_pic = drawings[Math.floor(Math.random() * drawings.length)]
+			blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce(), "pic" : drawings[Math.floor(Math.random() * drawings.length)] });
+			
+		}
+
+		interval = window.setInterval(simloop, 1000/fps);
 
   		function rand_color() {
   			return '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
@@ -51,14 +79,7 @@
 	    	return rand()*(0.95-0.6) + 0.6;
 	    }
 
-		for (var i = 0; i < block_count; i++) {	
-			var pos = [rand() * ctx.canvas.width , rand() * ctx.canvas.height ];
-			var vel = [rand() * vel_init - vel_init*0.5 , rand() * vel_init - vel_init*0.5 ];
-			blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce() });
-			
-		}
 
-		interval = window.setInterval(simloop, 1000/fps);
 
 		function getMousePos(canvas, evt) {
 	        var rect = canvas.getBoundingClientRect();
@@ -73,7 +94,7 @@
 		        var mousePos = getMousePos(c, evt);
 		        var pos = [mousePos.x, mousePos.y];
 				var vel = [rand() * vel_init - vel_init*0.5 , rand() * vel_init - vel_init*0.5 ];
-		        blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce()} );			
+		        blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce(), "pic" : drawings[Math.floor(Math.random() * drawings.length)]} );			
 			}
 			else {
 				glimit_count += 1;
@@ -128,12 +149,18 @@
 			// draw
 			ctx.fillStyle = colors[0]; // clean
 			ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-			ctx.beginPath();	
-			for (var i = blocks.length - 1; i >= 0; i--) {
+			
+			/*for (var i = blocks.length - 1; i >= 0; i--) {
+				ctx.beginPath();
 				ctx.fillStyle = blocks[i].color;
 				ctx.arc(blocks[i].pos[0], blocks[i].pos[1], block_size, 0 , 2*Math.PI);		
+				ctx.fill();	
+			}*/
+
+			for (var i = blocks.length - 1; i >= 0; i--) {
+				ctx.drawImage(blocks[i].pic,blocks[i].pos[0], blocks[i].pos[1]);
 			}
-			ctx.fill();
+			
 		}
 
 
