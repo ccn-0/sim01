@@ -21,7 +21,7 @@
 		var blocks = [];
 
 		// physics
-		var vel_init = 20;
+		var vel_init = 2;
 		var friction_flr = 0.9;
 		var friction_wall = 0.9;
 		var gravity = 0.00;
@@ -29,7 +29,7 @@
 		var bounceMax = 0.6;
 
 		// repulsion event
-		var repulsion_interval = window.setInterval(repulseEvent, rand()*10000 + 10000); // 10-20 seconds
+		// var repulsion_interval = window.setInterval(repulseEvent, rand()*10000 + 10000); // 10-20 seconds
 		var repulse_active = 0;
 
 		function repulseEvent() {
@@ -104,10 +104,10 @@
         		var dx = (blocks[i].pos[0]-mousePos.x);
 				var dy = (blocks[i].pos[1]-mousePos.y);
 				var distance = Math.sqrt(dx*dx + dy*dy) + 1;
-				if (distance < 100) {
-					var inv_sqrare_dist = 1/distance;	
-					blocks[i].vel[0] += inv_sqrare_dist * dx;
-					blocks[i].vel[1] += inv_sqrare_dist * dy;
+				if (distance < 50) {
+					var inv_dist = 1/(distance*distance);	
+					blocks[i].vel[0] += inv_dist * dx;
+					blocks[i].vel[1] += inv_dist * dy;
 				}
 			}
         }, false);
@@ -150,19 +150,11 @@
 						var dx = (blocks[i].pos[0]-blocks[j].pos[0]);
 						var dy = (blocks[i].pos[1]-blocks[j].pos[1]);
 						var distance = Math.sqrt(dx*dx + dy*dy) + 2;
-						var inv_dist = (1/distance) * 0.005;
-						// gravity interaction
-						blocks[i].vel[0] += -inv_dist * dx;
-						blocks[i].vel[1] += -inv_dist * dy;
-						if (distance < 100) {
-							// weird repulsion physics, not realistic
-							blocks[i].vel[0] = (blocks[i].vel[0] + inv_dist*10 * dx) * 0.97;
-							blocks[i].vel[1] = (blocks[i].vel[1] + inv_dist*10 * dy) * 0.97;
-						}
-						if (repulse_active > 0 && distance < 180) {
-							// strong pulse event
-							blocks[i].vel[0] = (blocks[i].vel[0] + inv_dist*10 * dx) * 1.02;
-							blocks[i].vel[1] = (blocks[i].vel[1] + inv_dist*10 * dy) * 1.02;
+						var inv_dist = 1/(distance*distance);
+						if (distance < 60) {
+							// repulsion interaction
+							blocks[i].vel[0] += inv_dist * dx;
+							blocks[i].vel[1] += inv_dist * dy;
 						}
 					}
 				}
