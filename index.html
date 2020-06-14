@@ -20,7 +20,6 @@
 		var block_size = 8;   // visual size of the particle (side length of the square)
 		var blocks = [];
 
-
 		// physics
 		var vel_init = 20;
 		var friction_flr = 0.9;
@@ -28,7 +27,15 @@
 		var gravity = 0.00;
 		var bounceMin = 0.3;
 		var bounceMax = 0.6;
-		
+
+		// repulsion event
+		var repulsion_interval = window.setInterval(repulseEvent, rand()*10000 + 10000); // 10-20 seconds
+		var repulse_active = 0;
+
+		function repulseEvent() {
+			repulse_active = 10; // ticks
+		}
+
 		// visuals
 		var colors = ["#333333", "#2244FF"]; // cells colors
 		var pics = [
@@ -46,8 +53,10 @@
 		}
 
 		// rendering
-		var interval = 0;
+		var render_interval = 0;
 		var fps = 60;
+		render_interval = window.setInterval(simloop, 1000/fps);
+		
 		var glimit = 4; // generates a particle on mousemove every X frames
 		var glimit_count = 0;
 
@@ -56,15 +65,13 @@
 		ctx.canvas.width  = window.innerWidth;
   		ctx.canvas.height = window.innerHeight;
 
+  		// init particles 
   		for (var i = 0; i < block_count; i++) {	
 			var pos = [rand() * ctx.canvas.width , rand() * ctx.canvas.height ];
 			var vel = [rand() * vel_init - vel_init*0.5 , rand() * vel_init - vel_init*0.5 ];
 			var rnd_pic = drawings[Math.floor(Math.random() * drawings.length)]
-			blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce(), "pic" : drawings[Math.floor(Math.random() * drawings.length)] });
-			
+			blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce(), "pic" : drawings[Math.floor(Math.random() * drawings.length)] });	
 		}
-
-		interval = window.setInterval(simloop, 1000/fps);
 
   		function rand_color() {
   			return '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
@@ -82,8 +89,6 @@
 	    	return rand()*(bounceMax-bounceMin) + bounceMin;
 	    }
 
-
-
 		function getMousePos(canvas, evt) {
 	        var rect = canvas.getBoundingClientRect();
 	        return {
@@ -92,19 +97,6 @@
 	        };
 	    }
 		c.addEventListener('mousemove', function(evt) {
-			// OLD - particle spam generator
-			// if (glimit_count == glimit) {
-			// 	glimit_count = 0;
-		 //        var mousePos = getMousePos(c, evt);
-		 //        var pos = [mousePos.x, mousePos.y];
-			// 	var vel = [rand() * vel_init - vel_init*0.5 , rand() * vel_init - vel_init*0.5 ];
-		 //        blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce(), "pic" : drawings[Math.floor(Math.random() * drawings.length)]} );			
-			// }
-			// else {
-			// 	glimit_count += 1;
-			// }
-
-
 			// cursor repulse
 			for (var i = blocks.length - 1; i >= 0; i--) {
 				var mousePos = getMousePos(c, evt);
@@ -117,37 +109,34 @@
 					blocks[i].vel[0] += inv_sqrare_dist * dx;
 					blocks[i].vel[1] += inv_sqrare_dist * dy;
 				}
-
 			}
-
         }, false);
 
-		// loop
+		// main loop
 		function simloop() {
-
-			// TODO - particle decay
-			
 			// pre-think
+			
 			for (var i = blocks.length - 1; i >= 0; i--) {
-				blocks[i].vel[1] += gravity; // gravity
+
+				blocks[i].vel[1] += gravity; // apply gravity
 				var newpos = [blocks[i].pos[0] + blocks[i].vel[0], blocks[i].pos[1] + blocks[i].vel[1]];
-				if (newpos[1] > ctx.canvas.height) { // bounce from the floor
-					newpos[1] = ctx.canvas.height;
-					blocks[i].vel[1] *= -blocks[i].bounceScale; // energy loss on bounce, -1.0 for no loss
-					blocks[i].vel[0] *= friction_flr; // friction
+				if (newpos[1] > ctx.canvas.height-20) { // bounce from the floor
+					newpos[1] = ctx.canvas.height-20;
+					blocks[i].vel[1] *= -blocks[i].bounceScale; 
+					blocks[i].vel[0] *= friction_flr; 
 				}
-				if (newpos[1] < 0) { // bounce from the ceiling
-					newpos[1] = 0;
-					blocks[i].vel[1] *= -blocks[i].bounceScale; // energy loss on bounce, -1.0 for no loss
-					blocks[i].vel[0] *= friction_flr; // friction
+				if (newpos[1] < 20) { // bounce from the ceiling
+					newpos[1] = 20;
+					blocks[i].vel[1] *= -blocks[i].bounceScale; 
+					blocks[i].vel[0] *= friction_flr; 
 				}
-				if (newpos[0] < 0) { // bounce from left wall
-					newpos[0] = 0;
-					blocks[i].vel[0] *= -blocks[i].bounceScale; // energy loss on bounce, -1.0 for no loss
-					blocks[i].vel[1] *= friction_wall; // friction
+				if (newpos[0] < 20) { // bounce from left wall
+					newpos[0] = 20;
+					blocks[i].vel[0] *= -blocks[i].bounceScale; 
+					blocks[i].vel[1] *= friction_wall; 
 				}
-				if (newpos[0] > ctx.canvas.width) { // bounce from right wall
-					newpos[0] = ctx.canvas.width;
+				if (newpos[0] > ctx.canvas.width-20) { // bounce from right wall
+					newpos[0] = ctx.canvas.width-20;
 					blocks[i].vel[0] *= -blocks[i].bounceScale; 
 					blocks[i].vel[1] *= friction_wall; 
 				}
@@ -165,28 +154,28 @@
 						// gravity interaction
 						blocks[i].vel[0] += -inv_dist * dx;
 						blocks[i].vel[1] += -inv_dist * dy;
-						if (distance < 100) {
+						if (distance < 50) {
 							// weird repulsion physics, not realistic
-							blocks[i].vel[0] = (blocks[i].vel[0] + blocks[j].vel[0])*0.4;
-							blocks[i].vel[1] = (blocks[i].vel[1] + blocks[j].vel[1])*0.4;
+							blocks[i].vel[0] = (blocks[i].vel[0] + inv_dist*10 * dx) * 0.99;
+							blocks[i].vel[1] = (blocks[i].vel[1] + inv_dist*10 * dy) * 0.99;
+						}
+						if (repulse_active > 0 && distance < 100) {
+							// strong pulse event
+							blocks[i].vel[0] = (blocks[i].vel[0] + inv_dist*10 * dx) * 1.02;
+							blocks[i].vel[1] = (blocks[i].vel[1] + inv_dist*10 * dy) * 1.02;
 						}
 					}
 				}
 			}
 
+			repulse_active -= 1;
+
 			// draw
 			ctx.fillStyle = colors[0]; // clean
 			ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-			
-			/*for (var i = blocks.length - 1; i >= 0; i--) {
-				ctx.beginPath();
-				ctx.fillStyle = blocks[i].color;
-				ctx.arc(blocks[i].pos[0], blocks[i].pos[1], block_size, 0 , 2*Math.PI);		
-				ctx.fill();	
-			}*/
 
 			for (var i = blocks.length - 1; i >= 0; i--) {
-				ctx.drawImage(blocks[i].pic,blocks[i].pos[0], blocks[i].pos[1]);
+				ctx.drawImage(blocks[i].pic, blocks[i].pos[0] - 30 , blocks[i].pos[1] - 30);
 			}
 			
 		}
