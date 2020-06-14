@@ -16,14 +16,19 @@
 	function play() {
 		var ctx;
 		var rand = Math.random;
-		var block_count = 30;
-		var block_size = 8;
+		var block_count = 30; // initial generated particle count in the area
+		var block_size = 8;   // visual size of the particle (side length of the square)
 		var vel_init = 20;
 		var friction_flr = 0.9;
 		var friction_wall = 0.97;
+		var gravity = 0.1;
 		var blocks = [];
 		var colors = ["#FFFFFF", "#2244FF"]; // cells colors
 		var interval = 0;
+
+		var glimit = 4; // generates a particle on mousemove every X frames
+		var glimit_count = 0;
+
 		var c = document.getElementById('area');
 		ctx = c.getContext('2d');
 		ctx.canvas.width  = window.innerWidth;
@@ -62,10 +67,17 @@
 	        };
 	    }
 		c.addEventListener('mousemove', function(evt) {
-	        var mousePos = getMousePos(c, evt);
-	        var pos = [mousePos.x, mousePos.y];
-			var vel = [rand() * vel_init - vel_init*0.5 , rand() * vel_init - vel_init*0.5 ];
-	        blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce()} );
+			if (glimit_count == glimit) {
+				glimit_count = 0;
+		        var mousePos = getMousePos(c, evt);
+		        var pos = [mousePos.x, mousePos.y];
+				var vel = [rand() * vel_init - vel_init*0.5 , rand() * vel_init - vel_init*0.5 ];
+		        blocks.push( {"pos": pos, "vel": vel, "color": rand_color(), "bounceScale" : rand_bounce()} );			
+			}
+			else {
+				glimit_count += 1;
+			}
+
         }, false);
 
 		// loop
@@ -73,10 +85,15 @@
 
 			// pre-think
 			for (var i = blocks.length - 1; i >= 0; i--) {
-				blocks[i].vel[1] += 0.8; // gravity
+				blocks[i].vel[1] += gravity; // gravity
 				var newpos = [blocks[i].pos[0] + blocks[i].vel[0], blocks[i].pos[1] + blocks[i].vel[1]];
 				if (newpos[1] > ctx.canvas.height) { // bounce from the floor
 					newpos[1] = ctx.canvas.height;
+					blocks[i].vel[1] *= -blocks[i].bounceScale; // energy loss on bounce, -1.0 for no loss
+					blocks[i].vel[0] *= friction_flr; // friction
+				}
+				if (newpos[1] < 0) { // bounce from the ceiling
+					newpos[1] = 0;
 					blocks[i].vel[1] *= -blocks[i].bounceScale; // energy loss on bounce, -1.0 for no loss
 					blocks[i].vel[0] *= friction_flr; // friction
 				}
@@ -92,6 +109,21 @@
 				}
 				blocks[i].pos = newpos;
 			}
+
+			// particle interactions
+			for (var i = blocks.length - 1; i >= 0; i--) {
+				for (var j = blocks.length - 1; j >= 0; j--) {
+					if (i != j) {
+						var dx = (blocks[i].pos[0]-blocks[j].pos[0]);
+						var dy = (blocks[i].pos[1]-blocks[j].pos[1]);
+						var distance = Math.sqrt(dx*dx + dy*dy) + 2;
+						var inv_dist = (1/distance) * 0.01;
+						blocks[i].vel[0] += -inv_dist * dx;
+						blocks[i].vel[1] += -inv_dist * dy;
+					}
+				}
+			}
+
 			// draw
 			ctx.fillStyle = colors[0]; // clean
 			ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
