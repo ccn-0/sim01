@@ -105,7 +105,7 @@
 				var dy = (blocks[i].pos[1]-mousePos.y);
 				var distance = Math.sqrt(dx*dx + dy*dy) + 1;
 				if (distance < 100) {
-					var inv_dist = 1/(distance*distance) * 3;	
+					var inv_dist = 1/distance * 0.5;	
 					blocks[i].vel[0] += inv_dist * dx;
 					blocks[i].vel[1] += inv_dist * dy;
 				}
@@ -149,7 +149,7 @@
 					if (i != j) {
 						var dx = (blocks[i].pos[0]-blocks[j].pos[0]);
 						var dy = (blocks[i].pos[1]-blocks[j].pos[1]);
-						var distance = Math.sqrt(dx*dx + dy*dy) + 2;
+						var distance = Math.sqrt(dx*dx + dy*dy) + 0.1;
 						var inv_dist = 1/(distance*distance);
 						if (distance < 60) {
 							// repulsion interaction
@@ -165,15 +165,16 @@
 			// draw
 			ctx.fillStyle = colors[0]; // clean
 			ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
 			for (var i = blocks.length - 1; i >= 0; i--) {
-				ctx.drawImage(blocks[i].pic, blocks[i].pos[0] - 30 , blocks[i].pos[1] - 30);
-			}
-			
+				var picture = blocks[i].pic;
+				ctx.drawImage(picture, 
+					blocks[i].pos[0] - picture.width/4, 
+					blocks[i].pos[1] - picture.height/4,
+					picture.width/2,
+					picture.height/2
+					);
+			}	
 		}
-
-
-
 	}
 	</script>
 
