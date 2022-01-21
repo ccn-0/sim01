@@ -101,10 +101,10 @@
         		var dx = (blocks[i].pos[0]-mousePos.x);
 				var dy = (blocks[i].pos[1]-mousePos.y);
 				var distance = Math.sqrt(dx*dx + dy*dy) + 1;
-				if (distance < 100) {
+				if (distance < 2000) {
 					var inv_dist = 1/distance * 0.5;	
-					blocks[i].vel[0] += inv_dist * dx;
-					blocks[i].vel[1] += inv_dist * dy;
+					blocks[i].vel[0] -= inv_dist * dx;
+					blocks[i].vel[1] -= inv_dist * dy;
 				}
 			}
         }, false);
