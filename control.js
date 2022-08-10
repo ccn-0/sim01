@@ -4,6 +4,7 @@ function init_control() {
         "up" : false,
         "right" : false,
         "down" : false,
+        "space" : false,
         "mouse_x" : 0,
         "mouse_y" : 0,
         "mouse1" : false,
@@ -56,19 +57,21 @@ function add_listeners() {
         if (evt.defaultPrevented) {
             return;
         }
-        if (evt.code === "KeyS"){
+        if (evt.code === "KeyS") {
             keys.down = true;
-        } else if (evt.code === "KeyW"){
+        } else if (evt.code === "KeyW") {
             keys.up = true;
-        } else if (evt.code === "KeyA"){
+        } else if (evt.code === "KeyA") {
             keys.left = true;
-        } else if (evt.code === "KeyD"){
+        } else if (evt.code === "KeyD") {
             keys.right = true;
-        } else if (evt.code === "Digit1"){
+        } else if (evt.code === "Space") {
+            keys.space = true;
+        } else if (evt.code === "Digit1") {
             keys.slot1 = true;
-        } else if (evt.code === "Digit2"){
+        } else if (evt.code === "Digit2") {
             keys.slot2 = true;
-        } else if (evt.code === "Digit3"){
+        } else if (evt.code === "Digit3") {
             keys.slot3 = true;
         } 
     });
@@ -84,6 +87,8 @@ function add_listeners() {
             keys.left = false;
         } else if (evt.code === "KeyD"){
             keys.right = false;
+        } else if (evt.code === "Space") {
+            keys.space = false;
         } else if (evt.code === "Digit1"){
             keys.slot1 = false;
         } else if (evt.code === "Digit2"){

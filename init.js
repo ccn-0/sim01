@@ -1,5 +1,6 @@
 function _make_crosshair() {
     return {
+        'eid' : global_eid++,
         'origin' : {'x' : 0, 'y' : 0},
         'color' : "#FF0000",
         'size' : 4
@@ -9,7 +10,9 @@ function _make_crosshair() {
 function _make_player() {
     var crosshair = _make_crosshair();
     return {
+        'eid' : global_eid++,
         'origin' : {'x' : 0, 'y' : 0},
+        'velocity' : {'x' : 0, 'y' : 0},
         'angle' : {'x' : 1, 'y' : 0},
         'crosshair' : crosshair,
         'model_idle' : assets.player.model_idle,
@@ -17,21 +20,30 @@ function _make_player() {
         'movement_speed' : 4,
         'color' : "#008800",
         'size' : 60,
-        'max_hp' : 100,
-        'defense' : 0,
-        'block' : 0,
+        'defense' : 0.0,
+        'block' : 0.0,
         'damage_min' : 30,
         'damage_max' : 60,
         'damage_percent' : 1.0,
-        'attack_speed' : 20,
+        'critical_chance' : 0.0,
+        'attack_speed' : 20,  // Attack can happen every X frames
         'attack_cooldown' : 0,
+        'dash_speed' : 60,   // Dash can happen every X frames
+        'dash_cooldown' : 0,
+        'dash_duration' : 12,  // How many frames is dash active
+        'dash_velocity' : 20,
+        'dash_active' : false,
         'projectile_count' : 1,
         'projectile_spread' : 0.3,
         'projectile_speed' : 10,
+        'projectile_pierce' : 0,
+        'projectile_chain' : 0,
+        'xp_multiplier' : 5.0,
         'leech' : 0,
+        'max_hp' : 100,
         'hp' : 100,
         'xp' : 0,
-        'xp_next' : 400,
+        'xp_next' : 1000,
         'level' : 1,
         'modifiers' : [],
     }
@@ -41,6 +53,7 @@ function make_world() {
     var player = _make_player();
     var camera = _make_crosshair();
     var world = {
+        'eid' : global_eid++,
         'mapsize' : {'x' : 500, 'y' : 500},
         'player' : player,
         'camera' : camera,
@@ -56,6 +69,7 @@ function make_world() {
 
 function _make_camera() {
     return {
+        'eid' : global_eid++,
         'origin' : {'x' : 0, 'y' : 0},
     }
 }

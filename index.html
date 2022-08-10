@@ -12,6 +12,8 @@
 
     </style>
 
+    <script type="text/javascript" src="entity.js"></script>
+    <script type="text/javascript" src="math.js"></script>
     <script type="text/javascript" src="main.js"></script>
     <script type="text/javascript" src="monsters.js"></script>
     <script type="text/javascript" src="update.js"></script>
@@ -32,6 +34,7 @@
         var assets;
         var anim_transitions;
         var events = {};
+        var global_eid = 0;
         var frame = -1; // Current frame
         var gg = false;
         var paused = false;
