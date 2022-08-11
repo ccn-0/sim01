@@ -27,6 +27,11 @@ class ProjectileEntity extends DurationEntity {
         // Check if some monster is hit
         for (var i = 0; i < world.monsters.length; i++) {
             var monster = world.monsters[i];
+            
+            if (monster.hp <= 0) {
+                continue; // Something already killed the monster this frame, don't interact
+            }
+            
             var dist = Math.hypot(
                 monster.x - this.x,
                 monster.y - this.y
@@ -45,6 +50,13 @@ class ProjectileEntity extends DurationEntity {
         monster.hp -= result_damage;
         monster.hit_recently = 4;  
         this.entities_excluded.push(monster.eid);
+
+        // Monster died to this projectile
+        if (monster.hp <= 0) {
+            const result_xp = monster.xp * this.player.xp_multiplier;
+            this.player.xp += result_xp;
+            new DynamicTextEntity(monster.x-30, monster.y, 0, -2, 0, 0, 60, 60, 0.98, "#CCCC00", result_xp + " xp");
+        }
     
         if (this.projectile_chain > 0) {
             const random_monster = world.monsters[

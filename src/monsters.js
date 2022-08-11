@@ -24,12 +24,7 @@ class MonsterEntity extends PhysicalEntity {
 
     update() {
         super.update();
-        // Monster died to this attack
-        if (this.hp <= 0) {
-            const result_xp = this.xp * world.player.xp_multiplier;
-            world.player.xp += result_xp;
-            new DynamicTextEntity(this.x-30, this.y, 0, -2, 0, 0, 60, 60, 0.98, "#CCCC00", result_xp + " xp");
-        }
+
         // Animation state
         const anim_offset = this.frame_alive % 64;
         const next_animation_state = this.animation_offsets[anim_offset];
