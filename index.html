@@ -12,22 +12,10 @@
 
     </style>
 
-    <script type="text/javascript" src="entity.js"></script>
-    <script type="text/javascript" src="math.js"></script>
-    <script type="text/javascript" src="main.js"></script>
-    <script type="text/javascript" src="monsters.js"></script>
-    <script type="text/javascript" src="update.js"></script>
-    <script type="text/javascript" src="load.js"></script>
-    <script type="text/javascript" src="control.js"></script>
-    <script type="text/javascript" src="draw.js"></script>
-    <script type="text/javascript" src="init.js"></script>
-    <script type="text/javascript" src="entities.js"></script>
-    <script type="text/javascript" src="modifiers.js"></script>
-
     <script>
         var ctx;
         var c;
-        var fps;
+        var fps = 60;
         var render_interval;
         var keys;
         var world;
@@ -38,8 +26,27 @@
         var frame = -1; // Current frame
         var gg = false;
         var paused = false;
-
     </script>
+
+    <script type="text/javascript" src="src/math.js"></script>
+    <script type="text/javascript" src="src/load.js"></script>
+    <script type="text/javascript" src="src/world.js"></script>
+    <script type="text/javascript" src="src/main.js"></script>
+    <script type="text/javascript" src="src/init.js"></script>
+    <script type="text/javascript" src="src/entity.js"></script>
+    <script type="text/javascript" src="src/player.js"></script>
+    <script type="text/javascript" src="src/camera.js"></script>
+    <script type="text/javascript" src="src/crosshair.js"></script>
+    <script type="text/javascript" src="src/monsters.js"></script>
+    <script type="text/javascript" src="src/projectile.js"></script>
+    <script type="text/javascript" src="src/sprite.js"></script>
+    <script type="text/javascript" src="src/update.js"></script>
+    <script type="text/javascript" src="src/control.js"></script>
+    <script type="text/javascript" src="src/draw.js"></script>
+    <script type="text/javascript" src="src/entities.js"></script>
+    <script type="text/javascript" src="src/modifiers.js"></script>
+
+
 
 </head>
 <body onload="init_game()">
