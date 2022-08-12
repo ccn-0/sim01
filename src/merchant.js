@@ -39,17 +39,7 @@ class Merchant {
             [50, "multiproj1"],
             //[10, "xp_multiplier1"],
         ];
-    
-        var offers = [];
-    
-        for (var i = 0; i < 3; i++) {
-            // Pick weighted random
-            var random_mod = weighted_random(modifiers);
-            offers.push(random_mod.item);
-            // Remove for next round 
-            modifiers.splice(random_mod.i, 1);
-        }
-        this.offers = offers
+        this.offers = weighted_random(modifiers, 3);
     }
 
 }

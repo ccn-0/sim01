@@ -1,0 +1,9 @@
+{
+    "life" : {
+        "description" : "+$ to maximum HP",
+        "min_value" : 5,
+        "max_value" : 30,
+        "weight" : 1000,
+        "tier_weights" : [600, 300, 100]
+    }
+}

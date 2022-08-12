@@ -31,19 +31,30 @@ Array.prototype.fast_delete = (elem) => {
     this.pop();
 }
 
-function weighted_random(modifiers) {
-    var weights = [];
-    var items = [];
-    for (var i = 0; i < modifiers.length; i++) {
-        items.push(modifiers[i][1]);
-        weights.push(modifiers[i][0]);
+function weighted_random(modifiers, count) {
+    var offers = [];
+    for (var n = 0; n < count; n++) {
+        // Pick weighted random
+        var random_mod = {};
+
+        var weights = [];
+        var items = [];
+        for (var i = 0; i < modifiers.length; i++) {
+            items.push(modifiers[i][1]);
+            weights.push(modifiers[i][0]);
+        }
+        var i;
+        for (i = 0; i < weights.length; i++)
+            weights[i] += weights[i - 1] || 0;
+        var random = Math.random() * weights[weights.length - 1];
+        for (i = 0; i < weights.length; i++)
+            if (weights[i] > random)
+                break;
+        random_mod.item = items[i];
+        random_mod.i = i;         
+        offers.push(random_mod.item);
+        // Remove for next round 
+        modifiers.splice(random_mod.i, 1);
     }
-    var i;
-    for (i = 0; i < weights.length; i++)
-        weights[i] += weights[i - 1] || 0;
-    var random = Math.random() * weights[weights.length - 1];
-    for (i = 0; i < weights.length; i++)
-        if (weights[i] > random)
-            break;
-    return {'item' : items[i], 'i' : i};
+    return offers;
 }
