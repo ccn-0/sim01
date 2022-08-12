@@ -12,7 +12,7 @@ function draw_background() {
             const chunk_x = i / 128 + Map.width/2;
             const chunk_y = j / 128 + Map.height/2;
             var tile_to_draw = Map.map_to_asset[world.map.data[chunk_y][chunk_x]];
-            tile_to_draw ? tile_to_draw : Map.map_to_asset[0]; // default asset if undefined
+            tile_to_draw = tile_to_draw ? tile_to_draw : Map.map_to_asset[0]; // default asset if undefined
             ctx.drawImage(tile_to_draw, 
                 ctx.canvas.width/2  - camera.x + i, 
                 ctx.canvas.height/2 - camera.y + j,

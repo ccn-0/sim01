@@ -4,6 +4,7 @@ class PlayerEntity extends PhysicalEntity {
     static model_hit = _load_image_asset("https://cdn.discordapp.com/emojis/980168035082055690.webp");
 
     // Base player stats, used for init and as a calculation base for player power modifiers
+    static base_size = 60;
     static base_level = 1;
     static base_max_hp = 100;
     static base_speed = 3;
@@ -25,7 +26,7 @@ class PlayerEntity extends PhysicalEntity {
     static base_critical_chance = 0.0;
 
     constructor() {
-        super(0, 0, 0, 0, 0, 0, 60);
+        super(0, 0, 0, 0, 0, 0, PlayerEntity.base_size, true);
 
         this.crosshair = undefined;
 
