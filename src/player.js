@@ -10,9 +10,9 @@ class PlayerEntity extends PhysicalEntity {
     static base_defense = 0.0;
     static base_block = 0.0;
     static base_xp_multiplier = 1.0;
-    static base_dash_speed = 60;
-    static base_dash_duration = 12;
-    static base_dash_velocity = 20;
+    static base_dash_speed = 120;
+    static base_dash_duration = 10;
+    static base_dash_velocity = 10;
     static base_projectile_count = 1;
     static base_projectile_spread = 0.3;
     static base_projectile_speed = 10;
@@ -71,7 +71,8 @@ class PlayerEntity extends PhysicalEntity {
 
     update() {
 
-        // Viewangle
+        super.update();
+
         var view_vec = normalize_vector(
             keys.mouse_x - ctx.canvas.width / 2,
             keys.mouse_y - ctx.canvas.height / 2
@@ -79,54 +80,37 @@ class PlayerEntity extends PhysicalEntity {
         this.ax = view_vec.x;
         this.ay = view_vec.y;
     
-        // Movement angle
         var move_vec = normalize_vector(
             keys.right - keys.left,
             keys.down - keys.up
         );
 
-        // Update origin
         this.x += move_vec.x * this.speed;
         this.y += move_vec.y * this.speed;
+
+        this.x = clamp(this.x, world.min_x+this.size/2, world.max_x-this.size/2);
+        this.y = clamp(this.y, world.min_y+this.size/2, world.max_y-this.size/2);
     
-        // Dash
         if (keys.space && this.dash_cooldown == 0) {
             this.__perform_dash();
         }
     
-        // Attack
         if (keys.mouse1 && this.attack_cooldown == 0) {
             this.__perform_attack();
         }
     
-        // Tick down cooldowns
         this.attack_cooldown = this.attack_cooldown <= 0 ? 0 : this.attack_cooldown-1;
         this.dash_cooldown = this.dash_cooldown <= 0 ? 0 : this.dash_cooldown-1;
     
-        // Model/animation
         this.model = this.model_idle;
     
-        // Level up 
         if (this.xp >= this.xp_next) {
             this.xp = this.xp - this.xp_next; 
             this.xp_next = 2**this.level * 1000;
             this.level += 1;
-            // Pause the game and spawn merchant
-            paused = true;
-            var merchant = _make_merchant();
-            world.merchant = merchant;
+            // Pause the game and enable merchant
+            world.merchant.enable();
         }
-
-        super.update();
-
-        this.__monster_collision();
-
-        // World bounds check
-        this.x = clamp(this.x, world.min_x+this.size/2, world.max_x-this.size/2);
-        this.y = clamp(this.y, world.min_y+this.size/2, world.max_y-this.size/2);
-
-        this.crosshair.update();
-
     }
 
     __perform_attack() {
@@ -161,29 +145,5 @@ class PlayerEntity extends PhysicalEntity {
             },
             []
         );
-    }
-
-    __monster_collision() {
-        if (this.dash_active) {
-            // Player has no monster collision during dash
-            return;
-        }
-        // Player vs monster collision
-        for (var i = 0; i < world.monsters.length; i++) {
-            var monster = world.monsters[i];
-            var dist = Math.hypot(this.x-monster.x, this.y-monster.y);
-            if (dist < (this.size + monster.size)*0.5) { 
-                var is_blocked = Math.random() < this.block ? 1 : 0;
-                var result_damage = Math.floor(
-                    (monster.damage / (this.defense+1))
-                    * (1-is_blocked));
-                this.hp -= result_damage;
-                monster.hp = 0;
-                var message = result_damage + (is_blocked ? "(blocked)" : "");
-                new DynamicTextEntity(this.x, this.y, 0, -2, 0, 0, 100, 60, 0.96, "#FF0000", message);
-                new DynamicSpriteEntity(monster.x, monster.y, 0, 0, 0, 0, 
-                    monster.size * 4, 15, 0.85, "#CC0000", assets.other.bloodsplosion);
-            }
-        }
     }
 }

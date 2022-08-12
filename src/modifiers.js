@@ -1,4 +1,3 @@
-
 function _apply_modifier(mod) {
     var dispatch = {
         "defense1" : () => {world.player.defense += 0.25},
@@ -21,53 +20,3 @@ function _apply_modifier(mod) {
 
     dispatch[mod]();
 }
-
-function _generate_offers() {
-    // Table with player modifiers and their weights.
-    var modifiers = [
-        [100, "defense1"],
-        //[100, "block1"],
-        //[100, "life1"],
-        [100, "damage1"],
-        //[100, "damage_percent1"],
-        //[100, "attack_speed1"],
-        //[100, "dash_speed1"],
-        //[100, "movement1"],   
-        //[50, "projectile_speed1"],
-        [50, "projectile_spread1"],
-        //[50, "critical1"],
-        [50, "projectile_pierce1"],
-        [25, "projectile_chain1"],
-        [50, "multiproj1"],
-        //[10, "xp_multiplier1"],
-    ];
-
-    var offers = [];
-
-    for (var i = 0; i < 3; i++) {
-        // Pick weighted random
-        random_mod = weighted_random(modifiers);
-        offers.push(random_mod.item);
-        // Remove for next round 
-        modifiers.splice(random_mod.i, 1);
-    }
-    return offers
-}
-
-function weighted_random(modifiers) {
-    var weights = [];
-    var items = [];
-    for (var i = 0; i < modifiers.length; i++) {
-        items.push(modifiers[i][1]);
-        weights.push(modifiers[i][0]);
-    }
-    var i;
-    for (i = 0; i < weights.length; i++)
-        weights[i] += weights[i - 1] || 0;
-    var random = Math.random() * weights[weights.length - 1];
-    for (i = 0; i < weights.length; i++)
-        if (weights[i] > random)
-            break;
-    return {'item' : items[i], 'i' : i};
-}
-

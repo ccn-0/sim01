@@ -8,6 +8,11 @@
             width:100%;
             height:100%;
             margin : 0;
+            padding: 0;
+        }
+        canvas {
+            margin : 0;
+            padding: 0;
         }
 
     </style>
@@ -31,27 +36,29 @@
     <script type="text/javascript" src="src/math.js"></script>
     <script type="text/javascript" src="src/load.js"></script>
     <script type="text/javascript" src="src/world.js"></script>
+    <script type="text/javascript" src="src/spawner.js"></script>
+    <script type="text/javascript" src="src/despawner.js"></script>
+    <script type="text/javascript" src="src/collision.js"></script>
+    <script type="text/javascript" src="src/observers.js"></script>
     <script type="text/javascript" src="src/main.js"></script>
     <script type="text/javascript" src="src/init.js"></script>
     <script type="text/javascript" src="src/entity.js"></script>
     <script type="text/javascript" src="src/player.js"></script>
+    <script type="text/javascript" src="src/merchant.js"></script>
     <script type="text/javascript" src="src/camera.js"></script>
     <script type="text/javascript" src="src/crosshair.js"></script>
     <script type="text/javascript" src="src/monsters.js"></script>
     <script type="text/javascript" src="src/projectile.js"></script>
     <script type="text/javascript" src="src/sprite.js"></script>
-    <script type="text/javascript" src="src/update.js"></script>
     <script type="text/javascript" src="src/control.js"></script>
     <script type="text/javascript" src="src/draw.js"></script>
-    <script type="text/javascript" src="src/entities.js"></script>
     <script type="text/javascript" src="src/modifiers.js"></script>
 
 
 
 </head>
 <body onload="init_game()">
-<canvas id="area"></canvas>
+    <canvas id="area"></canvas>
 </body>
-
 
 </html>

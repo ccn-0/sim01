@@ -1,6 +1,6 @@
 class MonsterEntity extends PhysicalEntity {
     constructor(size, max_hp, damage, speed, xp) {
-        super(0, 0, 0, 0, 0, 0, size);
+        super(0, 0, 0, 0, 0, 0, size, true);
         this.max_hp = max_hp;
         this.hp = max_hp;
         this.model = undefined;
@@ -19,7 +19,6 @@ class MonsterEntity extends PhysicalEntity {
         };
 
         this._random_spawn();
-        world.monsters.push(this);
     }
 
     update() {
@@ -71,8 +70,7 @@ class MonsterEntity extends PhysicalEntity {
             for (var j = 0; j < world.monsters.length; j++) {
                 const other_monster = world.monsters[j];
                 if (other_monster.eid == this.eid) continue;   
-                var dist_monster = Math.hypot(new_x - other_monster.x, new_y - other_monster.y);
-                if (dist_monster < (other_monster.size + this.size)*0.5) {
+                if (is_stuck(new_x, new_y, this.size, other_monster.x, other_monster.y, other_monster.size)) {
                     collision_flag = true;
                     break;
                 }
@@ -87,6 +85,12 @@ class MonsterEntity extends PhysicalEntity {
         this.x = mx;
         this.y = my
         this.frame_alive += 1;
+    }
+
+    take_damage(result_damage) {
+        this.hp -= result_damage;
+        this.hit_recently = 4;
+        new DynamicTextEntity(this.x+30, this.y, 0, -2, 0, 0, 100, 60, 0.96, "#FFFFFF", result_damage);  
     }
 
     _random_spawn() {
@@ -120,7 +124,7 @@ class HonzeekMonsterEntity extends MonsterEntity {
     static max_hp = 80;
     static damage = 10;
     static speed = 2.2;
-    static xp = 200;
+    static xp = 500;
     static model_idle = _load_image_asset("https://cdn.discordapp.com/emojis/857700195689300008.webp");
     static model_hit = _load_image_asset("https://cdn.discordapp.com/attachments/749608248184799345/1004827766283309126/honzeek_hit.webp");
 
@@ -132,6 +136,7 @@ class HonzeekMonsterEntity extends MonsterEntity {
             HonzeekMonsterEntity.speed, 
             HonzeekMonsterEntity.xp
         );
+        this.model = HonzeekMonsterEntity.model_idle;
         this.model_hit = HonzeekMonsterEntity.model_hit;
         this.animation_offsets = {
             0 : 0
@@ -164,6 +169,7 @@ class MyregMonsterEntity extends MonsterEntity {
             MyregMonsterEntity.speed, 
             MyregMonsterEntity.xp
         );
+        this.model = MyregMonsterEntity.model_idle;
         this.model_hit = MyregMonsterEntity.model_hit;
         this.animation_offsets = {
             0 : 1,

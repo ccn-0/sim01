@@ -3,14 +3,16 @@ class Entity {
     static __eid = 0;
     constructor() {
         this.eid = Entity.__eid++;
-        world.entities.push(this);
+        this.max_hp = 1;
+        this.hp = 1;
+        world.spawn.entities_to_spawn.push(this);
     }
     update() {}
 }
 
 class PhysicalEntity extends Entity {
     // Physical entity that has basic physical properties
-    constructor(x, y, vx, vy, ax, ay, size) {
+    constructor(x, y, vx, vy, ax, ay, size, solid) {
         super();
         this.x = x;
         this.y = y;
@@ -19,20 +21,21 @@ class PhysicalEntity extends Entity {
         this.ax = ax;
         this.ay = ay;
         this.size = size;
+        this.solid = solid;
         this.color = "#FFFFFF";
     }
 
     update() {
         this.x += this.vx;
         this.y += this.vy;
-
     }
+
 }
 
 class DurationEntity extends PhysicalEntity {
     // Entity that loses hp every frame
-    constructor(x, y, vx, vy, ax, ay, size, max_hp) {
-        super(x, y, vx, vy, ax, ay, size);
+    constructor(x, y, vx, vy, ax, ay, size, solid, max_hp) {
+        super(x, y, vx, vy, ax, ay, size, solid);
         this.max_hp = max_hp;
         this.hp = max_hp;
     }

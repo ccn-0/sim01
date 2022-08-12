@@ -7,9 +7,9 @@ function generate_monster_event() {
         new HonzeekMonsterEntity();
         make_event(frame + 30, generate_monster_event, []);
     }
-    else if (frame < 6000) {
+    else if (frame < 60000) {
         new MyregMonsterEntity();
-        make_event(frame + 30, generate_monster_event, []);
+        make_event(frame + 20, generate_monster_event, []);
     }
 
 }
@@ -37,46 +37,6 @@ function check_event() {
     }
 }
 
-function prethink() {
-    
-}
-
-function postthink() {
-    // Check if player died this frame
-    if (world.player.hp <= 0) {
-        gg = true;
-        world.player.hp = 0;
-    }
-
-    // Remove dead sprites
-    world.sprites = world.sprites.filter(function(ent) {
-        return ent.hp > 0;
-    });
-
-    // Remove dead projectiles
-    world.projectiles = world.projectiles.filter(function(ent) {
-        return ent.hp > 0;
-    });
-
-    // Remove dead monsters
-    world.monsters = world.monsters.filter(function(ent) {
-        return ent.hp > 0;
-    });
-
-    // Remove dead text messages
-    world.texts = world.texts.filter(function(ent) {
-        return ent.hp > 0;
-    });
-
-    // Remove all dead entities
-    world.entities = world.entities.filter(function(ent) {
-        if (ent.hp != undefined) {
-            return ent.hp > 0;
-        }
-        return true;  
-    });
-}
-
 
 // Main game loop
 function simloop() {
@@ -87,7 +47,6 @@ function simloop() {
         frame += 1;
         check_event();
         world.update();
-        postthink(); // Entity cleaning
     }
 
     if (gg) {

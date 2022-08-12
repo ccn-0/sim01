@@ -8,6 +8,8 @@ function init_control() {
         "mouse_x" : 0,
         "mouse_y" : 0,
         "mouse1" : false,
+        "escape" : false,
+        "escapeToggle" : false,
     }
 }
 
@@ -15,16 +17,13 @@ function _take_merchant_offer(offer_number) {
     var merchant = world.merchant;
     var offer = merchant.offers[offer_number];
     _apply_modifier(offer);
-    world.merchant = undefined;
-    paused = false;
+    merchant.disable();
 }
 
 function prehandle_controls() {
     // Called every frame even when game is paused.
-    // Allows interaction with HUD (like merchant menu)
-
     // Merchant menu is active
-    if (world.merchant != undefined) {
+    if (world.merchant.active) {
         if (keys.slot1) {
             _take_merchant_offer(0);
         }
@@ -35,6 +34,10 @@ function prehandle_controls() {
             _take_merchant_offer(2);
         }
     }
+    else {
+        paused = keys.escapeToggle;
+    }
+    
 }
 
 function add_listeners() {
@@ -54,10 +57,14 @@ function add_listeners() {
         }
     });
     document.addEventListener('keydown', function(evt) {
-        if (evt.defaultPrevented) {
+        if (evt.defaultPrevented) {  
             return;
         }
-        if (evt.code === "KeyS") {
+        if (evt.code === "Escape") {
+            console.log("esc")
+            keys.escapeToggle = keys.escapeToggle ? false : true;
+            keys.escape = true;
+        } else if (evt.code === "KeyS") {
             keys.down = true;
         } else if (evt.code === "KeyW") {
             keys.up = true;
@@ -79,7 +86,9 @@ function add_listeners() {
         if (evt.defaultPrevented) {
             return;
         }
-        if (evt.code === "KeyS"){
+        if (evt.code === "Escape") {
+            keys.escape = false;
+        } else if (evt.code === "KeyS"){
             keys.down = false;
         } else if (evt.code === "KeyW"){
             keys.up = false;

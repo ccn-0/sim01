@@ -7,63 +7,42 @@ class World {
         this.min_x = -width/2;
         this.max_x = width/2;
         this.min_y = -height/2;
-        this.max_y = height/2;
-        this.map = new Map();
+        this.max_y = height/2;   
         this.player = undefined;
-        this.camera = undefined;
-        this.merchant = undefined;
+        this.camera = undefined; 
         this.entities = [];
         this.phys_entities = [];
         this.monsters = [];
         this.projectiles = [];
         this.texts = [];
         this.sprites = [];
+        this.merchant = new Merchant();
+        this.map = new Map(); 
+        this.collisions = new Collisions();
+        this.spawn = new Spawner();
+        this.despawn = new Despawner();
     }
 
     update() {
-        this.player.update();
-        this.camera.update();
-        this.projectiles.forEach(projectile => {
-            projectile.update()
-        });
-        this.monsters.forEach(monster => {
-            monster.update()
-        });
-        this.texts.forEach(text => {
-            text.update()
-        });
-        this.sprites.forEach(sprite => {
-            sprite.update()
+
+        // Entities self update
+        this.entities.forEach(entity => {
+            entity.update()
         });
                 
         if (this.player.hp <= 0) {
             gg = true;
-            world.player.hp = 0;
+            this.player.hp = 0;
         }
 
-        // Cleanup entity lists (slow)
-        this.sprites = this.sprites.filter(function(ent) {
-            return ent.hp > 0;
-        });
-        this.projectiles = this.projectiles.filter(function(ent) {
-            return ent.hp > 0;
-        });
-        this.monsters = this.monsters.filter(function(ent) {
-            return ent.hp > 0;
-        });
-        this.texts = this.texts.filter(function(ent) {
-            return ent.hp > 0;
-        });
-        this.entities = this.entities.filter(function(ent) {
-            if (ent.hp != undefined) {
-                return ent.hp > 0;
-            }
-            return true;  
-        });
+        // Collision detection
+        this.collisions.run();
+
+        // Spawn/despawn
+        this.spawn.run();
+        this.despawn.run();
     }
-
 }
-
 
 class Map {
 

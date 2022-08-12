@@ -54,20 +54,12 @@ function draw_hud_xp() {
 
 function draw_merchant() {
     var merchant = world.merchant;
-    if (paused && merchant != undefined) {
-        ctx.globalAlpha = 0.80;
-        ctx.fillStyle = "#000000";
-        ctx.fillRect(
-            0, 
-            0, 
-            ctx.canvas.width, ctx.canvas.height
-        );
-        ctx.globalAlpha = 1.0;
+    if (merchant.active) {
         // Draw merchant screen and offered item tooltips
-        ctx.drawImage(merchant.model, 
-            ctx.canvas.width/2  - merchant.sizes.width/2, 
-            ctx.canvas.height/2 - merchant.sizes.height/2,
-            merchant.sizes.width, merchant.sizes.height
+        ctx.drawImage(Merchant.overlay, 
+            ctx.canvas.width/2  - merchant.width/2, 
+            ctx.canvas.height/2 - merchant.height/2,
+            merchant.width, merchant.height
         );
         ctx.font = '40px serif';
         ctx.fillStyle = "#FFFFFF";
@@ -98,36 +90,56 @@ function draw_merchant() {
     }
 }
 
-function draw_current_time() {
+function draw_paused_screen() {
+    ctx.globalAlpha = 0.80;
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(
+        0, 
+        0, 
+        ctx.canvas.width, ctx.canvas.height
+    );
+    ctx.globalAlpha = 1.0;
     var today = new Date();
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var dateTime = date+' '+time;
-    ctx.font = '12px serif';
+    var date = 
+             String(today.getFullYear()).padStart(4, '0')
+     + '-' + String(today.getMonth()+1).padStart(2, '0')
+     + '-' + String(today.getDate()).padStart(2, '0');
+    var time = 
+             String(today.getHours()).padStart(2, '0')
+     + ":" + String(today.getMinutes()).padStart(2, '0')
+     + ":" + String(today.getSeconds()).padStart(2, '0');
+    var dateTime = date + ' ' + time;
+    ctx.font = '18px serif';
     ctx.fillStyle = "#DDDDDD";
     ctx.fillText(dateTime, 
-        4,  12
+        20,  30
+    );
+    ctx.fillStyle = "#DDDDDD";
+    ctx.fillText("Paused", 
+    ctx.canvas.width/2-28,  30
     );
 }
 
 function draw_hud() {   
     // Draw player HP
     var player = world.player;
+
     ctx.font = '40px serif';
     ctx.fillStyle = "#FF0000";
     ctx.fillText(player.hp + "/" + player.max_hp, 
         30,  ctx.canvas.height - 90
-        );
+    );
 
     draw_hud_xp();
 
     draw_hud_time();
 
     // Pause game draws under here
+    if (paused) {
+        draw_paused_screen();
+    }
 
     draw_merchant();
-
-    draw_current_time();
 
     // Draw gg screen
     if (gg) {
@@ -156,7 +168,7 @@ function draw() {
 
     // draw_entities
     world.entities.forEach( (ent) => {
-        ctx.globalAlpha = ent.alpha?ent.alpha:1.0;
+        ctx.globalAlpha = ent.alpha ? ent.alpha : 1.0;
 
         // Entity has a model to draw
         if (ent.model) {
@@ -174,8 +186,8 @@ function draw() {
                 ctx.canvas.width/2  - camera.x + ent.x, 
                 ctx.canvas.height/2 - camera.y + ent.y);        
         }
-        // Entity is just a rectangle
-        else {
+        // Entity has color
+        else if (ent.color) {
             ctx.fillStyle = ent.color;
             ctx.fillRect(
                 ctx.canvas.width/2  - camera.x + ent.x, 
@@ -184,5 +196,6 @@ function draw() {
         }
         ctx.globalAlpha = 1.0;      
     })
+
     draw_hud();
 }
