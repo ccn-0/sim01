@@ -11,15 +11,15 @@ class PlayerEntity extends PhysicalEntity {
     static base_defense = 0.0;
     static base_block = 0.0;
     static base_xp_multiplier = 1.0;
-    static base_dash_speed = 10;
+    static base_dash_speed = 20;
     static base_dash_active_duration = 8;
-    static base_dash_cooldown_duration = 120;
+    static base_dash_cooldown_duration = 300;
     static base_projectile_count = 1;
     static base_projectile_spread = 0.3;
     static base_projectile_speed = 10;
     static base_projectile_pierce = 0;
     static base_projectile_chain = 0;
-    static base_attack_cooldown_duration = 20;
+    static base_attack_cooldown_duration = 60;
     static base_damage_min = 50;
     static base_damage_max = 100;
     static base_damage_multiplier = 1.0;
@@ -57,7 +57,7 @@ class PlayerEntity extends PhysicalEntity {
         
 
         // Attack state
-        this.attack_cooldown_duration = PlayerEntity.base_cooldown_duration;
+        this.attack_cooldown_duration = PlayerEntity.base_attack_cooldown_duration;
         this.attack_cooldown_timer = 0;
         this.projectile_count = PlayerEntity.base_projectile_count;
         this.projectile_spread = PlayerEntity.base_projectile_spread;
@@ -135,10 +135,10 @@ class PlayerEntity extends PhysicalEntity {
         }
         if (this.dash_isactive == true && this.dash_active_timer <= 0) {
             // Deactivate dash
-            this.dash_vx = 0;
-            this.dash_vy = 0;
             this.vx -= this.dash_vx;
             this.vy -= this.dash_vy;
+            this.dash_vx = 0;
+            this.dash_vy = 0;
             this.dash_isactive = false;
         }
         this.dash_cooldown_timer = this.dash_cooldown_timer <= 0 ? 0 : this.dash_cooldown_timer-1;

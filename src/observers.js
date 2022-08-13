@@ -47,7 +47,7 @@ class HitObserver {
     }
 
     __player_monster_hit(player, monster) {
-        if (player.dash_active) {
+        if (player.dash_isactive) {
             // Player has no monster collision during dash
             return;
         }

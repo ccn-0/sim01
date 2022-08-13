@@ -10,6 +10,10 @@ function load_assets() {
     return {
         'hud' : {
             'end_screen' : _load_image_asset("https://cdn.discordapp.com/attachments/788804003315449857/1005542893609558107/end.png"),
+            'dash_active' : _load_image_asset("assets/hud_dash_active.png"),
+            'dash_inactive' : _load_image_asset("assets/hud_dash_inactive.png"),
+            'attack_active' : _load_image_asset("assets/hud_attack_active.png"),
+            'attack_inactive' : _load_image_asset("assets/hud_attack_inactive.png"),
         },
         'marty' : {
             'model_idle' : _load_image_asset("https://cdn.discordapp.com/emojis/756206456679694567.webp"),

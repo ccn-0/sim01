@@ -120,6 +120,47 @@ function draw_paused_screen() {
     );
 }
 
+function draw_hud_cooldown_icon(x,y,cooldown, active_icon, inactive_icon) {
+    if (cooldown == 0) {
+        ctx.drawImage(active_icon, 
+            x, 
+            y,
+            64, 64
+        );
+    }
+    else {
+        ctx.drawImage(inactive_icon, 
+            x, 
+            y,
+            64, 64
+        );
+        var cd_text = (cooldown/60).toFixed(1);
+        ctx.font = '30px serif';
+        ctx.fillText(cd_text, 
+            x+15, 
+            y+40);   
+    }
+}
+
+function draw_hud_cooldowns() {
+    // Dash and attack
+    var player = world.player;
+    draw_hud_cooldown_icon(
+        ctx.canvas.width/2  - 96,
+        ctx.canvas.height - 150,
+        player.dash_cooldown_timer, 
+        assets.hud.dash_active,
+        assets.hud.dash_inactive
+    )
+    draw_hud_cooldown_icon(
+        ctx.canvas.width/2  + 32,
+        ctx.canvas.height - 150,
+        player.attack_cooldown_timer, 
+        assets.hud.attack_active,
+        assets.hud.attack_inactive
+    )
+}
+
 function draw_hud() {   
     // Draw player HP
     var player = world.player;
@@ -132,14 +173,15 @@ function draw_hud() {
 
     draw_hud_xp();
 
+    draw_hud_cooldowns();
+
     draw_hud_time();
 
     // Pause game draws under here
     if (paused) {
         draw_paused_screen();
+        draw_merchant();
     }
-
-    draw_merchant();
 
     // Draw gg screen
     if (gg) {
