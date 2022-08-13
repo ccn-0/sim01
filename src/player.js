@@ -8,6 +8,8 @@ class PlayerEntity extends PhysicalEntity {
     static base_level = 1;
     static base_max_hp = 100;
     static base_max_hp_multiplier = 1.0;
+    static base_hp_regen_percent = 0.00001; // percent of max_hp per tick
+    static base_hp_regen = 0;               // flat value per tick
     static base_speed = 3;
     static base_defense = 0.0;
     static base_block = 0.0;
@@ -44,7 +46,8 @@ class PlayerEntity extends PhysicalEntity {
         this.block_effective = PlayerEntity.base_block;     // chance to block capped at 90%
         this.max_hp = PlayerEntity.base_max_hp;
         this.max_hp_multiplier = PlayerEntity.base_max_hp_multiplier;
-        this.max_hp = this.max_hp*this.max_hp_multiplier;
+        this.hp_regen_percent = PlayerEntity.base_hp_regen_percent;
+        this.hp_regen = PlayerEntity.base_hp_regen + this.hp_regen_percent * this.max_hp;
         this.hp = this.max_hp;
         this.xp_multiplier = PlayerEntity.base_xp_multiplier;
         this.xp = 0;
@@ -104,12 +107,13 @@ class PlayerEntity extends PhysicalEntity {
 
         this.__update_dash();
         this.__update_attack();
+        this.hp = clamp(this.hp + this.hp_regen, 0, this.max_hp);
     
         this.model = this.model_idle;
     
         if (this.xp >= this.xp_next) {
             this.xp = this.xp - this.xp_next; 
-            this.xp_next = 2**this.level * 1000;
+            this.xp_next = 1.4**this.level * 1000;
             this.level += 1;
             // Pause the game and enable merchant
             world.merchant.enable();
@@ -118,6 +122,8 @@ class PlayerEntity extends PhysicalEntity {
 
     recalc_stats() {
         this.max_hp = PlayerEntity.base_max_hp;
+        this.hp_regen_percent = PlayerEntity.base_hp_regen_percent;
+        this.hp_regen = PlayerEntity.base_hp_regen;
         this.damage = PlayerEntity.base_damage;
         this.speed = PlayerEntity.base_speed;
         this.defense = PlayerEntity.base_defense;
@@ -140,6 +146,7 @@ class PlayerEntity extends PhysicalEntity {
             const mod = this.modifiers[i];
             mod.mod_ref.callback(this, mod);
         }
+        this.hp_regen = this.hp_regen + this.hp_regen_percent * this.max_hp;
         this.damage_min = Math.floor(this.damage_min * this.damage_multiplier);
         this.damage_max = Math.floor(this.damage_max * this.damage_multiplier);
         this.max_hp = Math.floor(this.max_hp * this.max_hp_multiplier);

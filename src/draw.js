@@ -73,17 +73,23 @@ function draw_merchant() {
             const offer_offset = height_offsets * offer_index;
             ctx.font = '20px serif';
             ctx.fillStyle = "#FFFFFF";
+            // "Button"
+            ctx.fillText("[" + (offer_index+1) + "]", 
+                ctx.canvas.width/2-85,  
+                ctx.canvas.height/2-140 + offer_offset,
+            );  
             // Descriptions
             for (let desc_index = 0; desc_index < offer.desc.length; desc_index++) {
                 const desc = offer.desc[desc_index];
                 ctx.fillText(desc, 
-                    ctx.canvas.width/2-70,  
+                    ctx.canvas.width/2-50,  
                     ctx.canvas.height/2-140 + offer_offset + desc_index*30
                 );
             }
-            ctx.fillStyle = StatModifier.tier_desc[merchant.offers[0].tier_id].color;
-            ctx.fillText(StatModifier.tier_desc[merchant.offers[0].tier_id].desc, 
-                ctx.canvas.width/2+230,  
+            // Tier
+            ctx.fillStyle = StatModifier.tier_desc[merchant.offers[offer_index].tier_id].color;
+            ctx.fillText(StatModifier.tier_desc[merchant.offers[offer_index].tier_id].desc, 
+                ctx.canvas.width/2+250,  
                 ctx.canvas.height/2-140 + offer_offset,
             );        
         }
@@ -201,7 +207,7 @@ function draw_hud() {
 
     ctx.font = '40px serif';
     ctx.fillStyle = "#FF0000";
-    ctx.fillText(player.hp + "/" + player.max_hp, 
+    ctx.fillText(Math.floor(player.hp) + "/" + Math.floor(player.max_hp), 
         30,  ctx.canvas.height - 90
     );
 

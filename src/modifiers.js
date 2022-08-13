@@ -64,7 +64,7 @@ class StatModifier extends Modifier {
             ],
             "callback" : (owner, mod) => {owner.defense += 1.0 * mod.get_final_value().toFixed(2)},
             "get_description_callback" : [
-                (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)} to defense`}
+                (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% increased defense`}
             ]
         },
         {
@@ -116,13 +116,13 @@ class StatModifier extends Modifier {
         },
         {
             "name" : "BaseAttackCooldownDuration",
-            "min_value" : 0.15,
-            "max_value" : 0.25,
+            "min_value" : 0.10,
+            "max_value" : 0.10,
             "weight" : 1000,
             "tiers" : [
                 {"weight" : 600, "multiplier" : 1.0},
-                {"weight" : 300, "multiplier" : 1.5},
-                {"weight" : 100,  "multiplier" : 2.0},
+                {"weight" : 300, "multiplier" : 1.3},
+                {"weight" : 100,  "multiplier" : 1.6},
             ],
             "callback" : (owner, mod) => {
                 owner.attack_cooldown_duration = Math.floor(owner.attack_cooldown_duration * (1 - 1.0 * mod.get_final_value().toFixed(2)))
@@ -180,7 +180,75 @@ class StatModifier extends Modifier {
             "get_description_callback" : [
                 (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% more projectile speed`}
             ]
-        }
+        },
+        {
+            "name" : "BaseProjectileSpreadReduction",
+            "min_value" : 0.1,
+            "max_value" : 0.1,
+            "weight" : 1000,
+            "tiers" : [
+                {"weight" : 400, "multiplier" : 1.0},
+                {"weight" : 300, "multiplier" : 1.3},
+                {"weight" : 300, "multiplier" : 1.6},
+            ],
+            "callback" : (owner, mod) => {
+                owner.projectile_spread = 
+                    owner.projectile_spread * (1 - mod.get_final_value())
+            },
+            "get_description_callback" : [
+                (mod) => {return `-${Math.floor(mod.get_final_value().toFixed(2) * 100)}% less projectile spread`}
+            ]
+        },
+        {
+            "name" : "BaseProjectilePierce",
+            "min_value" : 1,
+            "max_value" : 1,
+            "weight" : 1000,
+            "tiers" : [
+                {"weight" : 900, "multiplier" : 1.0},          
+                {"weight" : 100,  "multiplier" : 2.0},
+            ],
+            "callback" : (owner, mod) => {
+                owner.projectile_pierce += Math.floor(mod.get_final_value())
+            },
+            "get_description_callback" : [
+                (mod) => {return `+${Math.floor(mod.get_final_value())} to pierce`},
+            ]
+        },
+        {
+            "name" : "BaseDashCooldownDuration",
+            "min_value" : 0.10,
+            "max_value" : 0.10,
+            "weight" : 1000,
+            "tiers" : [
+                {"weight" : 600, "multiplier" : 1.0},
+                {"weight" : 300, "multiplier" : 1.3},
+                {"weight" : 100,  "multiplier" : 1.6},
+            ],
+            "callback" : (owner, mod) => {
+                owner.dash_cooldown_duration = Math.floor(owner.dash_cooldown_duration * (1 - 1.0 * mod.get_final_value().toFixed(2)))
+            },
+            "get_description_callback" : [
+                (mod) => {return `-${Math.floor(mod.get_final_value().toFixed(2) * 100)}% less dash cooldown`}
+            ]
+        },
+        {
+            "name" : "BaseDashSpeed",
+            "min_value" : 0.10,
+            "max_value" : 0.10,
+            "weight" : 1000,
+            "tiers" : [
+                {"weight" : 600, "multiplier" : 1.0},
+                {"weight" : 300, "multiplier" : 1.3},
+                {"weight" : 100,  "multiplier" : 1.6},
+            ],
+            "callback" : (owner, mod) => {
+                owner.dash_speed = Math.floor(owner.dash_speed * (1.0 + mod.get_final_value()))
+            },
+            "get_description_callback" : [
+                (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% more dash speed`}
+            ]
+        },
     ]
 
     constructor() {
