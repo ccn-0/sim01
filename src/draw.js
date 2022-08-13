@@ -55,7 +55,7 @@ function draw_hud_xp() {
 function draw_merchant() {
     var merchant = world.merchant;
     if (merchant.active) {
-        // Draw merchant screen and offered item tooltips
+        // Draw merchant screen
         ctx.drawImage(Merchant.overlay, 
             ctx.canvas.width/2  - merchant.width/2, 
             ctx.canvas.height/2 - merchant.height/2,
@@ -65,40 +65,62 @@ function draw_merchant() {
         ctx.fillStyle = "#FFFFFF";
         ctx.fillText("Level Up! Free Offer!", 
             ctx.canvas.width/2-100,  ctx.canvas.height/2-210,
-            );
+        );
+        // Draw offer texts
+        const height_offsets = 140;
+        for (let offer_index = 0; offer_index < merchant.offers.length; offer_index++) {
+            const offer = merchant.offers[offer_index]
+            const offer_offset = height_offsets * offer_index;
+            ctx.font = '20px serif';
+            ctx.fillStyle = "#FFFFFF";
+            // Descriptions
+            for (let desc_index = 0; desc_index < offer.desc.length; desc_index++) {
+                const desc = offer.desc[desc_index];
+                ctx.fillText(desc, 
+                    ctx.canvas.width/2-70,  
+                    ctx.canvas.height/2-140 + offer_offset + desc_index*30
+                );
+            }
+            ctx.fillStyle = StatModifier.tier_desc[merchant.offers[0].tier_id].color;
+            ctx.fillText(StatModifier.tier_desc[merchant.offers[0].tier_id].desc, 
+                ctx.canvas.width/2+230,  
+                ctx.canvas.height/2-140 + offer_offset,
+            );        
+        }
 
-        // Offer 1
-        ctx.font = '20px serif';
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillText("[1]  " + merchant.offers[0].desc, 
-            ctx.canvas.width/2-70,  ctx.canvas.height/2-110,
-        );
-        ctx.fillStyle = StatModifier.tier_desc[merchant.offers[0].tier_id].color;
-        ctx.fillText(StatModifier.tier_desc[merchant.offers[0].tier_id].desc, 
-            ctx.canvas.width/2+230,  ctx.canvas.height/2-110,
-        );
+        // // Offer 1
+        // ctx.font = '20px serif';
+        // ctx.fillStyle = "#FFFFFF";
+        // // Descriptions
+        // ctx.fillText("[1]  " + merchant.offers[0].desc, 
+        //     ctx.canvas.width/2-70,  ctx.canvas.height/2-110,
+        // );
+        // ctx.fillStyle = StatModifier.tier_desc[merchant.offers[0].tier_id].color;
+        // ctx.fillText(StatModifier.tier_desc[merchant.offers[0].tier_id].desc, 
+        //     ctx.canvas.width/2+230,  ctx.canvas.height/2-110,
+        // );
 
-        // Offer 2
-        ctx.font = '20px serif';
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillText("[2]  " + merchant.offers[1].desc, 
-            ctx.canvas.width/2-70,  ctx.canvas.height/2+30,
-        );
-        ctx.fillStyle = StatModifier.tier_desc[merchant.offers[1].tier_id].color;
-        ctx.fillText(StatModifier.tier_desc[merchant.offers[1].tier_id].desc, 
-            ctx.canvas.width/2+230,  ctx.canvas.height/2+30,
-        );
+        // // Offer 2
+        // ctx.font = '20px serif';
+        // ctx.fillStyle = "#FFFFFF";
+        // ctx.fillText("[2]  " + merchant.offers[1].desc, 
+        //     ctx.canvas.width/2-70,  ctx.canvas.height/2+30,
+        // );
+        // ctx.fillStyle = StatModifier.tier_desc[merchant.offers[1].tier_id].color;
+        // ctx.fillText(StatModifier.tier_desc[merchant.offers[1].tier_id].desc, 
+        //     ctx.canvas.width/2+230,  ctx.canvas.height/2+30,
+        // );
 
-        // Offer 3
-        ctx.font = '20px serif';
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillText("[3]  " + merchant.offers[2].desc, 
-            ctx.canvas.width/2-70,  ctx.canvas.height/2+170,
-        );
-        ctx.fillStyle = StatModifier.tier_desc[merchant.offers[2].tier_id].color;
-        ctx.fillText(StatModifier.tier_desc[merchant.offers[2].tier_id].desc, 
-            ctx.canvas.width/2+230,  ctx.canvas.height/2+170,
-        );
+        // // Offer 3
+        // ctx.font = '20px serif';
+        // ctx.fillStyle = "#FFFFFF";
+        // ctx.fillText("[3]  " + merchant.offers[2].desc, 
+        //     ctx.canvas.width/2-70,  ctx.canvas.height/2+170,
+        // );
+        // ctx.fillStyle = StatModifier.tier_desc[merchant.offers[2].tier_id].color;
+        // ctx.fillText(StatModifier.tier_desc[merchant.offers[2].tier_id].desc, 
+        //     ctx.canvas.width/2+230,  ctx.canvas.height/2+170,
+        // );
     }
 }
 

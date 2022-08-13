@@ -50,7 +50,9 @@ class StatModifier extends Modifier {
                 {"weight" : 100, "multiplier" : 2.0},           
             ],
             "callback" : (owner, mod) => {owner.max_hp += Math.floor(mod.get_final_value())},
-            "get_description_callback" : (mod) => {return `+${Math.floor(mod.get_final_value())} to maximum HP`}
+            "get_description_callback" : [
+                (mod) => {return `+${Math.floor(mod.get_final_value())} to maximum HP`}
+            ]
         },
         {
             "weight" : 1000,
@@ -61,7 +63,9 @@ class StatModifier extends Modifier {
                 {"weight" : 1000, "multiplier" : 1.0},
             ],
             "callback" : (owner, mod) => {owner.defense += 1.0 * mod.get_final_value().toFixed(2)},
-            "get_description_callback" : (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)} to defense`}
+            "get_description_callback" : [
+                (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)} to defense`}
+            ]
         },
         {
             "weight" : 1000,
@@ -73,7 +77,10 @@ class StatModifier extends Modifier {
                 {"weight" : 200, "multiplier" : 1.5},
             ],
             "callback" : (owner, mod) => {owner.block_real += 1.0 * mod.get_final_value().toFixed(2)},
-            "get_description_callback" : (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% to block chance`}
+            "get_description_callback" : [
+                (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% to block chance`},
+                (mod) => {return `Maximum block chance is 90%`}
+            ]
         },
         {
             "name" : "BaseDamage",
@@ -88,7 +95,9 @@ class StatModifier extends Modifier {
             "callback" : (owner, mod) => {
                 owner.damage_min += Math.floor(mod.get_final_value()),
                 owner.damage_max += Math.floor(mod.get_final_value())},
-            "get_description_callback" : (mod) => {return `+${Math.floor(mod.get_final_value())} to base damage`}
+            "get_description_callback" : [
+                (mod) => {return `+${Math.floor(mod.get_final_value())} to base damage`}
+            ]
         },
         {
             "name" : "BaseDamageMultiplier",
@@ -101,7 +110,9 @@ class StatModifier extends Modifier {
                 {"weight" : 100,  "multiplier" : 2.0},
             ],
             "callback" : (owner, mod) => {owner.damage_multiplier += 1.0 * mod.get_final_value().toFixed(2)},
-            "get_description_callback" : (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% to damage multiplier`}
+            "get_description_callback" : [
+                (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% to damage multiplier`}
+            ]
         },
         {
             "name" : "BaseAttackCooldownDuration",
@@ -116,7 +127,9 @@ class StatModifier extends Modifier {
             "callback" : (owner, mod) => {
                 owner.attack_cooldown_duration = Math.floor(owner.attack_cooldown_duration * (1 - 1.0 * mod.get_final_value().toFixed(2)))
             },
-            "get_description_callback" : (mod) => {return `-${Math.floor(mod.get_final_value().toFixed(2) * 100)}% less attack cooldown`}
+            "get_description_callback" : [
+                (mod) => {return `-${Math.floor(mod.get_final_value().toFixed(2) * 100)}% less attack cooldown`}
+            ]
         },
         {
             "name" : "BaseProjectileChain",
@@ -128,7 +141,10 @@ class StatModifier extends Modifier {
                 {"weight" : 100,  "multiplier" : 2.0},
             ],
             "callback" : (owner, mod) => {owner.projectile_chain += Math.floor(mod.get_final_value())},
-            "get_description_callback" : (mod) => {return `+${Math.floor(mod.get_final_value())} to chain`}
+            "get_description_callback" : [
+                (mod) => {return `+${Math.floor(mod.get_final_value())} to chain`},
+                (mod) => {return `Chain seeks random target`}
+            ]
         },
         {
             "name" : "BaseMultipleProjectiles",
@@ -139,8 +155,14 @@ class StatModifier extends Modifier {
                 {"weight" : 900, "multiplier" : 1.0},          
                 {"weight" : 100,  "multiplier" : 2.0},
             ],
-            "callback" : (owner, mod) => {owner.projectile_count += Math.floor(mod.get_final_value())},
-            "get_description_callback" : (mod) => {return `+${Math.floor(mod.get_final_value())} to number of projectiles`}
+            "callback" : (owner, mod) => {
+                owner.projectile_count += Math.floor(mod.get_final_value());
+                owner.projectile_spread *= 1.5;
+            },
+            "get_description_callback" : [
+                (mod) => {return `+${Math.floor(mod.get_final_value())} to number of projectiles`},
+                (mod) => {return `+50% more projectile spread`}
+            ]
         },
         {
             "name" : "BaseProjectileSpeed",
@@ -155,7 +177,9 @@ class StatModifier extends Modifier {
             "callback" : (owner, mod) => {
                 owner.projectile_speed = 
                     Math.floor(owner.projectile_speed * (1.0 + 1.0 * mod.get_final_value().toFixed(2)))},
-            "get_description_callback" : (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% more projectile speed`}
+            "get_description_callback" : [
+                (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% more projectile speed`}
+            ]
         }
     ]
 
@@ -170,7 +194,11 @@ class StatModifier extends Modifier {
         this.mod_ref = StatModifier.mods_db[this.mod_id];
         this.randomize_value_base();
         this.randomize_tier();
-        this.desc = this.mod_ref.get_description_callback(this);
+        this.desc = []
+        for (let i = 0; i < this.mod_ref.get_description_callback.length; i++) {
+            const desc_callback = this.mod_ref.get_description_callback[i];
+            this.desc.push(desc_callback(this));
+        }
     }
 
     randomize_tier() {
