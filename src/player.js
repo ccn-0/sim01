@@ -11,15 +11,15 @@ class PlayerEntity extends PhysicalEntity {
     static base_defense = 0.0;
     static base_block = 0.0;
     static base_xp_multiplier = 1.0;
-    static base_dash_speed = 120;
-    static base_dash_duration = 10;
-    static base_dash_velocity = 10;
+    static base_dash_speed = 10;
+    static base_dash_active_duration = 8;
+    static base_dash_cooldown_duration = 120;
     static base_projectile_count = 1;
     static base_projectile_spread = 0.3;
     static base_projectile_speed = 10;
     static base_projectile_pierce = 0;
     static base_projectile_chain = 0;
-    static base_attack_speed = 20;
+    static base_attack_cooldown_duration = 20;
     static base_damage_min = 50;
     static base_damage_max = 100;
     static base_damage_multiplier = 1.0;
@@ -46,19 +46,25 @@ class PlayerEntity extends PhysicalEntity {
         this.xp = 0;
         this.xp_next = 1000;
         
+        // Dash state
+        this.dash_cooldown_duration = PlayerEntity.base_dash_cooldown_duration;
         this.dash_speed = PlayerEntity.base_dash_speed;
-        this.dash_duration = PlayerEntity.base_dash_duration;
-        this.dash_velocity = PlayerEntity.base_dash_velocity;
-        this.dash_cooldown = 0;
-        this.dash_active = false;
+        this.dash_active_duration = PlayerEntity.base_dash_active_duration;
 
+        this.dash_cooldown_timer = 0;
+        this.dash_active_timer = 0;
+        this.dash_isactive = false;
+        
+
+        // Attack state
+        this.attack_cooldown_duration = PlayerEntity.base_cooldown_duration;
+        this.attack_cooldown_timer = 0;
         this.projectile_count = PlayerEntity.base_projectile_count;
         this.projectile_spread = PlayerEntity.base_projectile_spread;
         this.projectile_speed = PlayerEntity.base_projectile_speed;
         this.projectile_pierce = PlayerEntity.base_projectile_pierce;
         this.projectile_chain = PlayerEntity.base_projectile_chain;
-        this.attack_speed = PlayerEntity.base_attack_speed;
-        this.attack_cooldown = 0;
+
         this.damage_min = PlayerEntity.base_damage_min;
         this.damage_max = PlayerEntity.base_damage_max;
         this.damage_multiplier = PlayerEntity.base_damage_multiplier;
@@ -91,17 +97,9 @@ class PlayerEntity extends PhysicalEntity {
 
         this.x = clamp(this.x, world.min_x+this.size/2, world.max_x-this.size/2);
         this.y = clamp(this.y, world.min_y+this.size/2, world.max_y-this.size/2);
-    
-        if (keys.space && this.dash_cooldown == 0) {
-            this.__perform_dash();
-        }
-    
-        if (keys.mouse1 && this.attack_cooldown == 0) {
-            this.__perform_attack();
-        }
-    
-        this.attack_cooldown = this.attack_cooldown <= 0 ? 0 : this.attack_cooldown-1;
-        this.dash_cooldown = this.dash_cooldown <= 0 ? 0 : this.dash_cooldown-1;
+
+        this.__update_dash();
+        this.__update_attack();
     
         this.model = this.model_idle;
     
@@ -114,37 +112,36 @@ class PlayerEntity extends PhysicalEntity {
         }
     }
 
-    __perform_attack() {
-        // TODO: rewrite as event
-        this.attack_cooldown = this.attack_speed;
-        for (var i = 0; i < this.projectile_count; i++) {
-            new ProjectileEntity(this);     
+    __update_attack() {
+        if (keys.mouse1 && this.attack_cooldown_timer == 0) {
+            this.attack_cooldown_timer = this.attack_cooldown_duration;
+            for (var i = 0; i < this.projectile_count; i++) {
+                new ProjectileEntity(this);     
+            }
         }
+        this.attack_cooldown_timer = this.attack_cooldown_timer <= 0 ? 0 : this.attack_cooldown_timer-1;  
     }
     
-    __perform_dash() {
-        // Plan dash start and end events
-        var velocity = scale_vector(this.ax, this.ay, this.dash_velocity);
-        
-        var dash_frame = frame + 1;
-        make_event(
-            dash_frame, 
-            () => {
-                this.dash_cooldown = this.dash_speed;
-                this.dash_active = true;
-                this.vx += velocity.x;
-                this.vy += velocity.y;
-            },
-            []
-        );
-        make_event(
-            dash_frame + this.dash_duration, 
-            () => {
-                this.dash_active = false;
-                this.vx -= velocity.x;
-                this.vy -= velocity.y;
-            },
-            []
-        );
+    __update_dash() {
+        if (keys.space && this.dash_isactive == false && this.dash_cooldown_timer <= 0) { 
+            this.dash_cooldown_timer = this.dash_cooldown_duration;
+            this.dash_active_timer = this.dash_active_duration;
+            // Snapshot velocity for the dash
+            this.dash_vx = this.ax * this.dash_speed;
+            this.dash_vy = this.ay * this.dash_speed;
+            this.vx += this.dash_vx;
+            this.vy += this.dash_vy;
+            this.dash_isactive = true;
+        }
+        if (this.dash_isactive == true && this.dash_active_timer <= 0) {
+            // Deactivate dash
+            this.dash_vx = 0;
+            this.dash_vy = 0;
+            this.vx -= this.dash_vx;
+            this.vy -= this.dash_vy;
+            this.dash_isactive = false;
+        }
+        this.dash_cooldown_timer = this.dash_cooldown_timer <= 0 ? 0 : this.dash_cooldown_timer-1;
+        this.dash_active_timer = this.dash_active_timer <= 0 ? 0 : this.dash_active_timer-1;
     }
 }

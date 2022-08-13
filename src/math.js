@@ -5,10 +5,11 @@ function scale_vector(x, y, s) {
 function normalize_vector(x, y) {
     // To unit vector
     var dist = Math.hypot(x, y);
-    dist = dist < 0.001 ? 0.001 : dist;
-    var ux = x / dist;
-    var uy = y / dist;
-    return {'x' : ux, 'y': uy};
+    if (dist == 0)
+        return {'x' : 0, 'y': 0};
+    else 
+        return {'x' : x / dist, 'y':  y / dist};
+ 
 }
 
 function rotate_vector(x, y, radians) {
