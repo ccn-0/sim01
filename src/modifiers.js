@@ -124,11 +124,38 @@ class StatModifier extends Modifier {
             "max_value" : 1,
             "weight" : 1000,
             "tiers" : [
-                {"weight" : 700, "multiplier" : 1.0},          
-                {"weight" : 300,  "multiplier" : 2.0},
+                {"weight" : 900, "multiplier" : 1.0},          
+                {"weight" : 100,  "multiplier" : 2.0},
             ],
             "callback" : (owner, mod) => {owner.projectile_chain += Math.floor(mod.get_final_value())},
             "get_description_callback" : (mod) => {return `+${Math.floor(mod.get_final_value())} to chain`}
+        },
+        {
+            "name" : "BaseMultipleProjectiles",
+            "min_value" : 1,
+            "max_value" : 1,
+            "weight" : 1000,
+            "tiers" : [
+                {"weight" : 900, "multiplier" : 1.0},          
+                {"weight" : 100,  "multiplier" : 2.0},
+            ],
+            "callback" : (owner, mod) => {owner.projectile_count += Math.floor(mod.get_final_value())},
+            "get_description_callback" : (mod) => {return `+${Math.floor(mod.get_final_value())} to number of projectiles`}
+        },
+        {
+            "name" : "BaseProjectileSpeed",
+            "min_value" : 0.2,
+            "max_value" : 0.35,
+            "weight" : 1000,
+            "tiers" : [
+                {"weight" : 400, "multiplier" : 1.0},
+                {"weight" : 300, "multiplier" : 1.5},
+                {"weight" : 300, "multiplier" : 2.0},
+            ],
+            "callback" : (owner, mod) => {
+                owner.projectile_speed = 
+                    Math.floor(owner.projectile_speed * (1.0 + 1.0 * mod.get_final_value().toFixed(2)))},
+            "get_description_callback" : (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% more projectile speed`}
         }
     ]
 

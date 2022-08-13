@@ -141,7 +141,7 @@ class PlayerEntity extends PhysicalEntity {
             mod.mod_ref.callback(this, mod);
         }
         this.damage_min = Math.floor(this.damage_min * this.damage_multiplier);
-        this.damage_max = Math.floor(this.damage_min * this.damage_multiplier);
+        this.damage_max = Math.floor(this.damage_max * this.damage_multiplier);
         this.max_hp = Math.floor(this.max_hp * this.max_hp_multiplier);
         this.block_effective = clamp(this.block_real, 0, 0.9);
         this.defense = clamp(this.defense, 0, 1000);
