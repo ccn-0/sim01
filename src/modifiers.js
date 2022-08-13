@@ -34,16 +34,17 @@ class StatModifier extends Modifier {
 
     static tier_desc = {
         0: {"desc" : "Basic tier", "color" : "#DDDDDD"},
-        1: {"desc" : "Epic tier", "color" : "#4589FF"},
-        2: {"desc" : "\"Holy shit\" tier", "color" : "#4722BF"},
+        1: {"desc" : "Epic tier", "color" : "#70A0FF"},
+        2: {"desc" : "Giga tier", "color" : "#5030C0"},
+        3: {"desc" : "Insane tier", "color" : "#FFA500"},
     }
 
     static mods_db = [
         {
-            "weight" : 1000,
+            "weight" : 2000,
             "name" : "BaseMaxHP",
             "min_value" : 20,
-            "max_value" : 30,
+            "max_value" : 25,
             "tiers" : [
                 {"weight" : 600, "multiplier" : 1.0}, 
                 {"weight" : 300, "multiplier" : 1.5},
@@ -58,20 +59,20 @@ class StatModifier extends Modifier {
             "weight" : 1000,
             "name" : "BaseDefense",
             "min_value" : 0.2,
-            "max_value" : 0.3,
+            "max_value" : 0.25,
             "tiers" : [
                 {"weight" : 1000, "multiplier" : 1.0},
             ],
             "callback" : (owner, mod) => {owner.defense += 1.0 * mod.get_final_value().toFixed(2)},
             "get_description_callback" : [
-                (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% increased defense`}
+                (mod) => {return `${Math.floor(mod.get_final_value().toFixed(2) * 100)}% increased defense`}
             ]
         },
         {
             "weight" : 1000,
             "name" : "BaseBlock",
             "min_value" : 0.05,
-            "max_value" : 0.08,
+            "max_value" : 0.07,
             "tiers" : [
                 {"weight" : 800, "multiplier" : 1.0},
                 {"weight" : 200, "multiplier" : 1.5},
@@ -85,7 +86,7 @@ class StatModifier extends Modifier {
         {
             "name" : "BaseDamage",
             "min_value" : 15,
-            "max_value" : 25,
+            "max_value" : 20,
             "weight" : 1000,
             "tiers" : [
                 {"weight" : 600, "multiplier" : 1.0},           
@@ -102,8 +103,8 @@ class StatModifier extends Modifier {
         {
             "name" : "BaseDamageMultiplier",
             "min_value" : 0.1,
-            "max_value" : 0.2,
-            "weight" : 1000,
+            "max_value" : 0.12,
+            "weight" : 2000,
             "tiers" : [
                 {"weight" : 600, "multiplier" : 1.0},
                 {"weight" : 300, "multiplier" : 1.5},
@@ -128,17 +129,18 @@ class StatModifier extends Modifier {
                 owner.attack_cooldown_duration = Math.floor(owner.attack_cooldown_duration * (1 - 1.0 * mod.get_final_value().toFixed(2)))
             },
             "get_description_callback" : [
-                (mod) => {return `-${Math.floor(mod.get_final_value().toFixed(2) * 100)}% less attack cooldown`}
+                (mod) => {return `${Math.floor(mod.get_final_value().toFixed(2) * 100)}% less attack cooldown`}
             ]
         },
         {
             "name" : "BaseProjectileChain",
             "min_value" : 1,
             "max_value" : 1,
-            "weight" : 1000,
+            "weight" : 500,
             "tiers" : [
-                {"weight" : 900, "multiplier" : 1.0},          
-                {"weight" : 100,  "multiplier" : 2.0},
+                {"weight" : 0, "multiplier" : 1.0},  
+                {"weight" : 0, "multiplier" : 1.0},           
+                {"weight" : 1000,  "multiplier" : 1.0},
             ],
             "callback" : (owner, mod) => {owner.projectile_chain += Math.floor(mod.get_final_value())},
             "get_description_callback" : [
@@ -150,10 +152,11 @@ class StatModifier extends Modifier {
             "name" : "BaseMultipleProjectiles",
             "min_value" : 1,
             "max_value" : 1,
-            "weight" : 1000,
+            "weight" : 500,
             "tiers" : [
-                {"weight" : 900, "multiplier" : 1.0},          
-                {"weight" : 100,  "multiplier" : 2.0},
+                {"weight" : 0, "multiplier" : 1.0},  
+                {"weight" : 0, "multiplier" : 1.0},           
+                {"weight" : 1000,  "multiplier" : 1.0},
             ],
             "callback" : (owner, mod) => {
                 owner.projectile_count += Math.floor(mod.get_final_value());
@@ -167,7 +170,7 @@ class StatModifier extends Modifier {
         {
             "name" : "BaseProjectileSpeed",
             "min_value" : 0.2,
-            "max_value" : 0.35,
+            "max_value" : 0.25,
             "weight" : 1000,
             "tiers" : [
                 {"weight" : 400, "multiplier" : 1.0},
@@ -178,7 +181,7 @@ class StatModifier extends Modifier {
                 owner.projectile_speed = 
                     Math.floor(owner.projectile_speed * (1.0 + 1.0 * mod.get_final_value().toFixed(2)))},
             "get_description_callback" : [
-                (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% more projectile speed`}
+                (mod) => {return `${Math.floor(mod.get_final_value().toFixed(2) * 100)}% more projectile speed`}
             ]
         },
         {
@@ -196,7 +199,7 @@ class StatModifier extends Modifier {
                     owner.projectile_spread * (1 - mod.get_final_value())
             },
             "get_description_callback" : [
-                (mod) => {return `-${Math.floor(mod.get_final_value().toFixed(2) * 100)}% less projectile spread`}
+                (mod) => {return `${Math.floor(mod.get_final_value().toFixed(2) * 100)}% less projectile spread`}
             ]
         },
         {
@@ -205,8 +208,9 @@ class StatModifier extends Modifier {
             "max_value" : 1,
             "weight" : 1000,
             "tiers" : [
-                {"weight" : 900, "multiplier" : 1.0},          
-                {"weight" : 100,  "multiplier" : 2.0},
+                {"weight" : 0, "multiplier" : 1.0},
+                {"weight" : 0, "multiplier" : 1.0},         
+                {"weight" : 1000,  "multiplier" : 1.0},
             ],
             "callback" : (owner, mod) => {
                 owner.projectile_pierce += Math.floor(mod.get_final_value())
@@ -229,7 +233,7 @@ class StatModifier extends Modifier {
                 owner.dash_cooldown_duration = Math.floor(owner.dash_cooldown_duration * (1 - 1.0 * mod.get_final_value().toFixed(2)))
             },
             "get_description_callback" : [
-                (mod) => {return `-${Math.floor(mod.get_final_value().toFixed(2) * 100)}% less dash cooldown`}
+                (mod) => {return `${Math.floor(mod.get_final_value().toFixed(2) * 100)}% less dash cooldown`}
             ]
         },
         {
@@ -246,7 +250,25 @@ class StatModifier extends Modifier {
                 owner.dash_speed = Math.floor(owner.dash_speed * (1.0 + mod.get_final_value()))
             },
             "get_description_callback" : [
-                (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% more dash speed`}
+                (mod) => {return `${Math.floor(mod.get_final_value().toFixed(2) * 100)}% more dash speed`}
+            ]
+        },
+        {
+            "name" : "BaseMovementSpeedMultiplier",
+            "min_value" : 0.06,
+            "max_value" : 0.09,
+            "weight" : 50000,
+            "tiers" : [
+                {"weight" : 0, "multiplier" : 1.0},
+                {"weight" : 0, "multiplier" : 1.0},
+                {"weight" : 800, "multiplier" : 1.0},
+                {"weight" : 200,  "multiplier" : 1.5},
+            ],
+            "callback" : (owner, mod) => {
+                owner.speed_multiplier += mod.get_final_value();
+            },
+            "get_description_callback" : [
+                (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% to base movement speed`}
             ]
         },
     ]

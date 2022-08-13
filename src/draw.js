@@ -94,45 +94,12 @@ function draw_merchant() {
             );        
         }
 
-        // // Offer 1
-        // ctx.font = '20px serif';
-        // ctx.fillStyle = "#FFFFFF";
-        // // Descriptions
-        // ctx.fillText("[1]  " + merchant.offers[0].desc, 
-        //     ctx.canvas.width/2-70,  ctx.canvas.height/2-110,
-        // );
-        // ctx.fillStyle = StatModifier.tier_desc[merchant.offers[0].tier_id].color;
-        // ctx.fillText(StatModifier.tier_desc[merchant.offers[0].tier_id].desc, 
-        //     ctx.canvas.width/2+230,  ctx.canvas.height/2-110,
-        // );
-
-        // // Offer 2
-        // ctx.font = '20px serif';
-        // ctx.fillStyle = "#FFFFFF";
-        // ctx.fillText("[2]  " + merchant.offers[1].desc, 
-        //     ctx.canvas.width/2-70,  ctx.canvas.height/2+30,
-        // );
-        // ctx.fillStyle = StatModifier.tier_desc[merchant.offers[1].tier_id].color;
-        // ctx.fillText(StatModifier.tier_desc[merchant.offers[1].tier_id].desc, 
-        //     ctx.canvas.width/2+230,  ctx.canvas.height/2+30,
-        // );
-
-        // // Offer 3
-        // ctx.font = '20px serif';
-        // ctx.fillStyle = "#FFFFFF";
-        // ctx.fillText("[3]  " + merchant.offers[2].desc, 
-        //     ctx.canvas.width/2-70,  ctx.canvas.height/2+170,
-        // );
-        // ctx.fillStyle = StatModifier.tier_desc[merchant.offers[2].tier_id].color;
-        // ctx.fillText(StatModifier.tier_desc[merchant.offers[2].tier_id].desc, 
-        //     ctx.canvas.width/2+230,  ctx.canvas.height/2+170,
-        // );
     }
 }
 
 function draw_paused_screen() {
     ctx.globalAlpha = 0.80;
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = "#050B0F";
     ctx.fillRect(
         0, 
         0, 

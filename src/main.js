@@ -5,19 +5,19 @@ function generate_monster_event() {
     // TODO: event logic that dispatches based on current game time
     if (frame < 2000) {
         new HonzeekMonsterEntity();
-        make_event(frame + 50, generate_monster_event, []);
+        make_event(frame + 160, generate_monster_event, []);
     }
     else if (frame < 8000) {
         new MyregMonsterEntity();
-        make_event(frame + 40, generate_monster_event, []);
+        make_event(frame + 160, generate_monster_event, []);
     }
     else if (frame < 16000) {
-        new MyregMonsterEntity();
-        make_event(frame + 30, generate_monster_event, []);
+        new HonzeekMonsterEntity();
+        make_event(frame + 80, generate_monster_event, []);
     }
     else if (frame < 32000) {
         new MyregMonsterEntity();
-        make_event(frame + 20, generate_monster_event, []);
+        make_event(frame + 60, generate_monster_event, []);
     }
 
 }

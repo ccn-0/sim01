@@ -41,6 +41,7 @@ class PlayerEntity extends PhysicalEntity {
         // Player stats
         this.level = PlayerEntity.base_level;
         this.speed = PlayerEntity.base_speed;
+        this.speed_multiplier = 1.0;
         this.defense = PlayerEntity.base_defense;           // result_dmg = incoming_damage / (defense + 1)
         this.block_real = PlayerEntity.base_block;          // chance to block total uncapped
         this.block_effective = PlayerEntity.base_block;     // chance to block capped at 90%
@@ -126,9 +127,10 @@ class PlayerEntity extends PhysicalEntity {
         this.hp_regen = PlayerEntity.base_hp_regen;
         this.damage = PlayerEntity.base_damage;
         this.speed = PlayerEntity.base_speed;
+        this.speed_multiplier = 1.0
         this.defense = PlayerEntity.base_defense;
         this.block_real = PlayerEntity.base_block;
-        this.xp_multiplier = PlayerEntity.base_xp_multiplier;
+        this.xp_multiplier = 1.0;
         this.dash_cooldown_duration = PlayerEntity.base_dash_cooldown_duration;
         this.dash_speed = PlayerEntity.base_dash_speed;
         this.dash_active_duration = PlayerEntity.base_dash_active_duration;
@@ -140,12 +142,13 @@ class PlayerEntity extends PhysicalEntity {
         this.projectile_chain = PlayerEntity.base_projectile_chain;
         this.damage_min = PlayerEntity.base_damage_min;
         this.damage_max = PlayerEntity.base_damage_max;
-        this.damage_multiplier = PlayerEntity.base_damage_multiplier;
+        this.damage_multiplier = 1.0;
         this.critical_chance = PlayerEntity.base_critical_chance;
         for (let i = 0; i < this.modifiers.length; i++) {
             const mod = this.modifiers[i];
             mod.mod_ref.callback(this, mod);
         }
+        this.speed = this.speed * this.speed_multiplier;
         this.hp_regen = this.hp_regen + this.hp_regen_percent * this.max_hp;
         this.damage_min = Math.floor(this.damage_min * this.damage_multiplier);
         this.damage_max = Math.floor(this.damage_max * this.damage_multiplier);

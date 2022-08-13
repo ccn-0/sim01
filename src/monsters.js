@@ -121,7 +121,7 @@ class MonsterEntity extends PhysicalEntity {
 class HonzeekMonsterEntity extends MonsterEntity {
 
     static size = 60;
-    static max_hp = 80;
+    static max_hp = 200;
     static damage = 10;
     static speed = 2.2;
     static xp = 300;
@@ -151,7 +151,7 @@ class HonzeekMonsterEntity extends MonsterEntity {
 class MyregMonsterEntity extends MonsterEntity {
 
     static size = 60;
-    static max_hp = 200;
+    static max_hp = 400;
     static damage = 40;
     static speed = 2;
     static xp = 600;
