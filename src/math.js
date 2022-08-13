@@ -32,30 +32,32 @@ Array.prototype.fast_delete = (elem) => {
     this.pop();
 }
 
-function weighted_random(modifiers, count) {
-    var offers = [];
-    for (var n = 0; n < count; n++) {
-        // Pick weighted random
-        var random_mod = {};
+function random_in_range(min, max) {
+    return Math.random() * (max - min) + min;
+}
 
-        var weights = [];
-        var items = [];
-        for (var i = 0; i < modifiers.length; i++) {
-            items.push(modifiers[i][1]);
-            weights.push(modifiers[i][0]);
-        }
+function weighted_random(modifiers, count) {
+    // From array of modifiers randomly select `count` of items without duplicites
+    // Returns array of indexes to modifiers array
+    var offers = [];
+    var weights = [];
+    var items = [];
+    for (var i = 0; i < modifiers.length; i++) {
+        items.push(i);
+        weights.push(modifiers[i].weight);
+    }
+    for (var n = 0; n < count; n++) {
         var i;
         for (i = 0; i < weights.length; i++)
             weights[i] += weights[i - 1] || 0;
         var random = Math.random() * weights[weights.length - 1];
         for (i = 0; i < weights.length; i++)
             if (weights[i] > random)
-                break;
-        random_mod.item = items[i];
-        random_mod.i = i;         
-        offers.push(random_mod.item);
-        // Remove for next round 
-        modifiers.splice(random_mod.i, 1);
+                break;    
+        // Select item and remove from available for next round   
+        offers.push(items[i]);
+        items.splice(i, 1);
+        weights.splice(i, 1);
     }
     return offers;
 }

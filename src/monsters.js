@@ -124,7 +124,7 @@ class HonzeekMonsterEntity extends MonsterEntity {
     static max_hp = 80;
     static damage = 10;
     static speed = 2.2;
-    static xp = 500;
+    static xp = 1000;
     static model_idle = _load_image_asset("https://cdn.discordapp.com/emojis/857700195689300008.webp");
     static model_hit = _load_image_asset("https://cdn.discordapp.com/attachments/749608248184799345/1004827766283309126/honzeek_hit.webp");
 

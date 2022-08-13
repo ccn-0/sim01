@@ -7,6 +7,7 @@ class PlayerEntity extends PhysicalEntity {
     static base_size = 60;
     static base_level = 1;
     static base_max_hp = 100;
+    static base_max_hp_multiplier = 1.0;
     static base_speed = 3;
     static base_defense = 0.0;
     static base_block = 0.0;
@@ -38,10 +39,13 @@ class PlayerEntity extends PhysicalEntity {
         // Player stats
         this.level = PlayerEntity.base_level;
         this.speed = PlayerEntity.base_speed;
-        this.defense = PlayerEntity.base_defense;
-        this.block = PlayerEntity.base_block;
+        this.defense = PlayerEntity.base_defense;           // result_dmg = incoming_damage / (defense + 1)
+        this.block_real = PlayerEntity.base_block;          // chance to block total uncapped
+        this.block_effective = PlayerEntity.base_block;     // chance to block capped at 90%
         this.max_hp = PlayerEntity.base_max_hp;
-        this.hp = PlayerEntity.base_max_hp;
+        this.max_hp_multiplier = PlayerEntity.base_max_hp_multiplier;
+        this.max_hp = this.max_hp*this.max_hp_multiplier;
+        this.hp = this.max_hp;
         this.xp_multiplier = PlayerEntity.base_xp_multiplier;
         this.xp = 0;
         this.xp_next = 1000;
@@ -110,6 +114,38 @@ class PlayerEntity extends PhysicalEntity {
             // Pause the game and enable merchant
             world.merchant.enable();
         }
+    }
+
+    recalc_stats() {
+        this.max_hp = PlayerEntity.base_max_hp;
+        this.damage = PlayerEntity.base_damage;
+        this.speed = PlayerEntity.base_speed;
+        this.defense = PlayerEntity.base_defense;
+        this.block_real = PlayerEntity.base_block;
+        this.xp_multiplier = PlayerEntity.base_xp_multiplier;
+        this.dash_cooldown_duration = PlayerEntity.base_dash_cooldown_duration;
+        this.dash_speed = PlayerEntity.base_dash_speed;
+        this.dash_active_duration = PlayerEntity.base_dash_active_duration;
+        this.attack_cooldown_duration = PlayerEntity.base_attack_cooldown_duration;
+        this.projectile_count = PlayerEntity.base_projectile_count;
+        this.projectile_spread = PlayerEntity.base_projectile_spread;
+        this.projectile_speed = PlayerEntity.base_projectile_speed;
+        this.projectile_pierce = PlayerEntity.base_projectile_pierce;
+        this.projectile_chain = PlayerEntity.base_projectile_chain;
+        this.damage_min = PlayerEntity.base_damage_min;
+        this.damage_max = PlayerEntity.base_damage_max;
+        this.damage_multiplier = PlayerEntity.base_damage_multiplier;
+        this.critical_chance = PlayerEntity.base_critical_chance;
+        for (let i = 0; i < this.modifiers.length; i++) {
+            const mod = this.modifiers[i];
+            mod.mod_ref.callback(this, mod);
+        }
+        this.damage_min = Math.floor(this.damage_min * this.damage_multiplier);
+        this.damage_max = Math.floor(this.damage_min * this.damage_multiplier);
+        this.max_hp = Math.floor(this.max_hp * this.max_hp_multiplier);
+        this.block_effective = clamp(this.block_real, 0, 0.9);
+        this.defense = clamp(this.defense, 0, 1000);
+
     }
 
     __update_attack() {

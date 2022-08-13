@@ -15,8 +15,8 @@ function init_control() {
 
 function _take_merchant_offer(offer_number) {
     var merchant = world.merchant;
-    var offer = merchant.offers[offer_number];
-    _apply_modifier(offer);
+    var selected_modifier = merchant.offers[offer_number];
+    world.player.modifiers.push(selected_modifier);
     merchant.disable();
 }
 
@@ -25,12 +25,18 @@ function prehandle_controls() {
     // Merchant menu is active
     if (world.merchant.active) {
         if (keys.slot1) {
+            world.merchant.offers[1].hp = 0;
+            world.merchant.offers[2].hp = 0;
             _take_merchant_offer(0);
         }
         else if (keys.slot2) {
+            world.merchant.offers[0].hp = 0;
+            world.merchant.offers[2].hp = 0;
             _take_merchant_offer(1);
         }
         else if (keys.slot3) {
+            world.merchant.offers[1].hp = 0;
+            world.merchant.offers[0].hp = 0;
             _take_merchant_offer(2);
         }
     }

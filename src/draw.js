@@ -64,28 +64,40 @@ function draw_merchant() {
         ctx.font = '40px serif';
         ctx.fillStyle = "#FFFFFF";
         ctx.fillText("Level Up! Free Offer!", 
-            ctx.canvas.width/2-100,  ctx.canvas.height/2-120,
+            ctx.canvas.width/2-100,  ctx.canvas.height/2-210,
             );
 
         // Offer 1
         ctx.font = '20px serif';
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillText("[1]  " + merchant.offers[0], 
-            ctx.canvas.width/2+10,  ctx.canvas.height/2-41,
+        ctx.fillText("[1]  " + merchant.offers[0].desc, 
+            ctx.canvas.width/2-70,  ctx.canvas.height/2-110,
+        );
+        ctx.fillStyle = StatModifier.tier_desc[merchant.offers[0].tier_id].color;
+        ctx.fillText(StatModifier.tier_desc[merchant.offers[0].tier_id].desc, 
+            ctx.canvas.width/2+230,  ctx.canvas.height/2-110,
         );
 
         // Offer 2
         ctx.font = '20px serif';
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillText("[2]  " + merchant.offers[1], 
-            ctx.canvas.width/2+10,  ctx.canvas.height/2+17,
+        ctx.fillText("[2]  " + merchant.offers[1].desc, 
+            ctx.canvas.width/2-70,  ctx.canvas.height/2+30,
+        );
+        ctx.fillStyle = StatModifier.tier_desc[merchant.offers[1].tier_id].color;
+        ctx.fillText(StatModifier.tier_desc[merchant.offers[1].tier_id].desc, 
+            ctx.canvas.width/2+230,  ctx.canvas.height/2+30,
         );
 
         // Offer 3
         ctx.font = '20px serif';
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillText("[3]  " + merchant.offers[2], 
-            ctx.canvas.width/2+10,  ctx.canvas.height/2+75,
+        ctx.fillText("[3]  " + merchant.offers[2].desc, 
+            ctx.canvas.width/2-70,  ctx.canvas.height/2+170,
+        );
+        ctx.fillStyle = StatModifier.tier_desc[merchant.offers[2].tier_id].color;
+        ctx.fillText(StatModifier.tier_desc[merchant.offers[2].tier_id].desc, 
+            ctx.canvas.width/2+230,  ctx.canvas.height/2+170,
         );
     }
 }

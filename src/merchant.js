@@ -1,45 +1,35 @@
 class Merchant {
 
-    static overlay = _load_image_asset("https://cdn.discordapp.com/attachments/671443540819312731/1005911569005297726/merchant.webp"); 
+    static overlay = _load_image_asset("assets/merchant.webp"); 
 
     constructor() {
-        this.width = 512;
-        this.height = 256;
+        this.width = 768;
+        this.height = 512;
+        this.__draw_offer_offset = 100;
+        
         this.active = false;
-        this.offers = undefined;
+        this.offers = [];
     }
 
     enable() {
+        // Called on player level up
         this.active = true;
         paused = true;
         this._generate_offers();
     }
 
     disable() {
+        // Called after player chose modifier
+        world.player.recalc_stats();
+        this.offers = [];
         this.active = false;
         paused = false;
     }
 
     _generate_offers() {
-        // Table with player modifiers and their weights.
-        var modifiers = [
-            [100, "defense1"],
-            //[100, "block1"],
-            //[100, "life1"],
-            [100, "damage1"],
-            //[100, "damage_percent1"],
-            //[100, "attack_speed1"],
-            //[100, "dash_speed1"],
-            //[100, "movement1"],   
-            //[50, "projectile_speed1"],
-            [50, "projectile_spread1"],
-            //[50, "critical1"],
-            [50, "projectile_pierce1"],
-            [25, "projectile_chain1"],
-            [50, "multiproj1"],
-            //[10, "xp_multiplier1"],
-        ];
-        this.offers = weighted_random(modifiers, 3);
+        this.offers.push( new StatModifier() );
+        this.offers.push( new StatModifier() );
+        this.offers.push( new StatModifier() );
     }
 
 }

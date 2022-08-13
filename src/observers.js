@@ -51,7 +51,7 @@ class HitObserver {
             // Player has no monster collision during dash
             return;
         }
-        var is_blocked = Math.random() < player.block ? 1 : 0;
+        var is_blocked = Math.random() < player.block_effective ? 1 : 0;
         var result_damage = Math.floor((monster.damage / (player.defense+1)) * (1-is_blocked));
         player.hp -= result_damage;
         monster.hp = 0;
