@@ -15,9 +15,9 @@ function generate_monster_event() {
         new HonzeekMonsterEntity();
         make_event(frame + 80, generate_monster_event, []);
     }
-    else if (frame < 32000) {
+    else {
         new MyregMonsterEntity();
-        make_event(frame + 60, generate_monster_event, []);
+        make_event(frame + 50, generate_monster_event, []);
     }
 
 }

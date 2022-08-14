@@ -168,6 +168,70 @@ function draw_hud_cooldowns() {
     )
 }
 
+function draw_player_stats() {
+    const offsets = 20;
+    var player = world.player;
+    ctx.font = '14px serif';
+    ctx.fillStyle = "#DDDDDD";
+    ctx.fillText(`Level: ${player.level}`, 20,  100 + offsets*0);
+    ctx.fillText(`Damage: ${Math.round(player.damage_min/player.damage_multiplier)} to ${Math.round(player.damage_max/player.damage_multiplier)} (+${Math.round((player.damage_multiplier - 1)*100)}%)`, 20,  100 + offsets*1);
+    ctx.fillText(`Attack cooldown: ${player.attack_cooldown_duration/60} seconds`, 20,  100 + offsets*2);
+    ctx.fillText(`Movement speed: ${Math.round((player.speed_multiplier-1)*100)}`, 20,  100 + offsets*3);
+    ctx.fillText(`Defense: ${Math.round(player.defense*100)}%`, 20,  100 + offsets*4);
+    ctx.fillText(`Block: ${Math.round(player.block_effective*100)}% (${Math.round(player.block_real*100)}%)`, 20,  100 + offsets*5);
+    ctx.fillText(`HP regen: ${player.hp_regen*60} per second`, 20,  100 + offsets*6);
+    ctx.fillText(`Dash cooldown: ${player.dash_cooldown_duration/60} seconds`, 20,  100 + offsets*7);
+    ctx.fillText(`Dash speed: ${player.dash_speed}`, 20,  100 + offsets*8);
+    ctx.fillText(`Projectile count: ${player.projectile_count}`, 20,  100 + offsets*9);
+    ctx.fillText(`Projectile spread: ${player.projectile_spread} radians (:nerd:)`, 20,  100 + offsets*10);
+    ctx.fillText(`Projectile speed: ${player.projectile_speed}`, 20,  100 + offsets*11);
+    ctx.fillText(`Projectile pierce: ${player.projectile_pierce}`, 20,  100 + offsets*12);
+    ctx.fillText(`Projectile chain: ${player.projectile_chain}`, 20,  100 + offsets*13);
+
+
+
+    // // Player stats
+    // this.level = PlayerEntity.base_level;
+    // this.speed = PlayerEntity.base_speed;
+    // this.speed_multiplier = 1.0;
+    // this.defense = PlayerEntity.base_defense;           // result_dmg = incoming_damage / (defense + 1)
+    // this.block_real = PlayerEntity.base_block;          // chance to block total uncapped
+    // this.block_effective = PlayerEntity.base_block;     // chance to block capped at 90%
+    // this.max_hp = PlayerEntity.base_max_hp;
+    // this.max_hp_multiplier = PlayerEntity.base_max_hp_multiplier;
+    // this.hp_regen_percent = PlayerEntity.base_hp_regen_percent;
+    // this.hp_regen = PlayerEntity.base_hp_regen + this.hp_regen_percent * this.max_hp;
+    // this.hp = this.max_hp;
+    // this.xp_multiplier = PlayerEntity.base_xp_multiplier;
+    // this.xp = 0;
+    // this.xp_next = 1000;
+    
+    // // Dash state
+    // this.dash_cooldown_duration = PlayerEntity.base_dash_cooldown_duration;
+    // this.dash_speed = PlayerEntity.base_dash_speed;
+    // this.dash_active_duration = PlayerEntity.base_dash_active_duration;
+
+    // this.dash_cooldown_timer = 0;
+    // this.dash_active_timer = 0;
+    // this.dash_isactive = false;
+    
+
+    // // Attack state
+    // this.attack_cooldown_duration = PlayerEntity.base_attack_cooldown_duration;
+    // this.attack_cooldown_timer = 0;
+    // this.projectile_count = PlayerEntity.base_projectile_count;
+    // this.projectile_spread = PlayerEntity.base_projectile_spread;
+    // this.projectile_speed = PlayerEntity.base_projectile_speed;
+    // this.projectile_pierce = PlayerEntity.base_projectile_pierce;
+    // this.projectile_chain = PlayerEntity.base_projectile_chain;
+
+    // this.damage_min = PlayerEntity.base_damage_min;
+    // this.damage_max = PlayerEntity.base_damage_max;
+    // this.damage_multiplier = PlayerEntity.base_damage_multiplier;
+    // this.critical_chance = PlayerEntity.base_critical_chance;
+
+}
+
 function draw_hud() {   
     // Draw player HP
     var player = world.player;
@@ -187,7 +251,8 @@ function draw_hud() {
     // Pause game draws under here
     if (paused) {
         draw_paused_screen();
-        draw_merchant();
+        draw_player_stats(); 
+        draw_merchant(); // ONLY IF MERCHANT ACTIVATED
     }
 
     // Draw gg screen
