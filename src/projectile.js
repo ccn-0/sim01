@@ -65,15 +65,16 @@ class ProjectileEntity extends DurationEntity {
         this.is_inactive = true;
         
         if (this.projectile_chain > 0) {
-            const random_monster = world.monsters[
-                Math.floor(Math.random() * world.monsters.length)
-            ];
-            var new_vec = normalize_vector(
-                random_monster.x - this.x,
-                random_monster.y - this.y,
-            )
-            this.vx = new_vec.x * this.speed;
-            this.vy = new_vec.y * this.speed;
+            const closest_monster = this.__closest_chainable_monster();
+            if (closest_monster) {
+                // Monster that projectile can chain to exists, change velocity vec
+                var new_vec = normalize_vector(
+                    closest_monster.x - this.x,
+                    closest_monster.y - this.y,
+                )
+                this.vx = new_vec.x * this.speed;
+                this.vy = new_vec.y * this.speed;
+            }
             this.hp = 60;
             this.projectile_chain--;
         }
@@ -85,5 +86,20 @@ class ProjectileEntity extends DurationEntity {
             // Hit was final, kill projectile
             this.hp = 0;
         } 
-    } 
+    }
+
+    __closest_chainable_monster() {
+        // warning: performance can get bad
+        let closest_dist = Infinity;
+        let index = undefined;
+        for (let i = 0; i < world.monsters.length; i++) {
+            const monster = world.monsters[i];
+            const dist = Math.hypot(monster.x - this.x, monster.y - this.y);   
+            if (dist < closest_dist && !this.entities_excluded.includes(monster.eid)) {
+                closest_dist = dist;
+                index = i;
+            }
+        }
+        return world.monsters[index]; // Undefined if no monster can be chained to
+    }
 }

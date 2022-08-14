@@ -136,7 +136,7 @@ class StatModifier extends Modifier {
             "name" : "BaseProjectileChain",
             "min_value" : 1,
             "max_value" : 1,
-            "weight" : 500,
+            "weight" : 50000,
             "tiers" : [
                 {"weight" : 0, "multiplier" : 1.0},  
                 {"weight" : 0, "multiplier" : 1.0},           
