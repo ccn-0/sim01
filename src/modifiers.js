@@ -257,7 +257,7 @@ class StatModifier extends Modifier {
             "name" : "BaseMovementSpeedMultiplier",
             "min_value" : 0.06,
             "max_value" : 0.09,
-            "weight" : 50000,
+            "weight" : 600,
             "tiers" : [
                 {"weight" : 0, "multiplier" : 1.0},
                 {"weight" : 0, "multiplier" : 1.0},

@@ -5,8 +5,8 @@ class MonsterEntity extends PhysicalEntity {
         this.hp = max_hp;
         this.model = undefined;
         this.hit_recently = 0;
+        this.killed_by_player = false; // True when death was caused by player effect
         this.animation_state = 0;
-        this.frame_alive = 0;
         this.damage = damage;
         this.speed = speed;
         this.xp = xp;
@@ -84,12 +84,14 @@ class MonsterEntity extends PhysicalEntity {
         }
         this.x = mx;
         this.y = my
-        this.frame_alive += 1;
     }
 
     take_damage(result_damage) {
         this.hp -= result_damage;
         this.hit_recently = 4;
+        if (this.hp <= 0) {
+            this.killed_by_player = true;
+        }
         new DynamicTextEntity(this.x+30, this.y, 0, -2, 0, 0, 100, 60, 0.96, "#FFFFFF", result_damage);  
     }
 

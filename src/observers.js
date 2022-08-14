@@ -39,11 +39,7 @@ class HitObserver {
         const result_damage = projectile.damage * (projectile.is_crit ? 2.0 : 1.0);
         monster.take_damage(result_damage);
         projectile.monster_hit();
-        if (monster.hp <= 0) {
-            const result_xp = monster.xp * projectile.player.xp_multiplier;
-            projectile.player.xp += result_xp;
-            new DynamicTextEntity(monster.x-30, monster.y, 0, -2, 0, 0, 60, 60, 0.98, "#CCCC00", result_xp + " xp");
-        } 
+
     }
 
     __player_monster_hit(player, monster) {
@@ -57,7 +53,6 @@ class HitObserver {
         monster.hp = 0;
         var message = result_damage + (is_blocked ? "(blocked)" : "");
         new DynamicTextEntity(player.x, player.y, 0, -2, 0, 0, 100, 60, 0.96, "#FF0000", message);
-
     }
 }
 
@@ -71,7 +66,7 @@ class MonsterDespawnObserver {
     onNotify(ev, entities) {
         // Handle events
         switch (ev) {
-            case 21: // EVENT_COLLISION_PROJECTILE_MONSTER
+            case 21: // EVENT_DESPAWNED
                 this.__monster_despawned(entities[0]);
                 break;
             default:
@@ -80,7 +75,16 @@ class MonsterDespawnObserver {
     }
 
     __monster_despawned(monster) {
-        new DynamicSpriteEntity(monster.x, monster.y, 0, 0, 0, 0, 
-            monster.size * 4, 15, 0.85, "#CC0000", assets.other.bloodsplosion);
+        if (monster.killed_by_player == true) {
+            const result_xp = monster.xp * world.player.xp_multiplier;
+            world.player.xp += result_xp;
+            new DynamicTextEntity(monster.x-30, monster.y, 0, -2, 0, 0, 60, 60, 0.98, "#CCCC00", result_xp + " xp");
+        } 
+        else {
+            // Monster suicided
+            new DynamicSpriteEntity(monster.x, monster.y, 0, 0, 0, 0, 
+                monster.size * 4, 15, 0.85, "#CC0000", assets.other.bloodsplosion);
+        }
+
     }
 }

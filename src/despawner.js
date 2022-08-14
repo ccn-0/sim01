@@ -29,43 +29,31 @@ class Despawner {
         });
     }
 
-    __run() {
-        while (this.entities_to_despawn.length > 0) {
-            const entity = this.entities_to_despawn.shift();
-            this.notify(25, [entity]);
-            world.entities.fast_delete(entity);
-
-        }
-    } 
-
     run() {
-        const is_dead = (entity) => {
-            const dead = entity.hp <= 0;
-            if (dead) {
-                this.notify(25, [entity]);
-                if (entity instanceof PhysicalEntity) {
-                    this.notify(20, [entity]);
-                }
-                if (entity instanceof MonsterEntity) {
-                    this.notify(21, [entity]);
-                }
-                if (entity instanceof ProjectileEntity) {
-                    this.notify(22, [entity]);
-                }
-                if (entity instanceof DynamicTextEntity) {
-                    this.notify(23, [entity]);
-                }
-                if (entity instanceof DynamicSpriteEntity) {
-                    this.notify(24, [entity]);
-                }     
-            }
-            return !dead;
+        const __predicate_generator = (ev) => {
+            return (entity) => {
+                const dead = entity.hp <= 0;
+                if (dead) this.notify(ev, [entity]);
+                return !dead;
+            };
         }
-        world.phys_entities = world.phys_entities.filter(is_dead);
-        world.sprites = world.sprites.filter(is_dead);
-        world.projectiles = world.projectiles.filter(is_dead);
-        world.monsters = world.monsters.filter(is_dead);
-        world.texts = world.texts.filter(is_dead);
-        world.entities = world.entities.filter(is_dead);
+        world.phys_entities = world.phys_entities.filter(
+            __predicate_generator(20)
+        );
+        world.sprites = world.sprites.filter(
+            __predicate_generator(24)
+        );
+        world.projectiles = world.projectiles.filter(
+            __predicate_generator(22)
+        );
+        world.monsters = world.monsters.filter(
+            __predicate_generator(21)
+        );
+        world.texts = world.texts.filter(
+            __predicate_generator(23)
+        );
+        world.entities = world.entities.filter(
+            __predicate_generator(25)
+        );
     }
 }

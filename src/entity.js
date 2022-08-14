@@ -23,11 +23,13 @@ class PhysicalEntity extends Entity {
         this.size = size;
         this.solid = solid;
         this.color = "#FFFFFF";
+        this.frame_alive = 0;
     }
 
     update() {
         this.x += this.vx;
         this.y += this.vy;
+        this.frame_alive += 1;
     }
 
 }
