@@ -9,6 +9,9 @@ class Collisions {
             1 : [],
             2 : []
         }
+
+        this.distance_matrix = [];
+
     }
 
     add_observer(ev, observer) {
@@ -27,11 +30,15 @@ class Collisions {
     }
 
     run() {
+        this.distance_matrix = [];
         for (let i = 0; i < world.phys_entities.length; i++) {
             const entity_a = world.phys_entities[i];
+            let __dm_row = Array(world.phys_entities.length);
             for (let j = i+1; j < world.phys_entities.length; j++) {
                 const entity_b = world.phys_entities[j];
-                if (is_stuck(entity_a.x, entity_a.y, entity_a.size, entity_b.x, entity_b.y, entity_b.size)) {
+                const dist = Math.hypot(entity_b.x - entity_a.x, entity_b.y - entity_a.y);
+                __dm_row[j] = dist;
+                if (dist < (entity_a.size + entity_b.size) * 0.5) {
                     // ProjectileEntity hit MonsterEntity         
                     if ((entity_a instanceof ProjectileEntity) && (entity_b instanceof MonsterEntity)) {
                         this.notify(0, [entity_a, entity_b]);
@@ -52,6 +59,7 @@ class Collisions {
                     }
                 }
             }
+            this.distance_matrix.push(__dm_row);
         }
     }
 }

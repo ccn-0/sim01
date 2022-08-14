@@ -18,11 +18,14 @@ function rotate_vector(x, y, radians) {
     return {'x' : rx, 'y' : ry};
 }
 
+
 function is_stuck(ax, ay, a_size, bx, by, b_size) {
     const dist = Math.hypot(ax - bx, ay - by);
     const collided = dist < (a_size + b_size) * 0.5;
     return collided;
 }
+
+const pad_array_left = (arr,len,fill) => {return Array(len).fill(fill).concat(arr).slice(-(Math.max(len, arr.length)))}
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 

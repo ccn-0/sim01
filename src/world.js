@@ -25,6 +25,9 @@ class World {
 
     update() {
 
+        // Collision detection
+        this.collisions.run();
+
         // Entities self update
         this.entities.forEach(entity => {
             entity.update()
@@ -34,9 +37,6 @@ class World {
             gg = true;
             this.player.hp = 0;
         }
-
-        // Collision detection
-        this.collisions.run();
 
         // Spawn/despawn
         this.spawn.run();
@@ -49,10 +49,6 @@ class Map {
     // In chunks
     static width = 32;
     static height = 32;
-
-    // 'tiles' : {
-    //     'grass' : _load_image_asset("https://cdn.discordapp.com/attachments/749608248184799345/1005129290582609960/unknown.png"),
-    // }
 
     static map_to_asset = {
         0 : _load_image_asset("assets/tile_ocean.png"),
