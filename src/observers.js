@@ -36,6 +36,10 @@ class HitObserver {
             return; // Projectile already applied damage this tick
         }
         projectile.entities_excluded.push(monster.eid);
+        if (projectile.entities_excluded.length > 3) {
+            // Monsters hit 3 hits ago can be hit again (shift queue)
+            projectile.entities_excluded.shift();
+        }
         const result_damage = projectile.damage * (projectile.is_crit ? 2.0 : 1.0);
         monster.take_damage(result_damage);
         projectile.monster_hit();

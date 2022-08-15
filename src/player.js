@@ -161,8 +161,11 @@ class PlayerEntity extends PhysicalEntity {
     __update_attack() {
         if (keys.mouse1 && this.attack_cooldown_timer == 0) {
             this.attack_cooldown_timer = this.attack_cooldown_duration;
+            const start_angle_offset = this.projectile_spread*(this.projectile_count - 1)/2;
+            var proj_vel = rotate_vector(this.ax, this.ay, start_angle_offset);
             for (var i = 0; i < this.projectile_count; i++) {
-                new ProjectileEntity(this);     
+                new ProjectileEntity(this, proj_vel.x, proj_vel.y);
+                proj_vel = rotate_vector(proj_vel.x, proj_vel.y, -this.projectile_spread);
             }
         }
         this.attack_cooldown_timer = this.attack_cooldown_timer <= 0 ? 0 : this.attack_cooldown_timer-1;  

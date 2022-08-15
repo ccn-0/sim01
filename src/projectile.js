@@ -10,16 +10,14 @@ class ProjectileEntity extends DurationEntity {
         _load_image_asset("assets/proj05.png"),
     ]
 
-    constructor(player) {
-        const angle = (Math.random() - 0.5) * player.projectile_spread;
-        const vec = rotate_vector(player.ax, player.ay, angle);
+    constructor(player, vx, vy) {
         const damage = Math.floor(Math.random()*(player.damage_max-player.damage_min) + player.damage_min);
         const is_crit = Math.random() < player.critical_chance ? 1 : 0;
         const x = player.crosshair.x;
         const y = player.crosshair.y;
-        const vx = vec.x * player.projectile_speed;
-        const vy = vec.y * player.projectile_speed;
-        super(x, y, vx, vy, vec.x, vec.y, 32, 0, ProjectileEntity.base_max_hp);
+        const nvx = vx * player.projectile_speed;
+        const nvy = vy * player.projectile_speed;
+        super(x, y, nvx, nvy, player.ax, player.ay, 32, 0, ProjectileEntity.base_max_hp);
         this.player = player;
         this.speed = player.projectile_speed;
         this.projectile_chain = player.projectile_chain;
