@@ -23,6 +23,7 @@ function load_assets() {
         'other' : {
             'bloodsplosion' : _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1005847942969704468/explosion.webp"),
             'merchant' : _load_image_asset("https://cdn.discordapp.com/attachments/671443540819312731/1005911569005297726/merchant.webp"),
+            'game_controls' : _load_image_asset("assets/game_controls.png"),
         },
     }
 }

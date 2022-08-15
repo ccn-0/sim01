@@ -24,7 +24,12 @@ function init_game() {
     new CameraEntity(player);
      
     // First spawn event
-    make_event(100, generate_monster_event, []);
+    make_event(10, generate_monster_event, []);
+    make_event(2, () => {
+        new DynamicSpriteEntity(0, -200, 0, 0, 0, 0, 
+        320, 360, 0.992, "#FFFFFF", assets.other.game_controls);
+    }, 
+    [])
 
     render_interval = window.setInterval(simloop, 1000/fps);
 }
