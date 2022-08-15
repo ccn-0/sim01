@@ -26,10 +26,12 @@ class Merchant {
         paused = false;
     }
 
-    _generate_offers() {
-        this.offers.push( new StatModifier() );
-        this.offers.push( new StatModifier() );
-        this.offers.push( new StatModifier() );
+    _generate_offers() {    
+        var _mod_ids = weighted_random(StatModifier.mods_db, 3); // Pick 3 random but different mods
+        for (let i = 0; i < 3; i++) {
+            const _mod_id = _mod_ids[i];
+            var _tier_id = weighted_random(StatModifier.mods_db[_mod_id].tiers, 1);
+            this.offers.push( new StatModifier(_mod_id, _tier_id) );  
+        } 
     }
-
 }

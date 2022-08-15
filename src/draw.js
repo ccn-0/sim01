@@ -25,7 +25,7 @@ function draw_background() {
 function draw_hud_time() {
     var seconds = String(Math.floor((frame/60) % 60)).padStart(2, '0');
     var minutes = String(Math.floor((frame/3600) % 60)).padStart(2, '0');
-    ctx.font = '24px serif';
+    ctx.font = '24px helvetica';
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText(minutes + ":" + seconds, 
         ctx.canvas.width/2 - 30, 60
@@ -35,7 +35,7 @@ function draw_hud_time() {
 function draw_hud_xp() {
     var player = world.player;
     // Draw player  level
-    ctx.font = '24px serif';
+    ctx.font = '24px helvetica';
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText("Level " + player.level, 
         30, ctx.canvas.height - 30
@@ -61,7 +61,7 @@ function draw_merchant() {
             ctx.canvas.height/2 - merchant.height/2,
             merchant.width, merchant.height
         );
-        ctx.font = '40px serif';
+        ctx.font = '40px helvetica';
         ctx.fillStyle = "#FFFFFF";
         ctx.fillText("Level Up! Free Offer!", 
             ctx.canvas.width/2-100,  ctx.canvas.height/2-210,
@@ -71,7 +71,7 @@ function draw_merchant() {
         for (let offer_index = 0; offer_index < merchant.offers.length; offer_index++) {
             const offer = merchant.offers[offer_index]
             const offer_offset = height_offsets * offer_index;
-            ctx.font = '20px serif';
+            ctx.font = '16px helvetica';
             ctx.fillStyle = "#FFFFFF";
             // "Button"
             ctx.fillText("[" + (offer_index+1) + "]", 
@@ -82,14 +82,14 @@ function draw_merchant() {
             for (let desc_index = 0; desc_index < offer.desc.length; desc_index++) {
                 const desc = offer.desc[desc_index];
                 ctx.fillText(desc, 
-                    ctx.canvas.width/2-50,  
+                    ctx.canvas.width/2-55,  
                     ctx.canvas.height/2-140 + offer_offset + desc_index*30
                 );
             }
             // Tier
             ctx.fillStyle = StatModifier.tier_desc[merchant.offers[offer_index].tier_id].color;
             ctx.fillText(StatModifier.tier_desc[merchant.offers[offer_index].tier_id].desc, 
-                ctx.canvas.width/2+250,  
+                ctx.canvas.width/2+280,  
                 ctx.canvas.height/2-140 + offer_offset,
             );        
         }
@@ -116,7 +116,7 @@ function draw_paused_screen() {
      + ":" + String(today.getMinutes()).padStart(2, '0')
      + ":" + String(today.getSeconds()).padStart(2, '0');
     var dateTime = date + ' ' + time;
-    ctx.font = '18px serif';
+    ctx.font = '18px helvetica';
     ctx.fillStyle = "#DDDDDD";
     ctx.fillText(dateTime, 
         20,  30
@@ -142,7 +142,7 @@ function draw_hud_cooldown_icon(x,y,cooldown, active_icon, inactive_icon) {
             64, 64
         );
         var cd_text = (cooldown/60).toFixed(1);
-        ctx.font = '30px serif';
+        ctx.font = '30px helvetica';
         ctx.fillText(cd_text, 
             x+15, 
             y+40);   
@@ -171,7 +171,7 @@ function draw_hud_cooldowns() {
 function draw_player_stats() {
     const offsets = 20;
     var player = world.player;
-    ctx.font = '14px serif';
+    ctx.font = '14px helvetica';
     ctx.fillStyle = "#DDDDDD";
     ctx.fillText(`Level: ${player.level}`, 20,  100 + offsets*0);
     ctx.fillText(`Damage: ${Math.round(player.damage_min/player.damage_multiplier)} to ${Math.round(player.damage_max/player.damage_multiplier)} (+${Math.round((player.damage_multiplier - 1)*100)}%)`, 20,  100 + offsets*1);
@@ -180,12 +180,12 @@ function draw_player_stats() {
     ctx.fillText(`Movement speed: +${Math.round((player.speed_multiplier-1)*100)}%`, 20,  100 + offsets*4);
     ctx.fillText(`Defense: ${Math.round(player.defense*100)}%`, 20,  100 + offsets*5);
     ctx.fillText(`Block: ${Math.round(player.block_effective*100)}% (${Math.round(player.block_real*100)}%)`, 20,  100 + offsets*6);
-    ctx.fillText(`HP regen: ${player.hp_regen*60} per second`, 20,  100 + offsets*7);
+    ctx.fillText(`HP regen: ${(player.hp_regen*60).toFixed(2)} per second`, 20,  100 + offsets*7);
     ctx.fillText(`Dash cooldown: ${player.dash_cooldown_duration/60} seconds`, 20,  100 + offsets*8);
     ctx.fillText(`Dash speed: ${player.dash_speed}`, 20,  100 + offsets*9);
     ctx.fillText(`Projectile count: ${player.projectile_count}`, 20,  100 + offsets*10);
-    ctx.fillText(`Projectile spread: ${player.projectile_spread} radians (:nerd:)`, 20,  100 + offsets*11);
-    ctx.fillText(`Projectile speed: ${player.projectile_speed}`, 20,  100 + offsets*12);
+    ctx.fillText(`Projectile spread: ${(player.projectile_spread*57.2958).toFixed(1)} degrees`, 20,  100 + offsets*11);
+    ctx.fillText(`Projectile speed: ${(player.projectile_speed*60).toFixed(1)} u/s`, 20,  100 + offsets*12);
     ctx.fillText(`Projectile pierce: ${player.projectile_pierce}`, 20,  100 + offsets*13);
     ctx.fillText(`Projectile chain: ${player.projectile_chain}`, 20,  100 + offsets*14);
 
@@ -237,7 +237,7 @@ function draw_hud() {
     // Draw player HP
     var player = world.player;
 
-    ctx.font = '40px serif';
+    ctx.font = '40px helvetica';
     ctx.fillStyle = "#FF0000";
     ctx.fillText(Math.floor(player.hp) + "/" + Math.floor(player.max_hp), 
         30,  ctx.canvas.height - 90
@@ -295,7 +295,7 @@ function draw() {
         }
         // Entity has a text to draw
         else if (ent.message) {      
-            ctx.font = ent.size + 'px serif';
+            ctx.font = ent.size + 'px helvetica';
             ctx.fillStyle = ent.color;
             ctx.fillText(ent.message, 
                 ctx.canvas.width/2  - camera.x + ent.x, 

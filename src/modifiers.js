@@ -1,35 +1,5 @@
-// function _apply_modifier(mod) {
-//     var dispatch = {
-//         "defense1" : () => {world.player.defense += 0.25},
-//         "block1" : () => {world.player.block = world.player.block >= 0.75 ? 0.75 : world.player.block + 0.1},
-//         "life1" : () => {world.player.max_hp += 5},
-//         "damage1" : () => {world.player.damage_min += 5; world.player.damage_max += 10},
-//         "damage_percent1" : () => {world.player.damage_percent += 0.2},
-//         "attack_speed1" : () => {world.player.attack_speed = Math.floor(world.player.attack_speed * 0.9)},
-//         "movement1" : () => {world.player.movement_speed += 1},
-//         "projectile_speed1" : () => {world.player.projectile_speed += 1},
-//         "projectile_spread1" : () => {world.player.projectile_spread *= 0.66666},
-//         "dash_speed1" : () => {world.player.dash_speed = Math.floor(world.player.dash_speed * 0.9)},
-//         "critical1" : () => {world.player.critical_chance = world.player.critical_chance >= 1.0 ? 1.0 : world.player.critical_chance + 0.1},
-//         "projectile_pierce1" : () => {world.player.projectile_pierce += 1},
-//         "projectile_chain1" : () => {world.player.projectile_chain += 1},
-//         "multiproj1" : () => {world.player.projectile_count += 1; world.player.projectile_spread *= 2.0},
-//         "xp_multiplier1" : () => {world.player.xp_multiplier += 0.05},
-//     }
 
-//     dispatch[mod]();
-// }
-
-class Modifier extends Entity {
-    // Modifier is an entity that is collected from the merchant by the player. 
-    // Each instance is always owned by the player.
-
-    constructor() {
-        super();
-    }
-}
-
-class StatModifier extends Modifier { 
+class StatModifier { 
     // Changes player stats when collected, other than that does nothing
 
     static tier_desc = {
@@ -53,6 +23,42 @@ class StatModifier extends Modifier {
             "callback" : (owner, mod) => {owner.max_hp += Math.floor(mod.get_final_value())},
             "get_description_callback" : [
                 (mod) => {return `+${Math.floor(mod.get_final_value())} to maximum HP`}
+            ]
+        },
+        {
+            "name" : "BaseHPregen",
+            "min_value" : 0.0025,
+            "max_value" : 0.00333333333,
+            "weight" : 30000,
+            "tiers" : [
+                {"weight" : 800, "multiplier" : 1.0},
+                {"weight" : 100, "multiplier" : 2.0},
+                {"weight" : 80, "multiplier" : 3.0},
+                {"weight" : 20, "multiplier" : 4.0},
+            ],
+            "callback" : (owner, mod) => {
+                owner.hp_regen += mod.get_final_value();
+            },
+            "get_description_callback" : [
+                (mod) => {return `Regenerate +${(mod.get_final_value()*60).toFixed(2)} HP per second`}
+            ]
+        },
+        {
+            "name" : "BaseHPregenPercent",
+            "min_value" : 0.00004,
+            "max_value" : 0.00005,
+            "weight" : 30000,
+            "tiers" : [
+                {"weight" : 0, "multiplier" : 1.0},
+                {"weight" : 0, "multiplier" : 1.0},
+                {"weight" : 800, "multiplier" : 1.0},
+                {"weight" : 200, "multiplier" : 1.5},
+            ],
+            "callback" : (owner, mod) => {
+                owner.hp_regen_percent += mod.get_final_value();
+            },
+            "get_description_callback" : [
+                (mod) => {return `Regenerate +${(mod.get_final_value()*60*100).toFixed(2)}% of max HP per second`}
             ]
         },
         {
@@ -271,11 +277,29 @@ class StatModifier extends Modifier {
                 (mod) => {return `+${Math.floor(mod.get_final_value().toFixed(2) * 100)}% to base movement speed`}
             ]
         },
+
     ]
 
-    constructor() {
-        super();
-        this.randomize();
+    // constructor() {
+    //     this.randomize();
+    // }
+
+    // Nonrandom constructor
+    constructor(mod_id, tier_id) {
+        this.mod_id = mod_id;
+        this.mod_ref = StatModifier.mods_db[this.mod_id];
+        this.randomize_value_base();
+        this.tier_id = tier_id;   
+        this.tier_ref = this.mod_ref.tiers[this.tier_id];
+        this.__desc_update();
+    }
+
+    __desc_update() {
+        this.desc = []
+        for (let i = 0; i < this.mod_ref.get_description_callback.length; i++) {
+            const desc_callback = this.mod_ref.get_description_callback[i];
+            this.desc.push(desc_callback(this));
+        }
     }
 
     randomize() {
@@ -284,29 +308,23 @@ class StatModifier extends Modifier {
         this.mod_ref = StatModifier.mods_db[this.mod_id];
         this.randomize_value_base();
         this.randomize_tier();
-        this.desc = []
-        for (let i = 0; i < this.mod_ref.get_description_callback.length; i++) {
-            const desc_callback = this.mod_ref.get_description_callback[i];
-            this.desc.push(desc_callback(this));
-        }
+        this.__desc_update();
     }
 
     randomize_tier() {
+        // Randomize only tier within that mod type
         this.tier_id = weighted_random(this.mod_ref.tiers, 1)[0];   
         this.tier_ref = this.mod_ref.tiers[this.tier_id];
     }
 
     randomize_value_base () {
+        // Randomize only base value
         this.value_base = random_in_range(this.mod_ref.min_value, this.mod_ref.max_value);
     }
 
     get_final_value() {
         // After multipliers
         return this.value_base * this.tier_ref.multiplier;
-    }
-
-    value_to_string() {
-        
     }
 
     to_string() {
