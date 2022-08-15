@@ -239,7 +239,7 @@ function draw_hud() {
 
     ctx.font = '40px helvetica';
     ctx.fillStyle = "#FF0000";
-    ctx.fillText(Math.floor(player.hp) + "/" + Math.floor(player.max_hp), 
+    ctx.fillText(Math.ceil(player.hp) + "/" + Math.ceil(player.max_hp), 
         30,  ctx.canvas.height - 90
     );
 

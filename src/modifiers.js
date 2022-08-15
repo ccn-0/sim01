@@ -29,7 +29,7 @@ class StatModifier {
             "name" : "BaseHPregen",
             "min_value" : 0.0025,
             "max_value" : 0.00333333333,
-            "weight" : 30000,
+            "weight" : 1000,
             "tiers" : [
                 {"weight" : 800, "multiplier" : 1.0},
                 {"weight" : 100, "multiplier" : 2.0},
@@ -47,7 +47,7 @@ class StatModifier {
             "name" : "BaseHPregenPercent",
             "min_value" : 0.00004,
             "max_value" : 0.00005,
-            "weight" : 30000,
+            "weight" : 1000,
             "tiers" : [
                 {"weight" : 0, "multiplier" : 1.0},
                 {"weight" : 0, "multiplier" : 1.0},
