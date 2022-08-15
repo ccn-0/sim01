@@ -130,12 +130,12 @@ class HonzeekMonsterEntity extends MonsterEntity {
     static model_idle = _load_image_asset("https://cdn.discordapp.com/emojis/857700195689300008.webp");
     static model_hit = _load_image_asset("https://cdn.discordapp.com/attachments/749608248184799345/1004827766283309126/honzeek_hit.webp");
 
-    constructor(extra_max_hp, extra_damage) {
+    constructor(extra_max_hp, extra_damage, extra_speed) {
         super(
             HonzeekMonsterEntity.size, 
             HonzeekMonsterEntity.max_hp + extra_max_hp, 
             HonzeekMonsterEntity.damage + extra_damage, 
-            HonzeekMonsterEntity.speed, 
+            HonzeekMonsterEntity.speed + extra_speed, 
             HonzeekMonsterEntity.xp
         );
         this.model = HonzeekMonsterEntity.model_idle;
@@ -163,12 +163,48 @@ class MyregMonsterEntity extends MonsterEntity {
     static model_anim1 = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1005804399303606282/frame_2_delay-0.1s.gif")
     static model_hit = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1006979563500347412/myreg_hit.webp");
 
-    constructor(extra_max_hp, extra_damage) {
+    constructor(extra_max_hp, extra_damage, extra_speed) {
         super(
             MyregMonsterEntity.size, 
             MyregMonsterEntity.max_hp + extra_max_hp, 
             MyregMonsterEntity.damage + extra_damage, 
-            MyregMonsterEntity.speed, 
+            MyregMonsterEntity.speed + extra_speed, 
+            MyregMonsterEntity.xp
+        );
+        this.model = MyregMonsterEntity.model_idle;
+        this.model_hit = MyregMonsterEntity.model_hit;
+        this.animation_offsets = {
+            0 : 1,
+            12 : 2,
+            24 : 1,
+            36 : 0,
+        };
+        this.animation_states = {
+            0 : MyregMonsterEntity.model_idle,
+            1 : MyregMonsterEntity.model_anim0,
+            2 : MyregMonsterEntity.model_anim1,
+        };
+    }
+}
+
+
+class NykMonsterEntity extends MonsterEntity {
+
+    static size = 60;
+    static max_hp = 5000;
+    static damage = 40;
+    static speed = 2;
+    static xp = 500;
+    
+    static model_idle = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1005804398619938917/frame_0_delay-0.1s.gif");
+    static model_hit = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1006979563500347412/myreg_hit.webp");
+
+    constructor(extra_max_hp, extra_damage, extra_speed) {
+        super(
+            MyregMonsterEntity.size, 
+            MyregMonsterEntity.max_hp + extra_max_hp, 
+            MyregMonsterEntity.damage + extra_damage, 
+            MyregMonsterEntity.speed + extra_speed, 
             MyregMonsterEntity.xp
         );
         this.model = MyregMonsterEntity.model_idle;

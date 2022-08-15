@@ -4,10 +4,10 @@ function generate_monster_event(wave_num) {
  
     if (frame < 3600*wave_num) {
         if (wave_num % 2) {
-            new HonzeekMonsterEntity(wave_num*10, wave_num*1); // Extra hp, extra damage
+            new HonzeekMonsterEntity(wave_num*15, wave_num*1, wave_num*0.03); // Extra hp, extra damage, extra speed
         }
         else {
-            new MyregMonsterEntity(wave_num*15, wave_num*1); // Extra hp, extra damage
+            new MyregMonsterEntity(wave_num*40, wave_num*2, 0); // Extra hp, extra damage, extra speed
         }
         make_event(Math.floor(frame + (120 / Math.sqrt(wave_num))), generate_monster_event, [wave_num]);
     }
