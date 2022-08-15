@@ -123,18 +123,18 @@ class MonsterEntity extends PhysicalEntity {
 class HonzeekMonsterEntity extends MonsterEntity {
 
     static size = 60;
-    static max_hp = 200;
-    static damage = 10;
-    static speed = 2.2;
-    static xp = 300;
+    static max_hp = 300;
+    static damage = 20;
+    static speed = 2.5;
+    static xp = 400;
     static model_idle = _load_image_asset("https://cdn.discordapp.com/emojis/857700195689300008.webp");
     static model_hit = _load_image_asset("https://cdn.discordapp.com/attachments/749608248184799345/1004827766283309126/honzeek_hit.webp");
 
-    constructor() {
+    constructor(extra_max_hp, extra_damage) {
         super(
             HonzeekMonsterEntity.size, 
-            HonzeekMonsterEntity.max_hp, 
-            HonzeekMonsterEntity.damage, 
+            HonzeekMonsterEntity.max_hp + extra_max_hp, 
+            HonzeekMonsterEntity.damage + extra_damage, 
             HonzeekMonsterEntity.speed, 
             HonzeekMonsterEntity.xp
         );
@@ -153,21 +153,21 @@ class HonzeekMonsterEntity extends MonsterEntity {
 class MyregMonsterEntity extends MonsterEntity {
 
     static size = 60;
-    static max_hp = 400;
+    static max_hp = 500;
     static damage = 40;
     static speed = 2;
-    static xp = 600;
+    static xp = 500;
     
     static model_idle = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1005804398619938917/frame_0_delay-0.1s.gif");
     static model_anim0 = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1005804398900940890/frame_1_delay-0.1s.gif")
     static model_anim1 = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1005804399303606282/frame_2_delay-0.1s.gif")
     static model_hit = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1006979563500347412/myreg_hit.webp");
 
-    constructor() {
+    constructor(extra_max_hp, extra_damage) {
         super(
             MyregMonsterEntity.size, 
-            MyregMonsterEntity.max_hp, 
-            MyregMonsterEntity.damage, 
+            MyregMonsterEntity.max_hp + extra_max_hp, 
+            MyregMonsterEntity.damage + extra_damage, 
             MyregMonsterEntity.speed, 
             MyregMonsterEntity.xp
         );

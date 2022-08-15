@@ -82,7 +82,8 @@ class MonsterDespawnObserver {
         if (monster.killed_by_player == true) {
             const result_xp = monster.xp * world.player.xp_multiplier;
             world.player.xp += result_xp;
-            new DynamicTextEntity(monster.x-30, monster.y, 0, -2, 0, 0, 60, 60, 0.98, "#CCCC00", result_xp + " xp");
+            // +XP text
+            // new DynamicTextEntity(monster.x-30, monster.y, 0, -2, 0, 0, 60, 60, 0.98, "#CCCC00", result_xp + " xp");
         } 
         else {
             // Monster suicided

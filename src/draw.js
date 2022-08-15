@@ -176,12 +176,12 @@ function draw_player_stats() {
     ctx.fillText(`Level: ${player.level}`, 20,  100 + offsets*0);
     ctx.fillText(`Damage: ${Math.round(player.damage_min/player.damage_multiplier)} to ${Math.round(player.damage_max/player.damage_multiplier)} (+${Math.round((player.damage_multiplier - 1)*100)}%)`, 20,  100 + offsets*1);
     ctx.fillText(`Critical chance: ${Math.round(player.critical_chance*100)}%`, 20,  100 + offsets*2);
-    ctx.fillText(`Attack cooldown: ${player.attack_cooldown_duration/60} seconds`, 20,  100 + offsets*3);
+    ctx.fillText(`Attack cooldown: ${(player.attack_cooldown_duration/60).toFixed(2)} seconds`, 20,  100 + offsets*3);
     ctx.fillText(`Movement speed: +${Math.round((player.speed_multiplier-1)*100)}%`, 20,  100 + offsets*4);
     ctx.fillText(`Defense: ${Math.round(player.defense*100)}%`, 20,  100 + offsets*5);
     ctx.fillText(`Block: ${Math.round(player.block_effective*100)}% (${Math.round(player.block_real*100)}%)`, 20,  100 + offsets*6);
     ctx.fillText(`HP regen: ${(player.hp_regen*60).toFixed(2)} per second`, 20,  100 + offsets*7);
-    ctx.fillText(`Dash cooldown: ${player.dash_cooldown_duration/60} seconds`, 20,  100 + offsets*8);
+    ctx.fillText(`Dash cooldown: ${(player.dash_cooldown_duration/60).toFixed(2)} seconds`, 20,  100 + offsets*8);
     ctx.fillText(`Dash speed: ${player.dash_speed}`, 20,  100 + offsets*9);
     ctx.fillText(`Projectile count: ${player.projectile_count}`, 20,  100 + offsets*10);
     ctx.fillText(`Projectile spread: ${(player.projectile_spread*57.2958).toFixed(1)} degrees`, 20,  100 + offsets*11);

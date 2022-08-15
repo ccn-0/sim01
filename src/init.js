@@ -23,8 +23,9 @@ function init_game() {
     player.crosshair = crosshair;
     new CameraEntity(player);
      
-    // First spawn event
-    make_event(10, generate_monster_event, []);
+    // Start game events
+    var wave = 1;
+    make_event(10, generate_wave_event, [wave]);
     make_event(2, () => {
         new DynamicSpriteEntity(0, -200, 0, 0, 0, 0, 
         320, 360, 0.992, "#FFFFFF", assets.other.game_controls);

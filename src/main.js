@@ -1,25 +1,26 @@
 
 
-function generate_monster_event() {
+function generate_monster_event(wave_num) {
  
-    // TODO: event logic that dispatches based on current game time
-    if (frame < 2000) {
-        new HonzeekMonsterEntity();
-        make_event(frame + 100, generate_monster_event, []);
-    }
-    else if (frame < 8000) {
-        new MyregMonsterEntity();
-        make_event(frame + 100, generate_monster_event, []);
-    }
-    else if (frame < 16000) {
-        new HonzeekMonsterEntity();
-        make_event(frame + 50, generate_monster_event, []);
-    }
-    else {
-        new MyregMonsterEntity();
-        make_event(frame + 30, generate_monster_event, []);
+    if (frame < 3600*wave_num) {
+        if (wave_num % 2) {
+            new HonzeekMonsterEntity(wave_num*10, wave_num*1); // Extra hp, extra damage
+        }
+        else {
+            new MyregMonsterEntity(wave_num*15, wave_num*1); // Extra hp, extra damage
+        }
+        make_event(Math.floor(frame + (120 / Math.sqrt(wave_num))), generate_monster_event, [wave_num]);
     }
 
+}
+
+function generate_wave_event(wave_num) {
+    new DynamicTextEntity(
+        world.player.x, world.player.y-80,
+        0, 0, 0, 0, 50, 180, 0.98, "#FFCC77", `Wave ${wave_num}`
+    );
+    make_event(frame, generate_monster_event, [wave_num]); // First monster of the wave
+    make_event(frame + 3600, generate_wave_event, [wave_num+1]); // Plan next wave in a minute
 }
 
 function make_event(time, callback, params) {

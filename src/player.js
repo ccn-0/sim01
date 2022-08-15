@@ -114,7 +114,7 @@ class PlayerEntity extends PhysicalEntity {
     
         if (this.xp >= this.xp_next) {
             this.xp = this.xp - this.xp_next; 
-            this.xp_next = 1.4**this.level * 1000;
+            this.xp_next = 1.2**this.level * 1000;
             this.level += 1;
             // Pause the game and enable merchant
             world.merchant.enable();

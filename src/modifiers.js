@@ -108,8 +108,8 @@ class StatModifier {
         },
         {
             "name" : "BaseDamageMultiplier",
-            "min_value" : 0.1,
-            "max_value" : 0.12,
+            "min_value" : 0.3,
+            "max_value" : 0.35,
             "weight" : 2000,
             "tiers" : [
                 {"weight" : 600, "multiplier" : 1.0},
@@ -166,11 +166,11 @@ class StatModifier {
             ],
             "callback" : (owner, mod) => {
                 owner.projectile_count += Math.floor(mod.get_final_value());
-                owner.projectile_spread *= 1.5;
+                owner.projectile_spread *= 1.2;
             },
             "get_description_callback" : [
                 (mod) => {return `+${Math.floor(mod.get_final_value())} to number of projectiles`},
-                (mod) => {return `+50% more projectile spread`}
+                (mod) => {return `+20% more projectile spread`}
             ]
         },
         {
