@@ -26,7 +26,12 @@ function generate_wave_event(wave_num) {
         0, 0, 0, 0, 50, 180, 0.98, "#FFCC77", `Wave ${wave_num}`
     );
     make_event(frame, generate_monster_event, [wave_num]); // First monster of the wave
+    make_event(frame + 1000, generate_raremonster_event, [wave_num]); // Rares
+    make_event(frame + 1200, generate_raremonster_event, [wave_num]); // Rares
+    make_event(frame + 1400, generate_raremonster_event, [wave_num]); // Rares
+    make_event(frame + 1600, generate_raremonster_event, [wave_num]); // Rares
     make_event(frame + 1800, generate_raremonster_event, [wave_num]); // Rares
+    make_event(frame + 2000, generate_raremonster_event, [wave_num]); // Rares
     make_event(frame + 3600, generate_wave_event, [wave_num+1]); // Plan next wave in a minute
 }
 
