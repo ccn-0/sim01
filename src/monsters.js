@@ -195,6 +195,8 @@ class NykMonsterEntity extends MonsterEntity {
     static damage = 10;
     static speed = 3.5;
     static xp = 1000;
+
+    static knockback_speed = 20;
     
     static models = [
         _load_image_asset("assets/nyk00.gif"),

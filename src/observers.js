@@ -62,6 +62,8 @@ class HitObserver {
 
 class MonsterDespawnObserver {
 
+    // Generic monster death logic, applies to all monsters.
+
     constructor(world) {
         // Observe monster despawns
         world.despawn.add_observer(21, this);
@@ -91,5 +93,46 @@ class MonsterDespawnObserver {
                 monster.size * 4, 15, 0.85, "#CC0000", assets.other.bloodsplosion);
         }
 
+    }
+}
+
+class MonsterKnockbackOndeathObserver extends MonsterDespawnObserver {
+
+    // This class handles knockback effect on monster death.
+    // Monster class must support knockbacking.
+
+    constructor(world) {
+        super(world);
+    }
+
+    onNotify(ev, entities) {
+        // Handle events
+        switch (ev) {
+            case 21: // EVENT_DESPAWNED
+                this.__monster_despawned(entities[0]);
+                break;
+            default:
+                break;
+        }
+    }
+
+    __monster_despawned(monster) {
+        if (monster.killed_by_player == true) {
+            // Monster died to player
+        } 
+        else {
+            // Monster suicided
+            if (monster instanceof NykMonsterEntity) {
+                console.log("nyk died");
+                var player = world.player;
+                var vec = normalize_vector(player.x - monster.x, player.y - monster.y)
+                player.knockback_active = true;
+                player.knockback_timer = 8;
+                player.knockback_vx = vec.x * NykMonsterEntity.knockback_speed;
+                player.knockback_vy = vec.y * NykMonsterEntity.knockback_speed;
+                player.vx += player.knockback_vx;
+                player.vy += player.knockback_vy;
+            }
+        }
     }
 }

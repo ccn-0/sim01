@@ -62,7 +62,12 @@ class PlayerEntity extends PhysicalEntity {
         this.dash_cooldown_timer = 0;
         this.dash_active_timer = 0;
         this.dash_isactive = false;
-        
+
+        // Knockback state
+        this.knockback_timer = 0;
+        this.knockback_vx = 0;
+        this.knockback_vy = 0;
+        this.knockback_active = false;
 
         // Attack state
         this.attack_cooldown_duration = PlayerEntity.base_attack_cooldown_duration;
@@ -108,6 +113,7 @@ class PlayerEntity extends PhysicalEntity {
 
         this.__update_dash();
         this.__update_attack();
+        this.__update_knockback();
         this.hp = clamp(this.hp + this.hp_regen, 0, this.max_hp);
     
         this.model = this.model_idle;
@@ -192,5 +198,17 @@ class PlayerEntity extends PhysicalEntity {
         }
         this.dash_cooldown_timer = this.dash_cooldown_timer <= 0 ? 0 : this.dash_cooldown_timer-1;
         this.dash_active_timer = this.dash_active_timer <= 0 ? 0 : this.dash_active_timer-1;
+    }
+
+    __update_knockback() {
+        if (this.knockback_active == true && this.knockback_timer <= 0) {
+            // Deactivate knockback
+            this.vx -= this.knockback_vx;
+            this.vy -= this.knockback_vy;
+            this.knockback_vx = 0;
+            this.knockback_vy = 0;
+            this.knockback_active = false;
+        }
+        this.knockback_timer = this.knockback_timer <= 0 ? 0 : this.knockback_timer-1;
     }
 }
