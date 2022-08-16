@@ -97,9 +97,9 @@ function draw_merchant() {
     }
 }
 
-function draw_paused_screen() {
+function draw_paused_screen(color) {
     ctx.globalAlpha = 0.80;
-    ctx.fillStyle = "#050B0F";
+    ctx.fillStyle = color;
     ctx.fillRect(
         0, 
         0, 
@@ -251,22 +251,16 @@ function draw_hud() {
 
     // Pause game draws under here
     if (paused) {
-        draw_paused_screen();
+        draw_paused_screen("#040610");
         draw_player_stats(); 
         draw_merchant(); // ONLY IF MERCHANT ACTIVATED
     }
 
     // Draw gg screen
     if (gg) {
-        ctx.globalAlpha = 0.80;
-        ctx.fillStyle = "#440000";
-        ctx.fillRect(
-            0, 
-            0, 
-            ctx.canvas.width, ctx.canvas.height
-        );
-        ctx.globalAlpha = 1.0;
-
+        draw_paused_screen("#330000");
+        draw_player_stats(); 
+        // gg screen
         ctx.drawImage(assets.hud.end_screen, 
             ctx.canvas.width/2  - 256, 
             ctx.canvas.height/2  - 256,

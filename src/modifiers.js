@@ -148,10 +148,13 @@ class StatModifier {
                 {"weight" : 0, "multiplier" : 1.0},           
                 {"weight" : 1000,  "multiplier" : 1.0},
             ],
-            "callback" : (owner, mod) => {owner.projectile_chain += Math.floor(mod.get_final_value())},
+            "callback" : (owner, mod) => {
+                owner.projectile_chain += Math.floor(mod.get_final_value());
+                owner.damage_multiplier *= 0.9;
+            },
             "get_description_callback" : [
                 (mod) => {return `+${Math.floor(mod.get_final_value())} to chain`},
-                (mod) => {return `Chain seeks random target`}
+                (mod) => {return `10% less damage multiplier`}
             ]
         },
         {

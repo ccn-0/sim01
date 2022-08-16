@@ -153,7 +153,7 @@ class HonzeekMonsterEntity extends MonsterEntity {
 class MyregMonsterEntity extends MonsterEntity {
 
     static size = 60;
-    static max_hp = 500;
+    static max_hp = 400;
     static damage = 40;
     static speed = 2;
     static xp = 500;
@@ -190,35 +190,74 @@ class MyregMonsterEntity extends MonsterEntity {
 
 class NykMonsterEntity extends MonsterEntity {
 
-    static size = 60;
-    static max_hp = 5000;
-    static damage = 40;
-    static speed = 2;
-    static xp = 500;
+    static size = 70;
+    static max_hp = 500;
+    static damage = 10;
+    static speed = 3.5;
+    static xp = 1000;
     
-    static model_idle = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1005804398619938917/frame_0_delay-0.1s.gif");
-    static model_hit = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1006979563500347412/myreg_hit.webp");
+    static models = [
+        _load_image_asset("assets/nyk00.gif"),
+        _load_image_asset("assets/nyk01.gif"),
+        _load_image_asset("assets/nyk02.gif"),
+        _load_image_asset("assets/nyk03.gif"),
+        _load_image_asset("assets/nyk04.gif"),
+        _load_image_asset("assets/nyk05.gif"),
+        _load_image_asset("assets/nyk06.gif"),
+        _load_image_asset("assets/nyk07.gif"),
+        _load_image_asset("assets/nyk08.gif"),
+        _load_image_asset("assets/nyk09.gif"),
+        _load_image_asset("assets/nyk10.gif"),
+        _load_image_asset("assets/nyk11.gif"),        
+        _load_image_asset("assets/nyk12.gif"),
+        _load_image_asset("assets/nyk13.gif"),
+        _load_image_asset("assets/nyk14.gif"),
+    ]
+    static model_hit = _load_image_asset("assets/nyk_hit.png");
 
-    constructor(extra_max_hp, extra_damage, extra_speed) {
+    constructor(extra_max_hp, extra_damage, extra_speed, extra_xp) {
         super(
-            MyregMonsterEntity.size, 
-            MyregMonsterEntity.max_hp + extra_max_hp, 
-            MyregMonsterEntity.damage + extra_damage, 
-            MyregMonsterEntity.speed + extra_speed, 
-            MyregMonsterEntity.xp
+            NykMonsterEntity.size, 
+            NykMonsterEntity.max_hp + extra_max_hp, 
+            NykMonsterEntity.damage + extra_damage, 
+            NykMonsterEntity.speed + extra_speed, 
+            NykMonsterEntity.xp + extra_xp
         );
-        this.model = MyregMonsterEntity.model_idle;
-        this.model_hit = MyregMonsterEntity.model_hit;
+        this.model = NykMonsterEntity.models[0];
+        this.model_hit = NykMonsterEntity.model_hit;
         this.animation_offsets = {
-            0 : 1,
-            12 : 2,
-            24 : 1,
-            36 : 0,
+            2 : 1,
+            5 : 2,
+            8 : 3,
+            11 : 4,
+            14 : 5,
+            17 : 6,
+            20 : 7,
+            23 : 8,
+            26 : 9,
+            29 : 10,
+            32 : 11,
+            23 : 12,
+            26 : 13,
+            29 : 14,
+            32 : 0,
         };
         this.animation_states = {
-            0 : MyregMonsterEntity.model_idle,
-            1 : MyregMonsterEntity.model_anim0,
-            2 : MyregMonsterEntity.model_anim1,
+            0 : NykMonsterEntity.models[0],
+            1 : NykMonsterEntity.models[1],
+            2 : NykMonsterEntity.models[2],
+            3 : NykMonsterEntity.models[3],
+            4 : NykMonsterEntity.models[4],
+            5 : NykMonsterEntity.models[5],
+            6 : NykMonsterEntity.models[6],
+            7 : NykMonsterEntity.models[7],
+            8 : NykMonsterEntity.models[8],
+            9 : NykMonsterEntity.models[9],
+            10 : NykMonsterEntity.models[10],
+            11 : NykMonsterEntity.models[11],
+            12 : NykMonsterEntity.models[12],
+            13 : NykMonsterEntity.models[13],
+            14 : NykMonsterEntity.models[14],
         };
     }
 }
