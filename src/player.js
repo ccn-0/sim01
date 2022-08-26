@@ -85,6 +85,7 @@ class PlayerEntity extends PhysicalEntity {
 
         // Player inventory of all modifiers
         this.modifiers = [];
+        this.altar_modifiers = [];
 
         world.player = this;
     }

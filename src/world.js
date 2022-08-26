@@ -17,6 +17,7 @@ class World {
         this.texts = [];
         this.sprites = [];
         this.merchant = new Merchant();
+        this.altar = new SacrificeAltar();
         this.map = new Map(); 
         this.collisions = new Collisions();
         this.spawn = new Spawner();

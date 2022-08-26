@@ -7,7 +7,8 @@ class Collisions {
         this._observers = {
             0 : [],
             1 : [],
-            2 : []
+            2 : [],
+            3 : [],
         }
 
         this.distance_matrix = [];
@@ -57,6 +58,14 @@ class Collisions {
                     else if (entity_a instanceof MonsterEntity && entity_b instanceof PlayerEntity) {
                         this.notify(2, [entity_b, entity_a]);
                     }
+                    else if (entity_a instanceof BloodItem && entity_b instanceof PlayerEntity) {
+                        // PlayerEntity hit BloodItem (pickup)
+                        this.notify(3, [entity_b, entity_a]);
+                    }
+                    else if (entity_a instanceof PlayerEntity && entity_a instanceof BloodItem) {
+                        // PlayerEntity hit BloodItem (pickup)
+                        this.notify(3, [entity_a, entity_b]);
+                  }
                 }
             }
             this.distance_matrix.push(__dm_row);

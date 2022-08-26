@@ -20,6 +20,13 @@ function _take_merchant_offer(offer_number) {
     merchant.disable();
 }
 
+function _take_altar_offer(offer_number) {
+    var altar = world.altar;
+    var selected_modifier = altar.offers[offer_number];
+    world.player.altar_modifiers.push(selected_modifier);
+    altar.disable();
+}
+
 function prehandle_controls() {
     // Called every frame even when game is paused.
     // Merchant menu is active
@@ -38,6 +45,16 @@ function prehandle_controls() {
             world.merchant.offers[1].hp = 0;
             world.merchant.offers[0].hp = 0;
             _take_merchant_offer(2);
+        }
+    }
+    else if (world.altar.active) {
+        if (keys.slot1) {
+            world.altar.offers[1].hp = 0;
+            _take_altar_offer(0);
+        }
+        else if (keys.slot2) {
+            world.merchant.offers[0].hp = 0;
+            _take_altar_offer(1);
         }
     }
     else {
