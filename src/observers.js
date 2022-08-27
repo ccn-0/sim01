@@ -40,7 +40,10 @@ class HitObserver {
             // Monsters hit 3 hits ago can be hit again (shift queue)
             projectile.entities_excluded.shift();
         }
-        const result_damage = projectile.damage * (projectile.is_crit ? 2.0 : 1.0);
+        const result_damage = 
+            projectile.damage 
+            * (projectile.is_crit ? 2.0 : 1.0)
+            * (projectile.projectile_pierce_special ** projectile.projectile_pierce);
         monster.take_damage(result_damage);
         projectile.monster_hit();
 

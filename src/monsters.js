@@ -129,7 +129,7 @@ class MonsterEntity extends PhysicalEntity {
 class HonzeekMonsterEntity extends MonsterEntity {
 
     static size = 60;
-    static max_hp = 300;
+    static max_hp = 200;
     static damage = 15;
     static speed = 1.8;
     static xp = 400;
@@ -156,7 +156,7 @@ class HonzeekMonsterEntity extends MonsterEntity {
     }
 
     __create_drops() {
-        if (Math.random() < 0.9) {
+        if (Math.random() < 0.2) {
             this.inventory.push(0);
         }
     }
@@ -166,7 +166,7 @@ class HonzeekMonsterEntity extends MonsterEntity {
 class MyregMonsterEntity extends MonsterEntity {
 
     static size = 60;
-    static max_hp = 400;
+    static max_hp = 300;
     static damage = 40;
     static speed = 2;
     static xp = 500;
@@ -197,6 +197,12 @@ class MyregMonsterEntity extends MonsterEntity {
             1 : MyregMonsterEntity.model_anim0,
             2 : MyregMonsterEntity.model_anim1,
         };
+        this.__create_drops();
+    }
+    __create_drops() {
+        if (Math.random() < 0.3) {
+            this.inventory.push(0);
+        }
     }
 }
 
@@ -274,5 +280,11 @@ class NykMonsterEntity extends MonsterEntity {
             13 : NykMonsterEntity.models[13],
             14 : NykMonsterEntity.models[14],
         };
+        this.__create_drops();
+    }
+    __create_drops() {
+        if (Math.random() < 0.9) {
+            this.inventory.push(0);
+        }
     }
 }

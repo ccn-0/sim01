@@ -21,7 +21,8 @@ class ProjectileEntity extends DurationEntity {
         this.player = player;
         this.speed = player.projectile_speed;
         this.projectile_chain = player.projectile_chain;
-        this.projectile_pierce = player.projectile_pierce;      
+        this.projectile_pierce = player.projectile_pierce;
+        this.projectile_pierce_special = player.projectile_pierce_special;
         this.damage = damage;
         this.is_crit = is_crit;
         this.entities_excluded = [];

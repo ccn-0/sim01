@@ -236,6 +236,32 @@ function draw_player_stats() {
     ctx.fillText(`Projectile chain: ${player.projectile_chain}`, 20,  100 + offsets*14);
 }
 
+function draw_hud_altar(x,y) {
+    var altar = world.altar;
+    if (altar.full) {
+        ctx.font = '30px helvetica';
+        ctx.fillText(`[Q]`, 
+            x-40, 
+            y+40);
+        ctx.drawImage(SacrificeAltar.icons[1], 
+            x, 
+            y,
+            64, 64
+        );
+    }
+    else {
+        ctx.drawImage(SacrificeAltar.icons[0], 
+            x, 
+            y,
+            64, 64
+        );
+        ctx.font = '30px helvetica';
+        ctx.fillText(`${altar.blood_stacks}/${altar.blood_stacks_max}`, 
+            x-70, 
+            y+40);
+    }
+}
+
 function draw_hud() {   
     // Draw player HP
     var player = world.player;
@@ -247,9 +273,8 @@ function draw_hud() {
     );
 
     draw_hud_xp();
-
+    draw_hud_altar(ctx.canvas.width - 150, ctx.canvas.height - 150);
     draw_hud_cooldowns();
-
     draw_hud_time();
 
     // Pause game draws under here

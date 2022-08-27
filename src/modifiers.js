@@ -346,41 +346,40 @@ class AltarModifier {
     static mods_db = [
         {
             "weight" : 1000,
-            "name" : "Ancient Might",
+            "name" : "Might",
             "callback" : (owner, mod) => {
                 owner.damage_min = PlayerEntity.base_damage_min;
                 owner.damage_max = PlayerEntity.base_damage_max;
-                owner.damage_min += owner.max_hp;
-                owner.damage_max += owner.max_hp;
+                owner.damage_min += 0.5*owner.max_hp;
+                owner.damage_max += 0.5*owner.max_hp;
             },
             "get_description_callback" : [
-                (mod) => {return `Gain base damage equal to your maximum HP`},
+                (mod) => {return `Gain base damage equal to 50% of max HP`},
                 (mod) => {return `No other base damage modifiers apply`}
             ]
         },
         {
             "weight" : 1000,
-            "name" : "The Splinter",
+            "name" : "Splinter",
             "callback" : (owner, mod) => {
                 owner.projectile_count += owner.projectile_count;
                 owner.projectile_pierce = 0;
-                owner.projectile_chain = 0;
             },
             "get_description_callback" : [
                 (mod) => {return `Projectile count is doubled`},
-                (mod) => {return `Cannot pierce or chain`}
+                (mod) => {return `Cannot pierce`}
             ]
         },
         {
             "weight" : 1000,
-            "name" : "Dash Frenzy",
+            "name" : "Swiftness",
             "callback" : (owner, mod) => {
                 owner.dash_cooldown_duration = 60;
-                owner.defense = 0;
+                owner.defense *= 0.25;
             },
             "get_description_callback" : [
                 (mod) => {return `Dash cooldown is 1 second`},
-                (mod) => {return `Defense is 0%`}
+                (mod) => {return `75% less defense`}
             ]
         },
         {
@@ -389,13 +388,61 @@ class AltarModifier {
             "callback" : (owner, mod) => {
                 owner.dash_active_duration = 1;
                 owner.dash_speed *= 16;
-                owner.block_real = 0;
+                owner.block_real *= 0.5;
             },
             "get_description_callback" : [
                 (mod) => {return `Dash is replaced by teleport skill`},
-                (mod) => {return `Your block is 0%`}
+                (mod) => {return `50% less block chance`}
             ]
-        }
+        },
+        {
+            "weight" : 1000,
+            "name" : "Serpent",
+            "callback" : (owner, mod) => {
+                owner.projectile_chain *= 3;
+                owner.damage_multiplier *= 0.5;
+            },
+            "get_description_callback" : [
+                (mod) => {return `200% more chains`},
+                (mod) => {return `50% less projectile damage`}
+            ]
+        },
+        {
+            "weight" : 1000,
+            "name" : "Impale",
+            "callback" : (owner, mod) => {
+                owner.projectile_pierce_special = 1.5;
+                owner.projectile_chain = 0;
+                owner.damage_multiplier *= 0.7;
+            },
+            "get_description_callback" : [
+                (mod) => {return `50% more damage for each remaining pierce`},
+                (mod) => {return `Cannot chain`},
+                (mod) => {return `30% less projectile damage`},
+            ]
+        },
+        {
+            "weight" : 1000,
+            "name" : "Ranger",
+            "callback" : (owner, mod) => {
+                owner.projectile_speed = 2.0 * PlayerEntity.base_projectile_speed;
+            },
+            "get_description_callback" : [
+                (mod) => {return `You always have 200% of base projectile speed`},
+            ]
+        },
+        {
+            "weight" : 1000,
+            "name" : "Golem",
+            "callback" : (owner, mod) => {
+                owner.defense += 1.0;
+                owner.speed = 0.9 * PlayerEntity.base_speed;
+            },
+            "get_description_callback" : [
+                (mod) => {return `100% increased defense`},
+                (mod) => {return `You always have 90% of base movement speed`},
+            ]
+        },
     ]
 
     constructor(mod_id) {

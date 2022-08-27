@@ -76,6 +76,7 @@ class PlayerEntity extends PhysicalEntity {
         this.projectile_spread = PlayerEntity.base_projectile_spread;
         this.projectile_speed = PlayerEntity.base_projectile_speed;
         this.projectile_pierce = PlayerEntity.base_projectile_pierce;
+        this.projectile_pierce_special = 1.0;
         this.projectile_chain = PlayerEntity.base_projectile_chain;
 
         this.damage_min = PlayerEntity.base_damage_min;
@@ -146,6 +147,7 @@ class PlayerEntity extends PhysicalEntity {
         this.projectile_spread = PlayerEntity.base_projectile_spread;
         this.projectile_speed = PlayerEntity.base_projectile_speed;
         this.projectile_pierce = PlayerEntity.base_projectile_pierce;
+        this.projectile_pierce_special = 1.0;
         this.projectile_chain = PlayerEntity.base_projectile_chain;
         this.damage_min = PlayerEntity.base_damage_min;
         this.damage_max = PlayerEntity.base_damage_max;
