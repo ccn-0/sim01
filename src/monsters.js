@@ -11,6 +11,7 @@ class MonsterEntity extends PhysicalEntity {
         this.speed = speed;
         this.xp = xp;
         this.model_hit = undefined; // TODO: replace with dev sprites
+        this.inventory = []; // Monster item drops on death
         this.animation_offsets = {
             0 : 0
         };
@@ -33,20 +34,25 @@ class MonsterEntity extends PhysicalEntity {
         if (this.hit_recently > 0) {
             // Hit animation model has priority     
             this.model = this.model_hit;
-            this.hit_recently -= 1;
         }
         else {
             // Set normal model based on current animation state
             this.model = this.animation_states[this.animation_state];
         }
 
-        // TODO: fix bad movement logic
-        // Unit vector towards player
+        this.hit_recently = this.hit_recently ? this.hit_recently - 1 : 0;
+
+        if (this.hit_recently == 0) {
+            // Monster not stunned
+            this._move_towards_player();
+        }
+    }
+
+    _move_towards_player() {
         var uvec = normalize_vector(
             this.x - world.player.x, 
             this.y - world.player.y
         )
-
         // Try move straight, then 45 degrees left and right,
         // then finally 90 degrees left and right. This is probably not very
         // efficient or smart, but looks good enough.
@@ -88,7 +94,7 @@ class MonsterEntity extends PhysicalEntity {
 
     take_damage(result_damage) {
         this.hp -= result_damage;
-        this.hit_recently = 4;
+        this.hit_recently = 6;
         if (this.hp <= 0) {
             this.killed_by_player = true;
         }
@@ -124,8 +130,8 @@ class HonzeekMonsterEntity extends MonsterEntity {
 
     static size = 60;
     static max_hp = 300;
-    static damage = 20;
-    static speed = 2.5;
+    static damage = 15;
+    static speed = 1.8;
     static xp = 400;
     static model_idle = _load_image_asset("https://cdn.discordapp.com/emojis/857700195689300008.webp");
     static model_hit = _load_image_asset("https://cdn.discordapp.com/attachments/749608248184799345/1004827766283309126/honzeek_hit.webp");
@@ -146,6 +152,13 @@ class HonzeekMonsterEntity extends MonsterEntity {
         this.animation_states = {
             0 : HonzeekMonsterEntity.model_idle,
         };
+        this.__create_drops();
+    }
+
+    __create_drops() {
+        if (Math.random() < 0.9) {
+            this.inventory.push(0);
+        }
     }
 }
 

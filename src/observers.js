@@ -81,7 +81,15 @@ class MonsterDespawnObserver {
     }
 
     __monster_despawned(monster) {
+        // Drop monster inventory
+        for (let index = 0; index < monster.inventory.length; index++) {
+            const item = monster.inventory[index];
+            // TODO: fix when more items exist
+            new BloodItem(monster.x, monster.y);
+        }
+
         if (monster.killed_by_player == true) {
+            // Count XP
             const result_xp = monster.xp * world.player.xp_multiplier;
             world.player.xp += result_xp;
             // +XP text
@@ -92,7 +100,6 @@ class MonsterDespawnObserver {
             new DynamicSpriteEntity(monster.x, monster.y, 0, 0, 0, 0, 
                 monster.size * 4, 15, 0.85, "#CC0000", assets.other.bloodsplosion);
         }
-
     }
 }
 

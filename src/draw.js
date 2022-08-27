@@ -52,6 +52,52 @@ function draw_hud_xp() {
     );
 }
 
+function draw_altar() {
+    var altar = world.altar;
+    if (altar.active) {
+        ctx.drawImage(SacrificeAltar.overlay, 
+            ctx.canvas.width/2  - altar.width/2, 
+            ctx.canvas.height/2 - altar.height/2,
+            altar.width, altar.height
+        );
+        ctx.font = '32px helvetica';
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillText("The Altar of sacrifice", 
+            ctx.canvas.width/2+65,  ctx.canvas.height/2-120,
+        );
+        ctx.fillText("...demands your choice", 
+            ctx.canvas.width/2+25,  ctx.canvas.height/2-80,
+        );
+        // Draw offer texts
+        const height_offsets = 140;
+        for (let offer_index = 0; offer_index < altar.offers.length; offer_index++) {
+            const offer = altar.offers[offer_index];
+            const offer_offset = height_offsets * offer_index;
+            ctx.font = '16px helvetica';
+            ctx.fillStyle = "#FFDDEE";
+            // Mod name
+            ctx.fillText(offer.mod_ref.name,
+                ctx.canvas.width/2-20,
+                ctx.canvas.height/2-30 + offer_offset,
+            );
+            ctx.fillStyle = "#FFFFFF";
+            // "Button"
+            ctx.fillText("[" + (offer_index+1) + "]", 
+                ctx.canvas.width/2-20,  
+                ctx.canvas.height/2 + offer_offset,
+            );  
+            // Descriptions
+            for (let desc_index = 0; desc_index < offer.desc.length; desc_index++) {
+                const desc = offer.desc[desc_index];
+                ctx.fillText(desc, 
+                    ctx.canvas.width/2+10,  
+                    ctx.canvas.height/2 + offer_offset + desc_index*30
+                );
+            }   
+        }
+    }
+}
+
 function draw_merchant() {
     var merchant = world.merchant;
     if (merchant.active) {
@@ -188,49 +234,6 @@ function draw_player_stats() {
     ctx.fillText(`Projectile speed: ${(player.projectile_speed*60).toFixed(1)} u/s`, 20,  100 + offsets*12);
     ctx.fillText(`Projectile pierce: ${player.projectile_pierce}`, 20,  100 + offsets*13);
     ctx.fillText(`Projectile chain: ${player.projectile_chain}`, 20,  100 + offsets*14);
-
-
-
-    // // Player stats
-    // this.level = PlayerEntity.base_level;
-    // this.speed = PlayerEntity.base_speed;
-    // this.speed_multiplier = 1.0;
-    // this.defense = PlayerEntity.base_defense;           // result_dmg = incoming_damage / (defense + 1)
-    // this.block_real = PlayerEntity.base_block;          // chance to block total uncapped
-    // this.block_effective = PlayerEntity.base_block;     // chance to block capped at 90%
-    // this.max_hp = PlayerEntity.base_max_hp;
-    // this.max_hp_multiplier = PlayerEntity.base_max_hp_multiplier;
-    // this.hp_regen_percent = PlayerEntity.base_hp_regen_percent;
-    // this.hp_regen = PlayerEntity.base_hp_regen + this.hp_regen_percent * this.max_hp;
-    // this.hp = this.max_hp;
-    // this.xp_multiplier = PlayerEntity.base_xp_multiplier;
-    // this.xp = 0;
-    // this.xp_next = 1000;
-    
-    // // Dash state
-    // this.dash_cooldown_duration = PlayerEntity.base_dash_cooldown_duration;
-    // this.dash_speed = PlayerEntity.base_dash_speed;
-    // this.dash_active_duration = PlayerEntity.base_dash_active_duration;
-
-    // this.dash_cooldown_timer = 0;
-    // this.dash_active_timer = 0;
-    // this.dash_isactive = false;
-    
-
-    // // Attack state
-    // this.attack_cooldown_duration = PlayerEntity.base_attack_cooldown_duration;
-    // this.attack_cooldown_timer = 0;
-    // this.projectile_count = PlayerEntity.base_projectile_count;
-    // this.projectile_spread = PlayerEntity.base_projectile_spread;
-    // this.projectile_speed = PlayerEntity.base_projectile_speed;
-    // this.projectile_pierce = PlayerEntity.base_projectile_pierce;
-    // this.projectile_chain = PlayerEntity.base_projectile_chain;
-
-    // this.damage_min = PlayerEntity.base_damage_min;
-    // this.damage_max = PlayerEntity.base_damage_max;
-    // this.damage_multiplier = PlayerEntity.base_damage_multiplier;
-    // this.critical_chance = PlayerEntity.base_critical_chance;
-
 }
 
 function draw_hud() {   
@@ -254,6 +257,7 @@ function draw_hud() {
         draw_paused_screen("#040610");
         draw_player_stats(); 
         draw_merchant(); // ONLY IF MERCHANT ACTIVATED
+        draw_altar(); // ONLY IF ALTAR ACTIVATED
     }
 
     // Draw gg screen

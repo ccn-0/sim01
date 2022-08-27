@@ -8,8 +8,9 @@ function init_control() {
         "mouse_x" : 0,
         "mouse_y" : 0,
         "mouse1" : false,
+        "altar" : false,
         "escape" : false,
-        "escapeToggle" : false,
+        "escapeToggle" : true,
     }
 }
 
@@ -32,33 +33,33 @@ function prehandle_controls() {
     // Merchant menu is active
     if (world.merchant.active) {
         if (keys.slot1) {
-            world.merchant.offers[1].hp = 0;
-            world.merchant.offers[2].hp = 0;
+            //world.merchant.offers[1].hp = 0;
+            //world.merchant.offers[2].hp = 0;
             _take_merchant_offer(0);
         }
         else if (keys.slot2) {
-            world.merchant.offers[0].hp = 0;
-            world.merchant.offers[2].hp = 0;
+            //world.merchant.offers[0].hp = 0;
+            //world.merchant.offers[2].hp = 0;
             _take_merchant_offer(1);
         }
         else if (keys.slot3) {
-            world.merchant.offers[1].hp = 0;
-            world.merchant.offers[0].hp = 0;
+            //world.merchant.offers[1].hp = 0;
+            //world.merchant.offers[0].hp = 0;
             _take_merchant_offer(2);
         }
     }
     else if (world.altar.active) {
         if (keys.slot1) {
-            world.altar.offers[1].hp = 0;
+            //world.altar.offers[1].hp = 0;
             _take_altar_offer(0);
         }
         else if (keys.slot2) {
-            world.merchant.offers[0].hp = 0;
+            //world.altar.offers[0].hp = 0;
             _take_altar_offer(1);
         }
     }
     else {
-        paused = keys.escapeToggle;
+        paused = keys.escape;
     }
     
 }
@@ -84,9 +85,7 @@ function add_listeners() {
             return;
         }
         if (evt.code === "Escape") {
-            console.log("esc")
-            keys.escapeToggle = keys.escapeToggle ? false : true;
-            keys.escape = true;
+            keys.escape = keys.escapeToggle ? true : false;
         } else if (evt.code === "KeyS") {
             keys.down = true;
         } else if (evt.code === "KeyW") {
@@ -103,6 +102,9 @@ function add_listeners() {
             keys.slot2 = true;
         } else if (evt.code === "Digit3") {
             keys.slot3 = true;
+        } else if (evt.code === "KeyQ") {
+            keys.altar = true;
+            world.altar.enable();
         } 
     });
     document.addEventListener('keyup', function(evt) {
@@ -110,7 +112,7 @@ function add_listeners() {
             return;
         }
         if (evt.code === "Escape") {
-            keys.escape = false;
+            keys.escapeToggle = keys.escapeToggle ? false : true;
         } else if (evt.code === "KeyS"){
             keys.down = false;
         } else if (evt.code === "KeyW"){
@@ -127,6 +129,8 @@ function add_listeners() {
             keys.slot2 = false;
         } else if (evt.code === "Digit3"){
             keys.slot3 = false;
+        } else if (evt.code === "KeyQ") {
+            keys.altar = false;
         } 
     });
 }

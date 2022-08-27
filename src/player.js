@@ -151,10 +151,19 @@ class PlayerEntity extends PhysicalEntity {
         this.damage_max = PlayerEntity.base_damage_max;
         this.damage_multiplier = 1.0;
         this.critical_chance = PlayerEntity.base_critical_chance;
+
+        // Run through normal modifiers
         for (let i = 0; i < this.modifiers.length; i++) {
             const mod = this.modifiers[i];
             mod.mod_ref.callback(this, mod);
         }
+
+        // Run through altar modifiers
+        for (let i = 0; i < this.altar_modifiers.length; i++) {
+            const mod = this.altar_modifiers[i];
+            mod.mod_ref.callback(this, mod);
+        }
+
         this.speed = this.speed * this.speed_multiplier;
         this.hp_regen = this.hp_regen + this.hp_regen_percent * this.max_hp;
         this.damage_min = Math.floor(this.damage_min * this.damage_multiplier);
@@ -162,7 +171,6 @@ class PlayerEntity extends PhysicalEntity {
         this.max_hp = Math.floor(this.max_hp * this.max_hp_multiplier);
         this.block_effective = clamp(this.block_real, 0, 0.9);
         this.defense = clamp(this.defense, 0, 1000);
-
     }
 
     __update_attack() {

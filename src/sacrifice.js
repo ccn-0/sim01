@@ -1,4 +1,4 @@
-class SacrificeAltar extends Entity {
+class SacrificeAltar {
 
     static overlay = _load_image_asset("assets/altar.png"); 
 
@@ -9,29 +9,19 @@ class SacrificeAltar extends Entity {
     ]
 
     constructor() {
+        this.width = 768;
+        this.height = 512;
         this.blood_stacks_max = 10;
         this.blood_stacks = 0;
         this.full = false;
         this.active = false;
         this.offers = [];
         this.icon = undefined;
-        world.collisions.add_observer(3, this);
-    }
-
-    onNotify(ev, entities) {
-        // Handle events
-        switch (ev) {
-            case 3: // EVENT_BLOOD_PICKUP
-                this._handle_blood_pickup(entities[1]);
-                break;
-            default:
-                break;
-        }
     }
 
     enable() {
         // Called on player pressing button
-        if (this.full) {
+        if (this.full && !this.active) {
             this.active = true;
             paused = true;
             this._generate_offers();
@@ -49,21 +39,11 @@ class SacrificeAltar extends Entity {
         paused = false;
     }
 
-    _handle_blood_pickup(blood_item) {
-        this.blood_stacks += blood_item.value;
-        blood_item.hp = 0;
-        if (this.blood_stacks >= this.blood_stacks_max) {
-            this.blood_stacks = this.blood_stacks_max;
-            this.full = true; // Altar is ready to be used whenever player wants
-        }
+    _generate_offers() {    
+        var _mod_ids = weighted_random(AltarModifier.mods_db, 2); // Pick 2 random but different mods
+        for (let i = 0; i < 2; i++) {
+            const _mod_id = _mod_ids[i];
+            this.offers.push( new AltarModifier(_mod_id) );  
+        } 
     }
-
-    // _generate_offers() {    
-    //     var _mod_ids = weighted_random(StatModifier.mods_db, 3); // Pick 3 random but different mods
-    //     for (let i = 0; i < 3; i++) {
-    //         const _mod_id = _mod_ids[i];
-    //         var _tier_id = weighted_random(StatModifier.mods_db[_mod_id].tiers, 1);
-    //         this.offers.push( new StatModifier(_mod_id, _tier_id) );  
-    //     } 
-    // }
 }

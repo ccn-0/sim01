@@ -19,6 +19,7 @@ function init_game() {
     new HitObserver(world);
     new MonsterDespawnObserver(world);
     new MonsterKnockbackOndeathObserver(world);
+    new ItemPickupObserver(world);
     var player = new PlayerEntity();
     var crosshair = new CrosshairEntity(player);
     player.crosshair = crosshair;

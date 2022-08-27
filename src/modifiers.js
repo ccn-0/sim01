@@ -1,6 +1,6 @@
 
 class StatModifier { 
-    // Changes player stats when collected, other than that does nothing
+    // Changes player stats
 
     static tier_desc = {
         0: {"desc" : "Basic tier", "color" : "#DDDDDD"},
@@ -336,5 +336,79 @@ class StatModifier {
 
     to_string() {
         return `Modifier ${this.mod_ref.name} | Tier: ${this.tier_id + 1} | Base range: ${this.mod_ref.min_value} to ${this.mod_ref.max_value} | Multiplier: ${this.tier_ref.multiplier} )`;
+    }
+}
+
+class AltarModifier {
+    
+    // Build defining powerful modifiers
+
+    static mods_db = [
+        {
+            "weight" : 1000,
+            "name" : "Ancient Might",
+            "callback" : (owner, mod) => {
+                owner.damage_min = PlayerEntity.base_damage_min;
+                owner.damage_max = PlayerEntity.base_damage_max;
+                owner.damage_min += owner.max_hp;
+                owner.damage_max += owner.max_hp;
+            },
+            "get_description_callback" : [
+                (mod) => {return `Gain base damage equal to your maximum HP`},
+                (mod) => {return `No other base damage modifiers apply`}
+            ]
+        },
+        {
+            "weight" : 1000,
+            "name" : "The Splinter",
+            "callback" : (owner, mod) => {
+                owner.projectile_count += owner.projectile_count;
+                owner.projectile_pierce = 0;
+                owner.projectile_chain = 0;
+            },
+            "get_description_callback" : [
+                (mod) => {return `Projectile count is doubled`},
+                (mod) => {return `Cannot pierce or chain`}
+            ]
+        },
+        {
+            "weight" : 1000,
+            "name" : "Dash Frenzy",
+            "callback" : (owner, mod) => {
+                owner.dash_cooldown_duration = 60;
+                owner.defense = 0;
+            },
+            "get_description_callback" : [
+                (mod) => {return `Dash cooldown is 1 second`},
+                (mod) => {return `Defense is 0%`}
+            ]
+        },
+        {
+            "weight" : 1000,
+            "name" : "Teleport",
+            "callback" : (owner, mod) => {
+                owner.dash_active_duration = 1;
+                owner.dash_speed *= 16;
+                owner.block_real = 0;
+            },
+            "get_description_callback" : [
+                (mod) => {return `Dash is replaced by teleport skill`},
+                (mod) => {return `Your block is 0%`}
+            ]
+        }
+    ]
+
+    constructor(mod_id) {
+        this.mod_id = mod_id;
+        this.mod_ref = AltarModifier.mods_db[this.mod_id];
+        this.__desc_update();
+    }
+
+    __desc_update() {
+        this.desc = [];
+        for (let i = 0; i < this.mod_ref.get_description_callback.length; i++) {
+            const desc_callback = this.mod_ref.get_description_callback[i];
+            this.desc.push(desc_callback(this));
+        }
     }
 }

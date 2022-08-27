@@ -62,7 +62,7 @@ class Collisions {
                         // PlayerEntity hit BloodItem (pickup)
                         this.notify(3, [entity_b, entity_a]);
                     }
-                    else if (entity_a instanceof PlayerEntity && entity_a instanceof BloodItem) {
+                    else if (entity_a instanceof PlayerEntity && entity_b instanceof BloodItem) {
                         // PlayerEntity hit BloodItem (pickup)
                         this.notify(3, [entity_a, entity_b]);
                   }
