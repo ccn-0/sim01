@@ -1,7 +1,7 @@
 class PlayerEntity extends PhysicalEntity {
 
-    static model_idle = _load_image_asset("https://cdn.discordapp.com/emojis/980168035082055690.webp");
-    static model_hit = _load_image_asset("https://cdn.discordapp.com/emojis/980168035082055690.webp");
+    static model_idle = _load_image_asset("https://cdn.discordapp.com/emojis/965768479707906088.webp");
+    static model_hit = _load_image_asset("https://cdn.discordapp.com/emojis/965768479707906088.webp");
 
     // Base player stats, used for init and as a calculation base for player power modifiers
     static base_size = 60;
