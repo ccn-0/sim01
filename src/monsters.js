@@ -162,6 +162,42 @@ class HonzeekMonsterEntity extends MonsterEntity {
     }
 }
 
+class CorgiMonsterEntity extends MonsterEntity {
+
+    static size = 100;
+    static max_hp = 200;
+    static damage = 15;
+    static speed = 1.8;
+    static xp = 400;
+    static model_idle = _load_image_asset("assets/corgimonster.webp");
+    static model_hit = _load_image_asset("assets/corgimonster_hit.webp");
+
+    constructor(extra_max_hp, extra_damage, extra_speed) {
+        super(
+            CorgiMonsterEntity.size, 
+            CorgiMonsterEntity.max_hp + extra_max_hp, 
+            CorgiMonsterEntity.damage + extra_damage, 
+            CorgiMonsterEntity.speed + extra_speed, 
+            CorgiMonsterEntity.xp
+        );
+        this.model = CorgiMonsterEntity.model_idle;
+        this.model_hit = CorgiMonsterEntity.model_hit;
+        this.animation_offsets = {
+            0 : 0
+        };
+        this.animation_states = {
+            0 : CorgiMonsterEntity.model_idle,
+        };
+        this.__create_drops();
+    }
+
+    __create_drops() {
+        if (Math.random() < 0.2) {
+            this.inventory.push(0);
+        }
+    }
+}
+
 
 class MyregMonsterEntity extends MonsterEntity {
 

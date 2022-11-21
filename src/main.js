@@ -3,8 +3,11 @@
 function generate_monster_event(wave_num) {
  
     if (frame < 3600*wave_num) {
-        if (wave_num % 2) {
+        if (wave_num % 3 == 0) {
             new HonzeekMonsterEntity(wave_num*15, wave_num*1, wave_num*0.03, 0); // Extra hp, extra damage, extra speed
+        }
+        else if (wave_num % 3 == 1) {
+            new CorgiMonsterEntity(wave_num*15, wave_num*1, wave_num*0.03, 0);
         }
         else {
             new MyregMonsterEntity(wave_num*30, wave_num*2, 0, 0); // Extra hp, extra damage, extra speed
