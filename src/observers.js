@@ -26,6 +26,7 @@ class HitObserver {
     }
 
     __projectile_monster_hit(projectile, monster) {
+        console.log("starting __projectile_monster_hit");
         if (monster.hp <= 0) {
             return; // Something already killed the monster, don't interact
         }
@@ -34,9 +35,9 @@ class HitObserver {
         }
         if (projectile.is_inactive) {
             return; // Projectile already applied damage this tick
-        }
+        }      
         projectile.entities_excluded.push(monster.eid);
-        if (projectile.entities_excluded.length > 3) {
+        if (projectile.entities_excluded.length > 3 && projectile.entities_excluded_shiftable) {
             // Monsters hit 3 hits ago can be hit again (shift queue)
             projectile.entities_excluded.shift();
         }

@@ -84,6 +84,9 @@ class PlayerEntity extends PhysicalEntity {
         this.damage_multiplier = PlayerEntity.base_damage_multiplier;
         this.critical_chance = PlayerEntity.base_critical_chance;
 
+        // Spells and specials flags
+        this.ice_cascade = false;
+
         // Player inventory of all modifiers
         this.modifiers = [];
         this.altar_modifiers = [];
@@ -183,6 +186,13 @@ class PlayerEntity extends PhysicalEntity {
             for (var i = 0; i < this.projectile_count; i++) {
                 new ProjectileEntity(this, proj_vel.x, proj_vel.y);
                 proj_vel = rotate_vector(proj_vel.x, proj_vel.y, -this.projectile_spread);
+            }
+            if (this.ice_cascade) {
+                // Player has ice cascade spell active
+                for (var i = 0; i < 5; i++) {
+                    var ice_size = Math.floor(  128 + Math.random() * 128 )
+                    new IceCascadeEntity(this, this.ax, this.ay, 100 * i + 100, ice_size);
+                }    
             }
         }
         this.attack_cooldown_timer = this.attack_cooldown_timer <= 0 ? 0 : this.attack_cooldown_timer-1;  

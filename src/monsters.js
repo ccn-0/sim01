@@ -93,6 +93,7 @@ class MonsterEntity extends PhysicalEntity {
     }
 
     take_damage(result_damage) {
+        console.log(`monster taking damage ${result_damage}`)
         this.hp -= result_damage;
         this.hit_recently = 6;
         if (this.hp <= 0) {
@@ -156,7 +157,7 @@ class HonzeekMonsterEntity extends MonsterEntity {
     }
 
     __create_drops() {
-        if (Math.random() < 0.2) {
+        if (Math.random() < 0.3) {
             this.inventory.push(0);
         }
     }
@@ -192,7 +193,7 @@ class CorgiMonsterEntity extends MonsterEntity {
     }
 
     __create_drops() {
-        if (Math.random() < 0.2) {
+        if (Math.random() < 0.3) {
             this.inventory.push(0);
         }
     }

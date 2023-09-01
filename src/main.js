@@ -12,7 +12,7 @@ function generate_monster_event(wave_num) {
         else {
             new MyregMonsterEntity(wave_num*30, wave_num*2, 0, 0); // Extra hp, extra damage, extra speed
         }
-        make_event(Math.floor(frame + (120 / Math.sqrt(wave_num))), generate_monster_event, [wave_num]);
+        make_event(Math.floor(frame + (90 / Math.sqrt(wave_num))), generate_monster_event, [wave_num]);
     }
 
 }

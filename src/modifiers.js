@@ -443,6 +443,17 @@ class AltarModifier {
                 (mod) => {return `You always have 90% of base movement speed`},
             ]
         },
+        {
+            "weight" : 80000,
+            "name" : "Ice Cascade",
+            "callback" : (owner, mod) => {
+                owner.ice_cascade = true;
+            },
+            "get_description_callback" : [
+                (mod) => {return `Your attacks also cast Ice Cascade`},
+                (mod) => {return `Each Ice Cascade deals 50% of your damage`}
+            ]
+        },
     ]
 
     constructor(mod_id) {

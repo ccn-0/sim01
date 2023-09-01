@@ -25,6 +25,7 @@ class ProjectileEntity extends DurationEntity {
         this.projectile_pierce_special = player.projectile_pierce_special;
         this.damage = damage;
         this.is_crit = is_crit;
+        this.entities_excluded_shiftable = true; // Allow this entity to interact with other entities again
         this.entities_excluded = [];
         this.is_inactive = false;
         this.animation_state = 0;
