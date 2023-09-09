@@ -444,7 +444,7 @@ class AltarModifier {
             ]
         },
         {
-            "weight" : 80000,
+            "weight" : 1000,
             "name" : "Ice Cascade",
             "callback" : (owner, mod) => {
                 owner.ice_cascade = true;
@@ -452,6 +452,18 @@ class AltarModifier {
             "get_description_callback" : [
                 (mod) => {return `Your attacks also cast Ice Cascade`},
                 (mod) => {return `Each Ice Cascade deals 50% of your damage`}
+            ]
+        },        
+        {
+            "weight" : 100000,
+            "name" : "Plasma Nova",
+            "callback" : (owner, mod) => {
+                owner.plasma_nova = true;
+            },
+            "get_description_callback" : [
+                (mod) => {return `Your dash also casts Plasma Nova`},
+                (mod) => {return `Plasma Nova is cast at the end of dash travel`},
+                (mod) => {return `Plasma Nova deals 70% of your damage`}
             ]
         },
     ]

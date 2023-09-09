@@ -41,10 +41,16 @@ class Collisions {
                 __dm_row[j] = dist;
                 if (dist < (entity_a.size + entity_b.size) * 0.5) {
                     // ProjectileEntity hit MonsterEntity         
-                    if ((entity_a instanceof ProjectileEntity || entity_a instanceof IceCascadeEntity) && (entity_b instanceof MonsterEntity)) {
+                    if ((entity_a instanceof ProjectileEntity 
+                        || entity_a instanceof IceCascadeEntity 
+                        || entity_a instanceof PlasmaNovaEntity) 
+                        && (entity_b instanceof MonsterEntity)) {
                         this.notify(0, [entity_a, entity_b]);
                     }
-                    else if ((entity_a instanceof MonsterEntity) && (entity_b instanceof ProjectileEntity || entity_b instanceof IceCascadeEntity)) {
+                    else if ((entity_a instanceof MonsterEntity) 
+                        && (entity_b instanceof ProjectileEntity 
+                        || entity_b instanceof IceCascadeEntity 
+                        || entity_b instanceof PlasmaNovaEntity)) {
                         this.notify(0, [entity_b, entity_a]);
                     }
                     else if (entity_a instanceof MonsterEntity && entity_b instanceof MonsterEntity) {

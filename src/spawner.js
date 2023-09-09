@@ -42,8 +42,7 @@ class Spawner {
                 world.monsters.push(entity);
                 this.notify(11, [entity]);
             }
-            if (entity instanceof ProjectileEntity || entity instanceof IceCascadeEntity ) {
-                console.log("ProjectileEntity or IceCascadeEntity registered for events")
+            if (entity instanceof ProjectileEntity || entity instanceof IceCascadeEntity || entity instanceof PlasmaNovaEntity ) {
                 world.projectiles.push(entity);
                 this.notify(12, [entity]);
             }

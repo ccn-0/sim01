@@ -16,7 +16,7 @@ class PlayerEntity extends PhysicalEntity {
     static base_xp_multiplier = 1.0;
     static base_dash_speed = 20;
     static base_dash_active_duration = 8;
-    static base_dash_cooldown_duration = 300;
+    static base_dash_cooldown_duration = 180;
     static base_projectile_count = 1;
     static base_projectile_spread = 0.3;
     static base_projectile_speed = 10;
@@ -86,6 +86,7 @@ class PlayerEntity extends PhysicalEntity {
 
         // Spells and specials flags
         this.ice_cascade = false;
+        this.plasma_nova = false;
 
         // Player inventory of all modifiers
         this.modifiers = [];
@@ -188,7 +189,7 @@ class PlayerEntity extends PhysicalEntity {
                 proj_vel = rotate_vector(proj_vel.x, proj_vel.y, -this.projectile_spread);
             }
             if (this.ice_cascade) {
-                // Player has ice cascade spell active
+                // Player has ice cascade spell
                 for (var i = 0; i < 5; i++) {
                     var ice_size = Math.floor(  128 + Math.random() * 128 )
                     new IceCascadeEntity(this, this.ax, this.ay, 100 * i + 100, ice_size);
@@ -216,6 +217,16 @@ class PlayerEntity extends PhysicalEntity {
             this.dash_vx = 0;
             this.dash_vy = 0;
             this.dash_isactive = false;
+            if (this.plasma_nova) {
+                // Player has plasma nova spell             
+                var proj_count = 24;
+                var proj_spread = (360/proj_count) * (0.017453292) // To radians
+                var proj_vel = rotate_vector(this.ax, this.ay, proj_spread);
+                for (var i = 0; i < proj_count; i++) {        
+                    new PlasmaNovaEntity(this, proj_vel.x, proj_vel.y, 96);
+                    proj_vel = rotate_vector(proj_vel.x, proj_vel.y, proj_spread);
+                }    
+            }
         }
         this.dash_cooldown_timer = this.dash_cooldown_timer <= 0 ? 0 : this.dash_cooldown_timer-1;
         this.dash_active_timer = this.dash_active_timer <= 0 ? 0 : this.dash_active_timer-1;
