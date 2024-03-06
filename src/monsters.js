@@ -134,8 +134,8 @@ class HonzeekMonsterEntity extends MonsterEntity {
     static damage = 15;
     static speed = 1.8;
     static xp = 400;
-    static model_idle = _load_image_asset("https://cdn.discordapp.com/emojis/857700195689300008.webp");
-    static model_hit = _load_image_asset("https://cdn.discordapp.com/attachments/749608248184799345/1004827766283309126/honzeek_hit.webp");
+    static model_idle = _load_image_asset("assets/honzeek.webp");
+    static model_hit = _load_image_asset("assets/honzeek_hit.webp");
 
     constructor(extra_max_hp, extra_damage, extra_speed) {
         super(
@@ -208,10 +208,10 @@ class MyregMonsterEntity extends MonsterEntity {
     static speed = 2;
     static xp = 500;
     
-    static model_idle = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1005804398619938917/frame_0_delay-0.1s.gif");
-    static model_anim0 = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1005804398900940890/frame_1_delay-0.1s.gif")
-    static model_anim1 = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1005804399303606282/frame_2_delay-0.1s.gif")
-    static model_hit = _load_image_asset("https://cdn.discordapp.com/attachments/1005798982691323914/1006979563500347412/myreg_hit.webp");
+    static model_idle = _load_image_asset("assets/frame_0_delay-0.1s.gif");
+    static model_anim0 = _load_image_asset("assets/frame_1_delay-0.1s.gif")
+    static model_anim1 = _load_image_asset("assets/frame_2_delay-0.1s.gif")
+    static model_hit = _load_image_asset("assets/myreg_hit.webp");
 
     constructor(extra_max_hp, extra_damage, extra_speed) {
         super(
