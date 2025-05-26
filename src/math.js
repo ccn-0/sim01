@@ -64,3 +64,7 @@ function weighted_random(modifiers, count) {
     }
     return offers;
 }
+
+function ease_towards(current, target, easing = 0.1) {
+    return current + (target - current) * easing;
+}

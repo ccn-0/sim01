@@ -65,10 +65,10 @@ function prehandle_controls() {
 }
 
 function add_listeners() {
+
     c.addEventListener('mousemove', function(evt) {
-        var rect = c.getBoundingClientRect();
-        keys.mouse_x = evt.clientX - rect.left;
-        keys.mouse_y = evt.clientY - rect.top;
+        keys.mouse_x = evt.clientX;
+        keys.mouse_y = evt.clientY;
     });
     c.addEventListener('mousedown', function(evt) {
         if (evt.button == 0) {
@@ -81,6 +81,7 @@ function add_listeners() {
         }
     });
     document.addEventListener('keydown', function(evt) {
+        console.log(keys.mouse_x, keys.mouse_y)
         if (evt.defaultPrevented) {  
             return;
         }
@@ -94,8 +95,18 @@ function add_listeners() {
             keys.left = true;
         } else if (evt.code === "KeyD") {
             keys.right = true;
+        } else if (evt.code === "ArrowUp") {
+            keys.arrow_up = true;
+        } else if (evt.code === "ArrowDown") {
+            keys.arrow_down = true;
+        } else if (evt.code === "ArrowLeft") {
+            keys.arrow_left = true;
+        } else if (evt.code === "ArrowRight") {
+            keys.arrow_right = true;
         } else if (evt.code === "Space") {
             keys.space = true;
+        } else if (evt.code === "KeyV") {
+            keys.mouse1 = true;
         } else if (evt.code === "Digit1") {
             keys.slot1 = true;
         } else if (evt.code === "Digit2") {
@@ -121,8 +132,18 @@ function add_listeners() {
             keys.left = false;
         } else if (evt.code === "KeyD"){
             keys.right = false;
+        } else if (evt.code === "ArrowUp") {
+            keys.arrow_up = false;
+        } else if (evt.code === "ArrowDown") {
+            keys.arrow_down = false;
+        } else if (evt.code === "ArrowLeft") {
+            keys.arrow_left = false;
+        } else if (evt.code === "ArrowRight") {
+            keys.arrow_right = false;
         } else if (evt.code === "Space") {
             keys.space = false;
+        } else if (evt.code === "KeyV") {
+            keys.mouse1 = false;
         } else if (evt.code === "Digit1"){
             keys.slot1 = false;
         } else if (evt.code === "Digit2"){

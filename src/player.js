@@ -99,6 +99,24 @@ class PlayerEntity extends PhysicalEntity {
 
         super.update();
 
+        /* Quick and dirty arrow keys fake mouse :3 */
+        if (keys.arrow_up) {
+            keys.mouse_x = ease_towards(keys.mouse_x, ctx.canvas.width / 2);
+            keys.mouse_y = ease_towards(keys.mouse_y, ctx.canvas.height / 2 - 10);
+        }
+        if (keys.arrow_down) {
+            keys.mouse_x = ease_towards(keys.mouse_x, ctx.canvas.width / 2);
+            keys.mouse_y = ease_towards(keys.mouse_y, ctx.canvas.height / 2 + 10);
+        }
+        if (keys.arrow_left) {
+            keys.mouse_x = ease_towards(keys.mouse_x, ctx.canvas.width / 2 - 10);
+            keys.mouse_y = ease_towards(keys.mouse_y, ctx.canvas.height / 2);
+        }
+        if (keys.arrow_right) {
+            keys.mouse_x = ease_towards(keys.mouse_x, ctx.canvas.width / 2 + 10);
+            keys.mouse_y = ease_towards(keys.mouse_y, ctx.canvas.height / 2);
+        }
+
         var view_vec = normalize_vector(
             keys.mouse_x - ctx.canvas.width / 2,
             keys.mouse_y - ctx.canvas.height / 2
