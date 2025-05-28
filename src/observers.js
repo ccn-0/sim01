@@ -96,6 +96,7 @@ class MonsterDespawnObserver {
             // Count XP
             const result_xp = monster.xp * world.player.xp_multiplier;
             world.player.xp += result_xp;
+            world.player.kill_count += 1;
             // +XP text
             // new DynamicTextEntity(monster.x-30, monster.y, 0, -2, 0, 0, 60, 60, 0.98, "#CCCC00", result_xp + " xp");
         } 

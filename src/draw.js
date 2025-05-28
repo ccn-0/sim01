@@ -50,6 +50,12 @@ function draw_hud_xp() {
     ctx.fillRect(140, ctx.canvas.height - 50, 
         (ctx.canvas.width-200) * (player.xp/player.xp_next), 25
     );
+    // Draw kill counter
+    ctx.font = '24px helvetica';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText("Kills: " + player.kill_count, 
+        ctx.canvas.width - 180, 60
+    );
 }
 
 function draw_altar() {

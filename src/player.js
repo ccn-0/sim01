@@ -53,6 +53,7 @@ class PlayerEntity extends PhysicalEntity {
         this.xp_multiplier = PlayerEntity.base_xp_multiplier;
         this.xp = 0;
         this.xp_next = 1000;
+        this.kill_count = 0;
         
         // Dash state
         this.dash_cooldown_duration = PlayerEntity.base_dash_cooldown_duration;
