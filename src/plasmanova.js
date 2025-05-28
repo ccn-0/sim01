@@ -1,7 +1,7 @@
 class PlasmaNovaEntity extends DurationEntity {
 
     static base_max_hp = 90;
-    static base_damage_multiplier = 0.7;
+    static base_damage_multiplier = 0.4;
     static models = [
         _load_image_asset("assets/plasma00.png"),
         _load_image_asset("assets/plasma01.png"),

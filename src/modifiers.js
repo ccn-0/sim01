@@ -455,15 +455,15 @@ class AltarModifier {
             ]
         },        
         {
-            "weight" : 100000,
+            "weight" : 1000,
             "name" : "Plasma Nova",
             "callback" : (owner, mod) => {
                 owner.plasma_nova = true;
             },
             "get_description_callback" : [
                 (mod) => {return `Your dash also casts Plasma Nova`},
-                (mod) => {return `Plasma Nova is cast at the end of dash travel`},
-                (mod) => {return `Plasma Nova deals 70% of your damage`}
+                (mod) => {return `Plasma Nova projectiles pierce 5 times`},
+                (mod) => {return `Plasma Nova deals 40% of your damage`}
             ]
         },
     ]
